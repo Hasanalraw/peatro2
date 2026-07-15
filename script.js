@@ -11,6 +11,7 @@ const translations = {
     "nav-about": "Hakkımızda",
     "nav-menu": "Menü",
     "nav-reviews": "Değerlendirmeler",
+    "nav-where": "Neredeyiz",
     "nav-contact": "İletişim",
     "btn-book-nav": "Masa Rezervasyonu",
     "whatsapp-chat": "Bize Ulaşın",
@@ -98,6 +99,7 @@ const translations = {
     // Contact
     "contact-title": "İletişim ve Konum",
     "contact-subtitle": "Bizleri Ziyaret Edin",
+    "btn-directions": "Yol Tarifi Al",
     "footer-credit": "Otantik İtalyan deneyimleri için tutkuyla tasarlandı."
   },
   en: {
@@ -106,6 +108,7 @@ const translations = {
     "nav-about": "About Us",
     "nav-menu": "Menu",
     "nav-reviews": "Reviews",
+    "nav-where": "Where We Are",
     "nav-contact": "Contact",
     "btn-book-nav": "Book a Table",
     "whatsapp-chat": "Contact Us",
@@ -193,6 +196,7 @@ const translations = {
     // Contact
     "contact-title": "Contact & Location",
     "contact-subtitle": "Visit Us",
+    "btn-directions": "Get Directions",
     "footer-credit": "Designed with passion for authentic Italian experiences."
   },
   ar: {
@@ -201,6 +205,7 @@ const translations = {
     "nav-about": "من نحن",
     "nav-menu": "القائمة",
     "nav-reviews": "التقييمات",
+    "nav-where": "أين نحن",
     "nav-contact": "الاتصال",
     "btn-book-nav": "احجز طاولتك",
     "whatsapp-chat": "تواصل معنا",
@@ -282,17 +287,18 @@ const translations = {
     "reviews-subtitle": "آراء وتجارب زبائننا في Pietro",
     "review-warning": "نموذج مبدئي - يرجى استبداله بتقييمات حقيقية",
     "review-1-text": "\"المكان الوحيد في يالوفا الذي يقدم بيتزا إيطالية حقيقية. التناغم بين البروشوتو والفطر في بيتزا بيترو كان خيالياً. أجواء المكان والجدارية النباتية مميزة للغاية.\"",
-    "review-2-text": "\"طبق Penne Burrata يفوق الوصف! تماسك الصلصة الكريمية وطزاجة جبن البوراتا كانت مثالية. والقهوة الإسبريسو بعد العشاء كانت ممتازة.\"",
+    "review-2-text": "\"طبق Penne Burrata يفوق الوصف! تماسك الصلصة الكريمية وطزاجة جبن البوراتا كانت multiplets. والقهوة الإسبريسو بعد العشاء كانت ممتازة.\"",
     "review-3-text": "\"التصميم الداخلي مريح ودافئ جداً. تفاصيل الخشب الهندسية في السقف والجدارية يمنحان طاقة رائعة. إضافة ممتازة لمدينة يالوفا.\"",
 
     // Contact
     "contact-title": "الاتصال والموقع",
     "contact-subtitle": "تفضلوا بزيارتنا",
+    "btn-directions": "احصل على الاتجاهات",
     "footer-credit": "صُنع بكل حب وشغف لتقديم تجارب إيطالية أصيلة."
   }
 };
 
-// 2. Meal Database (Detail descriptions, ingredients & sizing prices)
+// 2. Meal Database (Detail descriptions, ingredients & sizing prices - ALL STRICTLY IN TL)
 const dishesData = {
   "1": {
     image: "images/pizza_margherita.jpg",
@@ -309,8 +315,8 @@ const dishesData = {
     },
     prices: {
       tr: { small: "340 TL", medium: "380 TL", large: "440 TL" },
-      en: { small: "$10.00", medium: "$12.00", large: "$14.00" },
-      ar: { small: "$10.00", medium: "$12.00", large: "$14.00" }
+      en: { small: "340 TL", medium: "380 TL", large: "440 TL" },
+      ar: { small: "340 TL", medium: "380 TL", large: "440 TL" }
     }
   },
   "2": {
@@ -328,8 +334,8 @@ const dishesData = {
     },
     prices: {
       tr: { small: "430 TL", medium: "490 TL", large: "560 TL" },
-      en: { small: "$13.50", medium: "$15.50", large: "$18.00" },
-      ar: { small: "$13.50", medium: "$15.50", large: "$18.00" }
+      en: { small: "430 TL", medium: "490 TL", large: "560 TL" },
+      ar: { small: "430 TL", medium: "490 TL", large: "560 TL" }
     }
   },
   "3": {
@@ -347,8 +353,8 @@ const dishesData = {
     },
     prices: {
       tr: { small: "410 TL", medium: "460 TL", large: "520 TL" },
-      en: { small: "$13.00", medium: "$14.50", large: "$16.50" },
-      ar: { small: "$13.00", medium: "$14.50", large: "$16.50" }
+      en: { small: "410 TL", medium: "460 TL", large: "520 TL" },
+      ar: { small: "410 TL", medium: "460 TL", large: "520 TL" }
     }
   },
   "4": {
@@ -366,8 +372,8 @@ const dishesData = {
     },
     prices: {
       tr: { small: "480 TL", medium: "540 TL", large: "610 TL" },
-      en: { small: "$15.00", medium: "$17.00", large: "$19.50" },
-      ar: { small: "$15.00", medium: "$17.00", large: "$19.50" }
+      en: { small: "480 TL", medium: "540 TL", large: "610 TL" },
+      ar: { small: "480 TL", medium: "540 TL", large: "610 TL" }
     }
   },
   "5": {
@@ -380,13 +386,13 @@ const dishesData = {
     },
     ingredients: {
       tr: ["Kalem Makarna", "Bütün Taze Burrata", "Kremalı Domates Marinara", "Kiraz Domatesler", "Taze Fesleğen", "Parmesan Peyniri"],
-      en: ["Penne Pasta", "Whole Fresh Burrata", "Creamy Tomato Marinara", "Cherry Tomatoes", "Fresh Basil", "Parmesan Cheese"],
+      en: ["Penne Pasta", "Whole Fresh Burrata", "Cherry Tomatoes", "Fresh Basil", "Parmesan Cheese"],
       ar: ["مكرونة بيني", "كرة بوراتا كاملة", "صلصة مارينارا كريمية", "طماطم كرزية", "ريحان طازج", "جبن بارميزان"]
     },
     prices: {
       tr: { small: "390 TL", medium: "440 TL", large: "500 TL" },
-      en: { small: "$12.00", medium: "$14.00", large: "$16.00" },
-      ar: { small: "$12.00", medium: "$14.00", large: "$16.00" }
+      en: { small: "390 TL", medium: "440 TL", large: "500 TL" },
+      ar: { small: "390 TL", medium: "440 TL", large: "500 TL" }
     }
   },
   "6": {
@@ -404,8 +410,8 @@ const dishesData = {
     },
     prices: {
       tr: { small: "390 TL", medium: "440 TL", large: "500 TL" },
-      en: { small: "$12.00", medium: "$14.00", large: "$16.00" },
-      ar: { small: "$12.00", medium: "$14.00", large: "$16.00" }
+      en: { small: "390 TL", medium: "440 TL", large: "500 TL" },
+      ar: { small: "390 TL", medium: "440 TL", large: "500 TL" }
     }
   },
   "7": {
@@ -423,8 +429,8 @@ const dishesData = {
     },
     prices: {
       tr: { small: "460 TL", medium: "520 TL", large: "590 TL" },
-      en: { small: "$14.50", medium: "$16.50", large: "$19.00" },
-      ar: { small: "$14.50", medium: "$16.50", large: "$19.00" }
+      en: { small: "460 TL", medium: "520 TL", large: "590 TL" },
+      ar: { small: "460 TL", medium: "520 TL", large: "590 TL" }
     }
   },
   "8": {
@@ -442,8 +448,8 @@ const dishesData = {
     },
     prices: {
       tr: { small: "370 TL", medium: "420 TL", large: "480 TL" },
-      en: { small: "$11.50", medium: "$13.50", large: "$15.50" },
-      ar: { small: "$11.50", medium: "$13.50", large: "$15.50" }
+      en: { small: "370 TL", medium: "420 TL", large: "480 TL" },
+      ar: { small: "370 TL", medium: "420 TL", large: "480 TL" }
     }
   }
 };
@@ -491,12 +497,12 @@ function setLanguage(lang) {
     en: {
       name: "e.g. John Doe",
       phone: "e.g. +1 (555) 123-4567",
-      dish: "e.g. Pizza Pietro (Medium - $17.00)"
+      dish: "e.g. Pizza Pietro (Medium - 540 TL)"
     },
     ar: {
       name: "مثال: أحمد محمد",
       phone: "مثال: +966 50 123 4567",
-      dish: "مثال: بيتزا بيترو (متوسطة - $17.00)"
+      dish: "مثال: بيتزا بيترو (متوسطة - 540 TL)"
     }
   };
 
@@ -596,7 +602,7 @@ window.openSizeModal = function(id) {
   const modal = document.getElementById("size-modal");
   document.getElementById("size-modal-dish-title").textContent = dish.name[currentLanguage];
 
-  // Set prices dynamically based on currency of active language
+  // Set prices dynamically based on active language (ALL IN TL NOW)
   const currencyPrices = dish.prices[currentLanguage];
   document.getElementById("price-small").textContent = currencyPrices.small;
   document.getElementById("price-medium").textContent = currencyPrices.medium;
@@ -659,7 +665,7 @@ window.confirmSizeSelection = function() {
   }
 };
 
-// 7. Reservation Form Handler
+// 7. Reservation Form Handler (Accumulates multiple reservations in localStorage)
 window.handleBookingSubmit = function(event) {
   event.preventDefault();
 
@@ -673,9 +679,24 @@ window.handleBookingSubmit = function(event) {
   // Simple validation helper
   if (!name || !phone || !date || !time) return;
 
-  // Simulate mock database / API storage
-  const reservationData = { name, phone, date, time, guests, dish, timestamp: new Date().toISOString() };
-  localStorage.setItem("pietro_latest_booking", JSON.stringify(reservationData));
+  // Fetch bookings list, append new booking, and save
+  let bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
+  const newBooking = {
+    id: 'B-' + Date.now(),
+    name,
+    phone,
+    date,
+    time,
+    guests,
+    dish,
+    status: "pending",
+    timestamp: new Date().toISOString()
+  };
+  bookings.unshift(newBooking); // add to top
+  localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
+
+  // Dispatch storage update trigger event for local tab-to-tab sync
+  localStorage.setItem("pietro_new_booking_event", Date.now().toString());
 
   // Show Success Popup Modal card
   const popup = document.getElementById("form-success-popup");
