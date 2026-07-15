@@ -150,7 +150,10 @@
               <span class="price">380 TL</span>
               <span class="price-note" data-key="price-note">Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin</span>
             </div>
-            <button class="btn-select-item" onclick="selectMenuItem('Pizza Margherita')" data-key="btn-select">Seç</button>
+            <div class="menu-card-actions">
+              <button class="btn-learn-more" onclick="openDetailModal('1')" data-key="btn-learn-more">Daha Fazla</button>
+              <button class="btn-select-item" onclick="openSizeModal('1')" data-key="btn-select">Seç</button>
+            </div>
           </div>
         </div>
       </div>
@@ -169,7 +172,10 @@
               <span class="price">490 TL</span>
               <span class="price-note" data-key="price-note">Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin</span>
             </div>
-            <button class="btn-select-item" onclick="selectMenuItem('Pizza Quattro Formaggi')" data-key="btn-select">Seç</button>
+            <div class="menu-card-actions">
+              <button class="btn-learn-more" onclick="openDetailModal('2')" data-key="btn-learn-more">Daha Fazla</button>
+              <button class="btn-select-item" onclick="openSizeModal('2')" data-key="btn-select">Seç</button>
+            </div>
           </div>
         </div>
       </div>
@@ -188,7 +194,10 @@
               <span class="price">460 TL</span>
               <span class="price-note" data-key="price-note">Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin</span>
             </div>
-            <button class="btn-select-item" onclick="selectMenuItem('Pizza Pollo Picante')" data-key="btn-select">Seç</button>
+            <div class="menu-card-actions">
+              <button class="btn-learn-more" onclick="openDetailModal('3')" data-key="btn-learn-more">Daha Fazla</button>
+              <button class="btn-select-item" onclick="openSizeModal('3')" data-key="btn-select">Seç</button>
+            </div>
           </div>
         </div>
       </div>
@@ -207,7 +216,10 @@
               <span class="price">540 TL</span>
               <span class="price-note" data-key="price-note">Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin</span>
             </div>
-            <button class="btn-select-item" onclick="selectMenuItem('Pizza Pietro')" data-key="btn-select">Seç</button>
+            <div class="menu-card-actions">
+              <button class="btn-learn-more" onclick="openDetailModal('4')" data-key="btn-learn-more">Daha Fazla</button>
+              <button class="btn-select-item" onclick="openSizeModal('4')" data-key="btn-select">Seç</button>
+            </div>
           </div>
         </div>
       </div>
@@ -226,7 +238,10 @@
               <span class="price">440 TL</span>
               <span class="price-note" data-key="price-note">Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin</span>
             </div>
-            <button class="btn-select-item" onclick="selectMenuItem('Penne Burrata')" data-key="btn-select">Seç</button>
+            <div class="menu-card-actions">
+              <button class="btn-learn-more" onclick="openDetailModal('5')" data-key="btn-learn-more">Daha Fazla</button>
+              <button class="btn-select-item" onclick="openSizeModal('5')" data-key="btn-select">Seç</button>
+            </div>
           </div>
         </div>
       </div>
@@ -245,7 +260,10 @@
               <span class="price">440 TL</span>
               <span class="price-note" data-key="price-note">Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin</span>
             </div>
-            <button class="btn-select-item" onclick="selectMenuItem('Tagliatelli Pollo')" data-key="btn-select">Seç</button>
+            <div class="menu-card-actions">
+              <button class="btn-learn-more" onclick="openDetailModal('6')" data-key="btn-learn-more">Daha Fazla</button>
+              <button class="btn-select-item" onclick="openSizeModal('6')" data-key="btn-select">Seç</button>
+            </div>
           </div>
         </div>
       </div>
@@ -264,7 +282,10 @@
               <span class="price">520 TL</span>
               <span class="price-note" data-key="price-note">Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin</span>
             </div>
-            <button class="btn-select-item" onclick="selectMenuItem('Tagliatelli Scampi')" data-key="btn-select">Seç</button>
+            <div class="menu-card-actions">
+              <button class="btn-learn-more" onclick="openDetailModal('7')" data-key="btn-learn-more">Daha Fazla</button>
+              <button class="btn-select-item" onclick="openSizeModal('7')" data-key="btn-select">Seç</button>
+            </div>
           </div>
         </div>
       </div>
@@ -283,7 +304,10 @@
               <span class="price">420 TL</span>
               <span class="price-note" data-key="price-note">Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin</span>
             </div>
-            <button class="btn-select-item" onclick="selectMenuItem('Tagliatelli Forester')" data-key="btn-select">Seç</button>
+            <div class="menu-card-actions">
+              <button class="btn-learn-more" onclick="openDetailModal('8')" data-key="btn-learn-more">Daha Fazla</button>
+              <button class="btn-select-item" onclick="openSizeModal('8')" data-key="btn-select">Seç</button>
+            </div>
           </div>
         </div>
       </div>
@@ -476,6 +500,66 @@
       <p class="footer-credit" data-key="footer-credit">Designed with passion for authentic Italian experiences.</p>
     </div>
   </footer>
+
+  <!-- Dish Detail Modal -->
+  <div id="detail-modal" class="modal-overlay" onclick="closeDetailModalOnOutsideClick(event)">
+    <div class="modal-card detail-modal-card">
+      <button class="modal-close-btn" onclick="closeDetailModal()">&times;</button>
+      <div class="detail-modal-grid">
+        <div class="detail-modal-image-area">
+          <img id="modal-dish-img" src="" alt="Dish Image">
+        </div>
+        <div class="detail-modal-info-area">
+          <h3 id="modal-dish-title" class="modal-dish-title">Dish Title</h3>
+          <p id="modal-dish-desc" class="modal-dish-desc">Dish description goes here.</p>
+          <div class="modal-ingredients-section">
+            <h4 data-key="modal-ingredients">İçindekiler</h4>
+            <ul id="modal-dish-ingredients" class="ingredients-list">
+              <!-- Dynamically populated ingredients -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Size Selection Modal -->
+  <div id="size-modal" class="modal-overlay" onclick="closeSizeModalOnOutsideClick(event)">
+    <div class="modal-card size-modal-card">
+      <button class="modal-close-btn" onclick="closeSizeModal()">&times;</button>
+      <h3 class="modal-title" data-key="modal-select-size">Boyut Seçin</h3>
+      <h4 id="size-modal-dish-title" class="size-modal-dish-title">Dish Title</h4>
+      
+      <div class="size-options-container">
+        <!-- Small Size Option -->
+        <div class="size-option-card" onclick="selectSize('small')" id="size-card-small">
+          <div class="size-option-details">
+            <span class="size-name" data-key="size-small">Küçük</span>
+            <span class="size-price" id="price-small">0 TL</span>
+          </div>
+          <div class="size-selector-radio"></div>
+        </div>
+        <!-- Medium Size Option -->
+        <div class="size-option-card active" onclick="selectSize('medium')" id="size-card-medium">
+          <div class="size-option-details">
+            <span class="size-name" data-key="size-medium">Orta</span>
+            <span class="size-price" id="price-medium">0 TL</span>
+          </div>
+          <div class="size-selector-radio"></div>
+        </div>
+        <!-- Large Size Option -->
+        <div class="size-option-card" onclick="selectSize('large')" id="size-card-large">
+          <div class="size-option-details">
+            <span class="size-name" data-key="size-large">Büyük</span>
+            <span class="size-price" id="price-large">0 TL</span>
+          </div>
+          <div class="size-selector-radio"></div>
+        </div>
+      </div>
+      
+      <button class="btn btn-gold btn-block" onclick="confirmSizeSelection()" data-key="btn-confirm" style="margin-top: 1.5rem;">Onayla ve Rezerve Et</button>
+    </div>
+  </div>
 
   <!-- Custom Scripts -->
   <script src="script.js"></script>

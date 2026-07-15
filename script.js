@@ -41,6 +41,15 @@ const translations = {
     "image-disclaimer": "Bu görsel temsil amaçlı kullanılmıştır. Kendi fotoğraflarınızla değiştirilecektir.",
     "price-note": "Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin",
     "btn-select": "Seç",
+    "btn-learn-more": "Daha Fazla",
+
+    // Modals Translations
+    "modal-ingredients": "İçindekiler",
+    "modal-select-size": "Boyut Seçin",
+    "size-small": "Küçük",
+    "size-medium": "Orta",
+    "size-large": "Büyük",
+    "btn-confirm": "Onayla ve Rezerve Et",
 
     // Individual Menu Items
     "menu-item-1-title": "Pizza Margherita",
@@ -127,6 +136,15 @@ const translations = {
     "image-disclaimer": "This image is used as a representation. It will be replaced with your actual photos.",
     "price-note": "Approximate price - please update real price",
     "btn-select": "Select",
+    "btn-learn-more": "Learn More",
+
+    // Modals Translations
+    "modal-ingredients": "Ingredients",
+    "modal-select-size": "Select Size",
+    "size-small": "Small",
+    "size-medium": "Medium",
+    "size-large": "Large",
+    "btn-confirm": "Confirm & Reserve",
 
     // Individual Menu Items
     "menu-item-1-title": "Pizza Margherita",
@@ -213,6 +231,15 @@ const translations = {
     "image-disclaimer": "هذه الصورة تم استخدامها بناءً على شكل تقريبي لكيف يجب أن يكون مطعمكم، وسيتم استبدالها بصوركم الخاصة.",
     "price-note": "سعر تقريبي مبدئي - يرجى تحديث السعر الفعلي",
     "btn-select": "اختر",
+    "btn-learn-more": "تعرّف عليها أكثر",
+
+    // Modals Translations
+    "modal-ingredients": "المكونات",
+    "modal-select-size": "اختر الحجم",
+    "size-small": "صغيرة",
+    "size-medium": "متوسطة",
+    "size-large": "كبيرة",
+    "btn-confirm": "تأكيد الحجز",
 
     // Individual Menu Items
     "menu-item-1-title": "Pizza Margherita",
@@ -265,10 +292,168 @@ const translations = {
   }
 };
 
+// 2. Meal Database (Detail descriptions, ingredients & sizing prices)
+const dishesData = {
+  "1": {
+    image: "images/pizza_margherita.jpg",
+    name: { tr: "Pizza Margherita", en: "Pizza Margherita", ar: "Pizza Margherita" },
+    desc: {
+      tr: "İmza Napoliten hamurumuz üzerinde taze mozzarella, domates sosu ve fesleğen yaprakları.",
+      en: "Fresh mozzarella, tomato sauce, and basil leaves on our signature Neapolitan crust.",
+      ar: "موزاريلا طازجة، صلصة طماطم، وأوراق ريحان طازجة على عجينتنا النابولية المميزة."
+    },
+    ingredients: {
+      tr: ["Taze Mozzarella", "Domates Sosu", "Taze Fesleğen", "Sızma Zeytinyağı", "Kekik"],
+      en: ["Fresh Mozzarella", "Tomato Sauce", "Fresh Basil", "Extra Virgin Olive Oil", "Oregano"],
+      ar: ["موزاريلا طازجة", "صلصة طماطم", "ريحان طازج", "زيت زيتون بكر ممتاز", "أوريجانو"]
+    },
+    prices: {
+      tr: { small: "340 TL", medium: "380 TL", large: "440 TL" },
+      en: { small: "$10.00", medium: "$12.00", large: "$14.00" },
+      ar: { small: "$10.00", medium: "$12.00", large: "$14.00" }
+    }
+  },
+  "2": {
+    image: "images/pizza_quattro.jpg",
+    name: { tr: "Pizza Quattro Formaggi", en: "Pizza Quattro Formaggi", ar: "Pizza Quattro Formaggi" },
+    desc: {
+      tr: "Taze adaçayı ile zenginleştirilmiş mozzarella, gorgonzola, parmesan ve fontina peynirleri karışımı.",
+      en: "A rich blend of mozzarella, gorgonzola, parmesan, and fontina cheeses with fresh sage.",
+      ar: "مزيج غني من أربعة أجبان (موزاريلا، جورجونزولا، بارميزان، فونتينا) مع أوراق الميرمية الطازجة."
+    },
+    ingredients: {
+      tr: ["Mozzarella Peyniri", "Gorgonzola Peyniri", "Parmesan Peyniri", "Fontina Peyniri", "Taze Adaçayı", "Zeytinyağı"],
+      en: ["Mozzarella Cheese", "Gorgonzola Cheese", "Parmesan Cheese", "Fontina Cheese", "Fresh Sage", "Olive Oil"],
+      ar: ["جبن الموزاريلا", "جبن الجورجونزولا", "جبن البارميزان", "جبن الفونتينا", "ميرمية طازجة", "زيت زيتون"]
+    },
+    prices: {
+      tr: { small: "430 TL", medium: "490 TL", large: "560 TL" },
+      en: { small: "$13.50", medium: "$15.50", large: "$18.00" },
+      ar: { small: "$13.50", medium: "$15.50", large: "$18.00" }
+    }
+  },
+  "3": {
+    image: "images/pizza_pollo.jpg",
+    name: { tr: "Pizza Pollo Picante", en: "Pizza Pollo Picante", ar: "Pizza Pollo Picante" },
+    desc: {
+      tr: "Taze domates sosu üzerinde ızgara tavuk, acı biberler, kekik ve mozzarella peyniri.",
+      en: "Grilled chicken, spicy hot peppers, oregano, and mozzarella over fresh tomato sauce.",
+      ar: "دجاج مشوي، فلفل حار، أوريجانو، وجبنة موزاريلا فوق صلصة الطماطم الطازجة."
+    },
+    ingredients: {
+      tr: ["Izgara Tavuk Göğsü", "Acı Kırmızı Biber", "Közlenmiş Renkli Biberler", "Kekik", "Mozzarella Peyniri", "Domates Sosu"],
+      en: ["Grilled Chicken Breast", "Hot Chili Pepper", "Roasted Bell Peppers", "Oregano", "Mozzarella", "Tomato Sauce"],
+      ar: ["صدر دجاج مشوي", "فلفل حار", "فلفل حلو مشوي", "أوريجانو", "موزاريلا", "صلصة طماطم"]
+    },
+    prices: {
+      tr: { small: "410 TL", medium: "460 TL", large: "520 TL" },
+      en: { small: "$13.00", medium: "$14.50", large: "$16.50" },
+      ar: { small: "$13.00", medium: "$14.50", large: "$16.50" }
+    }
+  },
+  "4": {
+    image: "images/pizza_pietro.jpg",
+    name: { tr: "Pizza Pietro", en: "Pizza Pietro", ar: "Pizza Pietro" },
+    desc: {
+      tr: "Özel kurutulmuş dana eti, yaban mantarları, renkli dolmalık biberler ve tıraşlanmış parmesan peyniri.",
+      en: "Premium cured beef (prosciutto style), wild mushrooms, colorful bell peppers, and shaved parmesan cheese.",
+      ar: "شرائح لحم بقري مجفف فاخر (بروشوتو)، فطر بري، فلفل ملون، ورقائق جبنة البارميزان."
+    },
+    ingredients: {
+      tr: ["Kurutulmuş Dana Eti", "Yaban Orman Mantarları", "Kültür Mantarı", "Renkli Dolmalık Biberler", "Tıraşlanmış Parmesan", "Taze Roka"],
+      en: ["Cured Prosciutto Beef", "Wild Forest Mushrooms", "White Button Mushrooms", "Bell Peppers", "Shaved Parmesan", "Fresh Arugula"],
+      ar: ["بروشوتو بقري مجفف", "فطر بري", "فطر أبيض", "فلفل ألوان", "شرائح بارميزان", "جرجير طازج"]
+    },
+    prices: {
+      tr: { small: "480 TL", medium: "540 TL", large: "610 TL" },
+      en: { small: "$15.00", medium: "$17.00", large: "$19.50" },
+      ar: { small: "$15.00", medium: "$17.00", large: "$19.50" }
+    }
+  },
+  "5": {
+    image: "images/penne_burrata.jpg",
+    name: { tr: "Penne Burrata", en: "Penne Burrata", ar: "Penne Burrata" },
+    desc: {
+      tr: "Üzerinde bütün taze burrata peyniri ile zengin, kremalı domates ve fesleğen soslu kalem makarna.",
+      en: "Penne pasta in a rich, creamy tomato-basil sauce topped with a whole fresh burrata ball.",
+      ar: "باستا بيني بصلصة طماطم كريمية غنية بالريحان تعلوها كرة كاملة من جبنة البوراتا الطازجة."
+    },
+    ingredients: {
+      tr: ["Kalem Makarna", "Bütün Taze Burrata", "Kremalı Domates Marinara", "Kiraz Domatesler", "Taze Fesleğen", "Parmesan Peyniri"],
+      en: ["Penne Pasta", "Whole Fresh Burrata", "Creamy Tomato Marinara", "Cherry Tomatoes", "Fresh Basil", "Parmesan Cheese"],
+      ar: ["مكرونة بيني", "كرة بوراتا كاملة", "صلصة مارينارا كريمية", "طماطم كرزية", "ريحان طازج", "جبن بارميزان"]
+    },
+    prices: {
+      tr: { small: "390 TL", medium: "440 TL", large: "500 TL" },
+      en: { small: "$12.00", medium: "$14.00", large: "$16.00" },
+      ar: { small: "$12.00", medium: "$14.00", large: "$16.00" }
+    }
+  },
+  "6": {
+    image: "images/tagliatelli_pollo.jpg",
+    name: { tr: "Tagliatelli Pollo", en: "Tagliatelli Pollo", ar: "Tagliatelli Pollo" },
+    desc: {
+      tr: "Izgara tavuk parçaları, taze adaçayı ve kadifemsi tereyağı sosu ile sotelenmiş yassı tagliatelli makarna.",
+      en: "Flat tagliatelli pasta tossed with tender grilled chicken, fresh sage, and a velvety butter sauce.",
+      ar: "تاليياتيلي مسطحة مطبوخة بقطع الدجاج المشوي والميرمية الطازجة وصلصة الزبدة الغنية."
+    },
+    ingredients: {
+      tr: ["Tagliatelli Makarna", "Izgara Tavuk Parçaları", "Taze Adaçayı", "Tereyağlı Özel Sos", "Sarımsak", "Rendelenmiş Parmesan"],
+      en: ["Tagliatelli Pasta", "Grilled Chicken Pieces", "Fresh Sage", "Special Butter Sauce", "Garlic", "Grated Parmesan"],
+      ar: ["باستا تاليياتيلي", "قطع دجاج مشوي", "ميرمية طازجة", "صلصة زبدة خاصة", "ثوم", "بارميزان مبشور"]
+    },
+    prices: {
+      tr: { small: "390 TL", medium: "440 TL", large: "500 TL" },
+      en: { small: "$12.00", medium: "$14.00", large: "$16.00" },
+      ar: { small: "$12.00", medium: "$14.00", large: "$16.00" }
+    }
+  },
+  "7": {
+    image: "images/tagliatelli_scampi.jpg",
+    name: { tr: "Tagliatelli Scampi", en: "Tagliatelli Scampi", ar: "Tagliatelli Scampi" },
+    desc: {
+      tr: "Sotelenmiş karides, sarımsak, maydanoz, limon kabuğu rendesi ve tıraşlanmış parmesanlı tagliatelli.",
+      en: "Tagliatelli pasta with sautéed shrimp, garlic, parsley, lemon zest, and shaved parmesan.",
+      ar: "تاليياتيلي بالجمبري السوتيه مع الثوم، البقدونس، مبشور قشر الليمون ورقائق البارميزان."
+    },
+    ingredients: {
+      tr: ["Tagliatelli Makarna", "Sotelenmiş Karides", "Sarımsaklı Tereyağı Sosu", "Taze Maydanoz", "Limon Kabuğu Rendesi", "Tıraşlanmış Parmesan"],
+      en: ["Tagliatelli Pasta", "Sautéed Shrimp", "Garlic Butter Sauce", "Fresh Parsley", "Lemon Zest", "Shaved Parmesan"],
+      ar: ["باستا تاليياتيلي", "جمبري سوتيه", "صلصة زبدة بالثوم", "بقدونس طازج", "قشر ليمون", "بارميزان مبشور"]
+    },
+    prices: {
+      tr: { small: "460 TL", medium: "520 TL", large: "590 TL" },
+      en: { small: "$14.50", medium: "$16.50", large: "$19.00" },
+      ar: { small: "$14.50", medium: "$16.50", large: "$19.00" }
+    }
+  },
+  "8": {
+    image: "images/tagliatelli_forester.jpg",
+    name: { tr: "Tagliatelli Forester", en: "Tagliatelli Forester", ar: "Tagliatelli Forester" },
+    desc: {
+      tr: "Sotelenmiş yaban orman mantarları, kestane mantarları ve adaçayı ile harmanlanmış şerit makarna.",
+      en: "Flat ribbon pasta tossed with sautéed wild forest mushrooms, chestnut mushrooms, and sage.",
+      ar: "باستا شريطية مسطحة مطبوخة بالفطر البري وفطر الكستناء السوتيه مع أوراق الميرمية والزبدة."
+    },
+    ingredients: {
+      tr: ["Tagliatelli Makarna", "Yaban Mantarları", "Kestane Mantarı", "Taze Adaçayı", "Tereyağlı ve Kremalı Sos", "Rendelenmiş Parmesan"],
+      en: ["Tagliatelli Pasta", "Wild Chanterelle Mushrooms", "Chestnut Mushrooms", "Fresh Sage", "Butter and Cream Sauce", "Grated Parmesan"],
+      ar: ["باستا تاليياتيلي", "فطر بري", "فطر كستنائي", "ميرمية طازجة", "صلصة زبدة بالكريمة", "بارميزان مبشور"]
+    },
+    prices: {
+      tr: { small: "370 TL", medium: "420 TL", large: "480 TL" },
+      en: { small: "$11.50", medium: "$13.50", large: "$15.50" },
+      ar: { small: "$11.50", medium: "$13.50", large: "$15.50" }
+    }
+  }
+};
+
 // Global state variables
 let currentLanguage = "tr";
+let currentSelectedDishId = "";
+let currentSelectedSize = "medium"; // default
 
-// 2. Language Switcher Logic
+// 3. Language Switcher Logic
 function setLanguage(lang) {
   if (!translations[lang]) return;
   currentLanguage = lang;
@@ -301,17 +486,17 @@ function setLanguage(lang) {
     tr: {
       name: "Örn. Ahmet Yılmaz",
       phone: "Örn. +90 530 123 4567",
-      dish: "Örn. Pizza Pietro"
+      dish: "Örn. Pizza Pietro (Orta - 540 TL)"
     },
     en: {
       name: "e.g. John Doe",
       phone: "e.g. +1 (555) 123-4567",
-      dish: "e.g. Pizza Pietro"
+      dish: "e.g. Pizza Pietro (Medium - $17.00)"
     },
     ar: {
       name: "مثال: أحمد محمد",
       phone: "مثال: +966 50 123 4567",
-      dish: "مثال: بيتزا بيترو"
+      dish: "مثال: بيتزا بيترو (متوسطة - $17.00)"
     }
   };
 
@@ -327,7 +512,7 @@ function setLanguage(lang) {
   updateWhatsAppLink(lang);
 }
 
-// 3. Dynamic WhatsApp Link generator based on active language
+// 4. Dynamic WhatsApp Link generator based on active language
 function updateWhatsAppLink(lang) {
   const whatsappFloat = document.querySelector(".whatsapp-float");
   if (!whatsappFloat) return;
@@ -342,7 +527,7 @@ function updateWhatsAppLink(lang) {
   whatsappFloat.href = `https://wa.me/905300000000?text=${encodedMessage}`;
 }
 
-// 4. Menu Filtering System
+// 5. Menu Filtering System
 const filterButtons = document.querySelectorAll(".filter-btn");
 const menuCards = document.querySelectorAll(".menu-card");
 
@@ -358,7 +543,6 @@ filterButtons.forEach(btn => {
       const category = card.getAttribute("data-category");
       if (filterValue === "all" || category === filterValue) {
         card.classList.remove("hidden");
-        // Fade in animation
         card.style.opacity = "0";
         setTimeout(() => {
           card.style.opacity = "1";
@@ -371,26 +555,111 @@ filterButtons.forEach(btn => {
   });
 });
 
-// 5. Select menu item in card and auto-scroll/fill in form
-window.selectMenuItem = function(itemName) {
-  const dishInput = document.getElementById("booking-dish");
-  if (dishInput) {
-    dishInput.value = itemName;
+// 6. Modal Interactions: Detail & Size Modals
+window.openDetailModal = function(id) {
+  const dish = dishesData[id];
+  if (!dish) return;
+
+  const modal = document.getElementById("detail-modal");
+  document.getElementById("modal-dish-img").src = dish.image;
+  document.getElementById("modal-dish-title").textContent = dish.name[currentLanguage];
+  document.getElementById("modal-dish-desc").textContent = dish.desc[currentLanguage];
+
+  const ingredientsList = document.getElementById("modal-dish-ingredients");
+  ingredientsList.innerHTML = "";
+  dish.ingredients[currentLanguage].forEach(ing => {
+    const li = document.createElement("li");
+    li.textContent = ing;
+    ingredientsList.appendChild(li);
+  });
+
+  modal.classList.add("active");
+};
+
+window.closeDetailModal = function() {
+  document.getElementById("detail-modal").classList.remove("active");
+};
+
+window.closeDetailModalOnOutsideClick = function(event) {
+  if (event.target === document.getElementById("detail-modal")) {
+    closeDetailModal();
+  }
+};
+
+window.openSizeModal = function(id) {
+  const dish = dishesData[id];
+  if (!dish) return;
+
+  currentSelectedDishId = id;
+  currentSelectedSize = "medium"; // reset size selection to default
+
+  const modal = document.getElementById("size-modal");
+  document.getElementById("size-modal-dish-title").textContent = dish.name[currentLanguage];
+
+  // Set prices dynamically based on currency of active language
+  const currencyPrices = dish.prices[currentLanguage];
+  document.getElementById("price-small").textContent = currencyPrices.small;
+  document.getElementById("price-medium").textContent = currencyPrices.medium;
+  document.getElementById("price-large").textContent = currencyPrices.large;
+
+  // Reset active classes on size selection cards
+  document.querySelectorAll(".size-option-card").forEach(card => card.classList.remove("active"));
+  document.getElementById("size-card-medium").classList.add("active");
+
+  modal.classList.add("active");
+};
+
+window.selectSize = function(size) {
+  currentSelectedSize = size;
+  document.querySelectorAll(".size-option-card").forEach(card => card.classList.remove("active"));
+  document.getElementById(`size-card-${size}`).classList.add("active");
+};
+
+window.closeSizeModal = function() {
+  document.getElementById("size-modal").classList.remove("active");
+};
+
+window.closeSizeModalOnOutsideClick = function(event) {
+  if (event.target === document.getElementById("size-modal")) {
+    closeSizeModal();
+  }
+};
+
+window.confirmSizeSelection = function() {
+  const dish = dishesData[currentSelectedDishId];
+  if (!dish) return;
+
+  const sizeLabels = {
+    tr: { small: "Küçük", medium: "Orta", large: "Büyük" },
+    en: { small: "Small", medium: "Medium", large: "Large" },
+    ar: { small: "صغيرة", medium: "متوسطة", large: "كبيرة" }
+  };
+
+  const selectedSizeLabel = sizeLabels[currentLanguage][currentSelectedSize];
+  const selectedPriceLabel = dish.prices[currentLanguage][currentSelectedSize];
+  const dishName = dish.name[currentLanguage];
+
+  const reservationInput = document.getElementById("booking-dish");
+  if (reservationInput) {
+    reservationInput.value = `${dishName} (${selectedSizeLabel} - ${selectedPriceLabel})`;
+    
     // Highlight input momentarily
-    dishInput.style.borderColor = "var(--color-gold)";
+    reservationInput.style.borderColor = "var(--color-gold)";
     setTimeout(() => {
-      dishInput.style.borderColor = "rgba(255, 255, 255, 0.1)";
+      reservationInput.style.borderColor = "rgba(255, 255, 255, 0.1)";
     }, 1500);
   }
 
-  // Smooth scroll to booking section
+  closeSizeModal();
+
+  // Scroll to reservation
   const bookingSection = document.getElementById("reservation");
   if (bookingSection) {
     bookingSection.scrollIntoView({ behavior: "smooth" });
   }
 };
 
-// 6. Reservation Form Handler
+// 7. Reservation Form Handler
 window.handleBookingSubmit = function(event) {
   event.preventDefault();
 
@@ -425,7 +694,7 @@ window.closePopup = function() {
   if (form) form.reset();
 };
 
-// 7. Mobile Menu Burger Animation & Toggle
+// 8. Mobile Menu Burger Animation & Toggle
 const mobileNavToggle = document.querySelector(".mobile-nav-toggle");
 const mainNav = document.querySelector(".main-nav");
 
@@ -444,7 +713,7 @@ if (mobileNavToggle && mainNav) {
   });
 }
 
-// 8. Sticky Navigation & Scroll Spy (Highlight active links)
+// 9. Sticky Navigation & Scroll Spy (Highlight active links)
 const header = document.querySelector(".site-header");
 const navLinks = document.querySelectorAll(".nav-link");
 const sections = document.querySelectorAll("section");
@@ -479,7 +748,7 @@ function varHeaderHeight() {
   return header ? header.offsetHeight : 80;
 }
 
-// 9. Initial Load Configuration
+// 10. Initial Load Configuration
 document.addEventListener("DOMContentLoaded", () => {
   // Set default date for reservation (tomorrow)
   const dateInput = document.getElementById("booking-date");
