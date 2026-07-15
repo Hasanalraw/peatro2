@@ -416,39 +416,41 @@
     .btn-delete { background-color: #444; }
     .btn-delete:hover { background-color: #666; }
 
-    /* Payment Status Badges */
-    .pay-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
+    /* Payment Status Dropdown Selector */
+    .pay-select {
+      padding: 6px 10px;
       border-radius: 6px;
       font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
-      border: 1px solid transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--color-text);
+      outline: none;
       transition: var(--transition-smooth);
-      background: none;
     }
     
-    .pay-badge.paid {
-      background-color: rgba(37, 211, 102, 0.1);
-      color: var(--color-green);
-      border-color: rgba(37, 211, 102, 0.2);
-    }
-    
-    .pay-badge.paid:hover {
-      background-color: rgba(37, 211, 102, 0.2);
-    }
-    
-    .pay-badge.unpaid {
+    .pay-select.unpaid {
       background-color: rgba(226, 161, 60, 0.08);
       color: var(--color-status-pending);
       border-color: rgba(226, 161, 60, 0.2);
     }
     
-    .pay-badge.unpaid:hover {
-      background-color: rgba(226, 161, 60, 0.15);
+    .pay-select.transfer {
+      background-color: rgba(37, 211, 102, 0.08);
+      color: var(--color-green);
+      border-color: rgba(37, 211, 102, 0.2);
+    }
+    
+    .pay-select.arrival {
+      background-color: rgba(52, 152, 219, 0.08);
+      color: #5dade2;
+      border-color: rgba(52, 152, 219, 0.2);
+    }
+
+    .pay-select option {
+      background-color: #1c1c1e;
+      color: #ffffff;
     }
 
     /* Menu Management Grid Layout */
@@ -1169,9 +1171,14 @@
         const dateStr = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
         
         const payStatus = booking.paymentStatus || "unpaid";
-        const payBadgeHtml = payStatus === "paid" ? 
-          `<button class="pay-badge paid" onclick="togglePaymentStatus('${booking.id}')"><i class="fa-solid fa-circle-check"></i> ${adminLangDict[adminActiveLang]["pay-paid"]}</button>` :
-          `<button class="pay-badge unpaid" onclick="togglePaymentStatus('${booking.id}')"><i class="fa-solid fa-circle-xmark"></i> ${adminLangDict[adminActiveLang]["pay-unpaid"]}</button>`;
+        const dict = adminLangDict[adminActiveLang];
+        const paySelectHtml = `
+          <select class="pay-select ${payStatus}" onchange="changePaymentStatus('${booking.id}', this.value)">
+            <option value="unpaid" ${payStatus === 'unpaid' ? 'selected' : ''}>${dict["pay-unpaid"]}</option>
+            <option value="transfer" ${payStatus === 'transfer' ? 'selected' : ''}>${dict["pay-transfer"]}</option>
+            <option value="arrival" ${payStatus === 'arrival' ? 'selected' : ''}>${dict["pay-arrival"]}</option>
+          </select>
+        `;
 
         tr.innerHTML = `
           <td>
@@ -1195,7 +1202,7 @@
             ${booking.drink ? `<span class="drink-tag" title="${escapeHTML(booking.drink)}">${escapeHTML(booking.drink)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
           </td>
           <td>
-            ${payBadgeHtml}
+            ${paySelectHtml}
           </td>
           <td>
             <span class="status-badge ${booking.status}">${translateStatus(booking.status)}</span>
@@ -1253,11 +1260,11 @@
       loadBookings();
     };
 
-    window.togglePaymentStatus = function(id) {
+    window.changePaymentStatus = function(id, newStatus) {
       let bookings = safeGetItem("pietro_bookings");
       bookings = bookings.map(b => {
         if (b.id === id) {
-          b.paymentStatus = (b.paymentStatus === "paid") ? "unpaid" : "paid";
+          b.paymentStatus = newStatus;
         }
         return b;
       });
