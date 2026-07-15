@@ -39,6 +39,7 @@ const translations = {
     "filter-all": "Tümü",
     "filter-pizza": "Pizzalar",
     "filter-pasta": "Makarnalar",
+    "filter-drinks": "İçecekler",
     "image-disclaimer": "Bu görsel temsil amaçlı kullanılmıştır. Kendi fotoğraflarınızla değiştirilecektir.",
     "price-note": "Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin",
     "btn-select": "Seç",
@@ -83,6 +84,11 @@ const translations = {
     "label-time": "Saat",
     "label-guests": "Kişi Sayısı",
     "label-dish": "Tercih Ettiğiniz Yemek (İsteğe Bağlı)",
+    "label-drink": "Tercih Ettiğiniz İçecek (İsteğe Bağlı)",
+    "option-no-drink": "İçecek seçin (İsteğe bağlı)",
+    "drink-cola": "Cola (Yakında)",
+    "drink-fanta": "Fanta (Yakında)",
+    "drink-water": "Su (Yakında)",
     "btn-book-now": "Şimdi Rezervasyon Yap",
     "popup-title": "Rezervasyon Talebi Gönderildi",
     "popup-message": "Rezervasyon talebiniz alınmıştır. Onaylamak için en kısa sürede sizinle iletişime geçeceğiz. Teşekkürler!",
@@ -136,6 +142,7 @@ const translations = {
     "filter-all": "All",
     "filter-pizza": "Pizzas",
     "filter-pasta": "Pastas",
+    "filter-drinks": "Drinks",
     "image-disclaimer": "This image is used as a representation. It will be replaced with your actual photos.",
     "price-note": "Approximate price - please update real price",
     "btn-select": "Select",
@@ -180,6 +187,11 @@ const translations = {
     "label-time": "Time",
     "label-guests": "Number of Guests",
     "label-dish": "Preferred Dish (Optional)",
+    "label-drink": "Preferred Drink (Optional)",
+    "option-no-drink": "Select a drink (Optional)",
+    "drink-cola": "Cola (Soon)",
+    "drink-fanta": "Fanta (Soon)",
+    "drink-water": "Water (Soon)",
     "btn-book-now": "Book Table Now",
     "popup-title": "Booking Request Received",
     "popup-message": "Your table reservation request has been received. We will contact you shortly to confirm your booking. Thank you!",
@@ -233,6 +245,7 @@ const translations = {
     "filter-all": "الكل",
     "filter-pizza": "البيتزا",
     "filter-pasta": "الباستا",
+    "filter-drinks": "المشروبات",
     "image-disclaimer": "هذه الصورة تم استخدامها بناءً على شكل تقريبي لكيف يجب أن يكون مطعمكم، وسيتم استبدالها بصوركم الخاصة.",
     "price-note": "سعر تقريبي مبدئي - يرجى تحديث السعر الفعلي",
     "btn-select": "اختر",
@@ -277,6 +290,11 @@ const translations = {
     "label-time": "الوقت",
     "label-guests": "عدد الأفراد",
     "label-dish": "الوجبة المفضلة (اختياري)",
+    "label-drink": "المشروب المفضل (اختياري)",
+    "option-no-drink": "اختر مشروباً (اختياري)",
+    "drink-cola": "كولا (قريباً)",
+    "drink-fanta": "فانتا (قريباً)",
+    "drink-water": "ماء (قريباً)",
     "btn-book-now": "احجز الآن",
     "popup-title": "تم استلام طلب الحجز",
     "popup-message": "لقد تلقينا طلب حجز الطاولة الخاص بك بنجاح. سنتواصل معك في أقرب وقت لتأكيد الحجز. شكراً لك!",
@@ -516,6 +534,15 @@ function setLanguage(lang) {
 
   // Update WhatsApp text on the link
   updateWhatsAppLink(lang);
+  
+  // Refresh placeholder in menu empty filter if it exists
+  const placeholder = document.getElementById("menu-empty-placeholder");
+  if (placeholder && placeholder.style.display === "block") {
+    const emptyKey = lang === "tr" ? "İçecek menümüz yakında eklenecektir. İlginiz için teşekkür ederiz." :
+                     (lang === "en" ? "Our drinks menu is coming soon. Thank you for your interest." :
+                     "قائمة المشروبات ستتوفر قريباً. شكراً لاهتمامكم.");
+    placeholder.querySelector("span").textContent = emptyKey;
+  }
 }
 
 // 4. Dynamic WhatsApp Link generator based on active language
@@ -533,7 +560,7 @@ function updateWhatsAppLink(lang) {
   whatsappFloat.href = `https://wa.me/905300000000?text=${encodedMessage}`;
 }
 
-// 5. Menu Filtering System
+// 5. Menu Filtering System with Empty Category Placeholder handler
 const filterButtons = document.querySelectorAll(".filter-btn");
 const menuCards = document.querySelectorAll(".menu-card");
 
@@ -544,20 +571,43 @@ filterButtons.forEach(btn => {
     btn.classList.add("active");
 
     const filterValue = btn.getAttribute("data-filter");
+    let visibleCount = 0;
 
     menuCards.forEach(card => {
       const category = card.getAttribute("data-category");
       if (filterValue === "all" || category === filterValue) {
         card.classList.remove("hidden");
-        card.style.opacity = "0";
-        setTimeout(() => {
-          card.style.opacity = "1";
-          card.style.transition = "opacity 0.4s ease";
-        }, 50);
+        card.style.opacity = "1";
+        visibleCount++;
       } else {
         card.classList.add("hidden");
       }
     });
+
+    // Handle empty category state (e.g. Drinks menu)
+    let placeholder = document.getElementById("menu-empty-placeholder");
+    if (visibleCount === 0) {
+      if (!placeholder) {
+        placeholder = document.createElement("div");
+        placeholder.id = "menu-empty-placeholder";
+        placeholder.className = "menu-empty-placeholder";
+        placeholder.style.textAlign = "center";
+        placeholder.style.gridColumn = "1 / -1";
+        placeholder.style.padding = "60px 20px";
+        placeholder.style.color = "var(--color-text-secondary)";
+        placeholder.style.fontStyle = "italic";
+        document.querySelector(".menu-grid").appendChild(placeholder);
+      }
+      placeholder.style.display = "block";
+      placeholder.innerHTML = `<i class="fa-solid fa-mug-hot" style="font-size: 3rem; color: rgba(0,0,0,0.06); margin-bottom: 16px; display: block;"></i> <span style="font-weight:300;"></span>`;
+      
+      const emptyKey = currentLanguage === "tr" ? "İçecek menümüz yakında eklenecektir. İlginiz için teşekkür ederiz." :
+                       (currentLanguage === "en" ? "Our drinks menu is coming soon. Thank you for your interest." :
+                       "قائمة المشروبات ستتوفر قريباً. شكراً لاهتمامكم.");
+      placeholder.querySelector("span").textContent = emptyKey;
+    } else if (placeholder) {
+      placeholder.style.display = "none";
+    }
   });
 });
 
@@ -602,7 +652,7 @@ window.openSizeModal = function(id) {
   const modal = document.getElementById("size-modal");
   document.getElementById("size-modal-dish-title").textContent = dish.name[currentLanguage];
 
-  // Set prices dynamically based on active language (ALL IN TL NOW)
+  // Set prices dynamically (ALL IN TL NOW FOR ALL LANGUAGES)
   const currencyPrices = dish.prices[currentLanguage];
   document.getElementById("price-small").textContent = currencyPrices.small;
   document.getElementById("price-medium").textContent = currencyPrices.medium;
@@ -675,9 +725,27 @@ window.handleBookingSubmit = function(event) {
   const time = document.getElementById("booking-time").value;
   const guests = document.getElementById("booking-guests").value;
   const dish = document.getElementById("booking-dish").value;
+  const drinkSelect = document.getElementById("booking-drink");
+  
+  // Format drink option name nicely
+  let drink = "";
+  if (drinkSelect && drinkSelect.value) {
+    const drinkText = drinkSelect.options[drinkSelect.selectedIndex].text;
+    drink = drinkText;
+  }
 
   // Simple validation helper
   if (!name || !phone || !date || !time) return;
+
+  // Append selected food + drink details into a combined summary if both exist
+  let orderSummary = dish;
+  if (drink) {
+    if (orderSummary) {
+      orderSummary += ` + ${drink}`;
+    } else {
+      orderSummary = drink;
+    }
+  }
 
   // Fetch bookings list, append new booking, and save
   let bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
@@ -688,7 +756,7 @@ window.handleBookingSubmit = function(event) {
     date,
     time,
     guests,
-    dish,
+    dish: orderSummary || "Masa Rezervasyonu",
     status: "pending",
     timestamp: new Date().toISOString()
   };

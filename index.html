@@ -133,6 +133,7 @@
         <button class="filter-btn active" data-filter="all" data-key="filter-all">Tümü</button>
         <button class="filter-btn" data-filter="pizza" data-key="filter-pizza">Pizzalar</button>
         <button class="filter-btn" data-filter="pasta" data-key="filter-pasta">Makarnalar</button>
+        <button class="filter-btn" data-filter="drinks" data-key="filter-drinks">İçecekler</button>
       </div>
     </div>
 
@@ -375,6 +376,15 @@
             <div class="form-group">
               <label for="booking-dish" data-key="label-dish">Tercih Ettiğiniz Yemek (İsteğe Bağlı)</label>
               <input type="text" id="booking-dish" placeholder="Örn. Pizza Pietro">
+            </div>
+            <div class="form-group">
+              <label for="booking-drink" data-key="label-drink">Tercih Ettiğiniz İçecek (İsteğe Bağlı)</label>
+              <select id="booking-drink">
+                <option value="" selected data-key="option-no-drink">İçecek seçin (İsteğe bağlı)</option>
+                <option value="Cola" data-key="drink-cola">Cola (Yakında)</option>
+                <option value="Fanta" data-key="drink-fanta">Fanta (Yakında)</option>
+                <option value="Su" data-key="drink-water">Su (Yakında)</option>
+              </select>
             </div>
           </div>
           <button type="submit" class="btn btn-gold btn-block" data-key="btn-book-now" style="margin-top: 1.5rem;">Şimdi Rezervasyon Yap</button>
