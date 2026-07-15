@@ -3,6 +3,21 @@
    Multilingual i18n support, filters, scroll interactions, and reservations
    ========================================================================== */
 
+// Global Safe LocalStorage Parser
+function safeGetItem(key, defaultValue = []) {
+  try {
+    const val = localStorage.getItem(key);
+    if (!val) return defaultValue;
+    return JSON.parse(val) || defaultValue;
+  } catch (e) {
+    console.error("Error parsing localStorage key " + key + ":", e);
+    // Auto-clear corrupted key to prevent infinite loop crashes
+    localStorage.removeItem(key);
+    return defaultValue;
+  }
+}
+
+
 // 1. i18n Translations Dictionary
 const translations = {
   tr: {
@@ -757,7 +772,7 @@ window.handleBookingSubmit = function(event) {
   if (!name || !phone || !date || !time) return;
 
   // Fetch bookings list, append new booking, and save
-  let bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
+  let bookings = safeGetItem("pietro_bookings");
   const newBooking = {
     id: 'B-' + Date.now(),
     name,
@@ -920,8 +935,8 @@ function renderMenu() {
   if (!menuGrid) return;
   menuGrid.innerHTML = "";
 
-  const deletedDefaultIds = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
-  const customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+  const deletedDefaultIds = safeGetItem("pietro_deleted_default_dishes");
+  const customDishes = safeGetItem("pietro_custom_dishes");
 
   // Create deep local copy of baseline default dishes and normalize them
   let activeDishes = defaultDishes.map(d => normalizeDish(d));

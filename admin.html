@@ -722,7 +722,10 @@
         <div class="dashboard-card">
           <div class="card-title">
             <span id="lang-menu-list-title">Aktif Menü Listesi</span>
-            <span id="menu-list-count" style="font-size: 0.8rem; font-weight: normal; color: var(--color-text-secondary);"></span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="menu-list-count" style="font-size: 0.8rem; font-weight: normal; color: var(--color-text-secondary); margin-right: 8px;"></span>
+              <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="resetMenuToDefault()" id="lang-btn-reset-menu">Menüyü Sıfırla</button>
+            </div>
           </div>
           
           <div class="menu-mgmt-list" id="menu-items-list">
@@ -837,6 +840,19 @@
   </div>
 
   <script>
+    // Global Safe LocalStorage Parser
+    function safeGetItem(key, defaultValue = []) {
+      try {
+        const val = localStorage.getItem(key);
+        if (!val) return defaultValue;
+        return JSON.parse(val) || defaultValue;
+      } catch (e) {
+        console.error("Error parsing localStorage key " + key + ":", e);
+        localStorage.removeItem(key);
+        return defaultValue;
+      }
+    }
+
     // 1. Static Initial Database (Baseline 8 default dishes)
     const defaultDishes = [
       { id: "1", category: "pizza", image: "images/pizza_margherita.jpg", name: { tr: "Pizza Margherita", en: "Pizza Margherita", ar: "Pizza Margherita" }, prices: { tr: { small: "340 TL", medium: "380 TL", large: "440 TL" } }, desc: { tr: "İmza Napoliten hamurumuz üzerinde taze mozzarella, domates sosu ve fesleğen yaprakları." }, ingredients: { tr: ["Taze Mozzarella", "Domates Sosu", "Taze Fesleğen", "Sızma Zeytinyağı"] } },
@@ -892,7 +908,8 @@
         "warning-title": "Tarayıcı Güvenlik Uyarısı:",
         "warning-desc": "Sayfayı doğrudan bilgisayarınızdan yerel dosya olarak açtınız. Tarayıcınızın yerel dosya politikaları nedeniyle sekmeler arası rezervasyon senkronizasyonu engellenebilir. Müşteri arayüzünden gönderilen rezervasyonları burada canlı görmek için projeyi Vercel'e yükleyebilir veya yerel bir sunucu (localhost) kullanabilirsiniz.",
         "toast-title": "Yeni Rezervasyon Talebi!",
-        "toast-desc": "yeni bir rezervasyon talebi gönderdi."
+        "toast-desc": "yeni bir rezervasyon talebi gönderdi.",
+        "btn-reset-menu": "Menüyü Sıfırla"
       },
       en: {
         "panel-tag": "Admin Panel",
@@ -935,7 +952,8 @@
         "warning-title": "Browser Security Warning:",
         "warning-desc": "You opened the page directly from local files (file://). Due to browser security policies, real-time sync between tabs may be blocked. Upload to Vercel or use a local server (localhost) for real-time live sync.",
         "toast-title": "New Booking Request!",
-        "toast-desc": "sent a new table reservation request."
+        "toast-desc": "sent a new table reservation request.",
+        "btn-reset-menu": "Reset Menu"
       },
       ar: {
         "panel-tag": "لوحة التحكم",
@@ -978,7 +996,8 @@
         "warning-title": "تنبيه أمان المتصفح:",
         "warning-desc": "لقد قمت بفتح الملف محلياً كمجلد ملفات. بسبب قيود أمان المتصفح، قد لا يتم مزامنة الطلبات بالوقت الفعلي. يرجى رفع المشروع على Vercel أو استخدام خادم محلي لتفعيل التزامن الفوري التلقائي.",
         "toast-title": "طلب حجز جديد!",
-        "toast-desc": "أرسل طلب حجز طاولة جديد."
+        "toast-desc": "أرسل طلب حجز طاولة جديد.",
+        "btn-reset-menu": "إعادة تعيين القائمة"
       }
     };
 
@@ -1027,6 +1046,7 @@
       document.getElementById("lang-empty-reservations").textContent = dict["empty-reservations"];
       
       document.getElementById("lang-menu-list-title").textContent = dict["menu-list-title"];
+      document.getElementById("lang-btn-reset-menu").textContent = dict["btn-reset-menu"];
       
       document.getElementById("lang-label-category").textContent = dict["label-category"];
       document.getElementById("lang-label-name-tr").textContent = dict["label-name-tr"];
@@ -1070,7 +1090,7 @@
 
     // 4. Load Bookings List
     function loadBookings() {
-      const bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
+      const bookings = safeGetItem("pietro_bookings");
       const tbody = document.getElementById("bookings-tbody");
       const emptyState = document.getElementById("bookings-empty");
       const table = document.getElementById("bookings-table");
@@ -1170,7 +1190,7 @@
 
     // 5. Booking Action functions
     window.setStatus = function(id, status) {
-      let bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
+      let bookings = safeGetItem("pietro_bookings");
       bookings = bookings.map(b => {
         if (b.id === id) b.status = status;
         return b;
@@ -1181,7 +1201,7 @@
 
     window.deleteBooking = function(id) {
       if (!confirm("Bu rezervasyon kaydını silmek istediğinize emin misiniz?")) return;
-      let bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
+      let bookings = safeGetItem("pietro_bookings");
       bookings = bookings.filter(b => b.id !== id);
       localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
       loadBookings();
@@ -1194,7 +1214,7 @@
     };
 
     window.contactCustomer = function(id) {
-      const bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
+      const bookings = safeGetItem("pietro_bookings");
       const booking = bookings.find(b => b.id === id);
       if (!booking) return;
 
@@ -1280,8 +1300,8 @@
     }
 
     function loadMenuList() {
-      const deletedDefaultIds = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
-      const customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+      const deletedDefaultIds = safeGetItem("pietro_deleted_default_dishes");
+      const customDishes = safeGetItem("pietro_custom_dishes");
       
       const listContainer = document.getElementById("menu-items-list");
       listContainer.innerHTML = "";
@@ -1334,12 +1354,12 @@
 
       if (id.startsWith("custom-")) {
         // Remove from custom list
-        let customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+        let customDishes = safeGetItem("pietro_custom_dishes");
         customDishes = customDishes.filter(d => d.id !== id);
         localStorage.setItem("pietro_custom_dishes", JSON.stringify(customDishes));
       } else {
         // Add to deleted defaults list
-        let deletedDefaultIds = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
+        let deletedDefaultIds = safeGetItem("pietro_deleted_default_dishes");
         if (!deletedDefaultIds.includes(id)) {
           deletedDefaultIds.push(id);
           localStorage.setItem("pietro_deleted_default_dishes", JSON.stringify(deletedDefaultIds));
@@ -1356,7 +1376,7 @@
     window.editMenuItem = function(id) {
       let dish = null;
       if (id.startsWith("custom-")) {
-        const customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+        const customDishes = safeGetItem("pietro_custom_dishes");
         dish = customDishes.find(d => d.id === id);
       } else {
         dish = defaultDishes.find(d => d.id === id);
@@ -1434,7 +1454,7 @@
 
       // Helper function to update the storage
       function saveDishData(imageUrlsArray) {
-        let customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+        let customDishes = safeGetItem("pietro_custom_dishes");
 
         if (editingId) {
           // Editing existing dish
@@ -1463,7 +1483,7 @@
           } else {
             // Editing default dishes: save it to custom dishes array by cloning its ID
             // First make sure we remove the original ID from deleted defaults if it was there
-            let deletedDefaults = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
+            let deletedDefaults = safeGetItem("pietro_deleted_default_dishes");
             if (!deletedDefaults.includes(editingId)) {
               deletedDefaults.push(editingId);
               localStorage.setItem("pietro_deleted_default_dishes", JSON.stringify(deletedDefaults));
@@ -1580,7 +1600,7 @@
         timestamp: new Date().toISOString()
       };
 
-      let bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
+      let bookings = safeGetItem("pietro_bookings");
       bookings.unshift(booking);
       localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
 
@@ -1606,7 +1626,7 @@
     // 8. Real-time storage synchronization
     window.addEventListener("storage", (event) => {
       if (event.key === "pietro_bookings" || event.key === "pietro_new_booking_event") {
-        const bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
+        const bookings = safeGetItem("pietro_bookings");
         if (bookings.length > 0) {
           playNotificationSound();
           showToast(bookings[0].name);
@@ -1621,6 +1641,23 @@
         document.getElementById("security-warning").style.display = "flex";
       }
     }
+
+    window.resetMenuToDefault = function() {
+      const confirmMsg = adminActiveLang === "tr" ? "Tüm menüyü sıfırlamak ve varsayılan yemekleri geri getirmek istediğinize emin misiniz?" :
+                         (adminActiveLang === "en" ? "Are you sure you want to reset the menu and restore default items?" :
+                         "هل أنت متأكد من إعادة تعيين القائمة واستعادة العناصر الافتراضية؟");
+      if (!confirm(confirmMsg)) return;
+
+      localStorage.removeItem("pietro_custom_dishes");
+      localStorage.removeItem("pietro_deleted_default_dishes");
+      localStorage.setItem("pietro_custom_dishes_updated_event", Date.now().toString());
+      loadMenuList();
+
+      const successMsg = adminActiveLang === "tr" ? "Menü varsayılana sıfırlandı." :
+                         (adminActiveLang === "en" ? "Menu has been reset to defaults." :
+                         "تم إعادة تعيين القائمة إلى الإعدادات الافتراضية.");
+      alert(successMsg);
+    };
 
     // 9. Initial Load Configuration
     document.addEventListener("DOMContentLoaded", () => {
