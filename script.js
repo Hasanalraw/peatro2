@@ -53,24 +53,6 @@ const translations = {
     "size-large": "Büyük",
     "btn-confirm": "Onayla ve Rezerve Et",
 
-    // Individual Menu Items
-    "menu-item-1-title": "Pizza Margherita",
-    "menu-item-1-desc": "İmza Napoliten hamurumuz üzerinde taze mozzarella, domates sosu ve fesleğen yaprakları.",
-    "menu-item-2-title": "Pizza Quattro Formaggi",
-    "menu-item-2-desc": "Taze adaçayı ile zenginleştirilmiş mozzarella, gorgonzola, parmesan ve fontina peynirleri karışımı.",
-    "menu-item-3-title": "Pizza Pollo Picante",
-    "menu-item-3-desc": "Taze domates sosu üzerinde ızgara tavuk, acı biberler, kekik ve mozzarella peyniri.",
-    "menu-item-4-title": "Pizza Pietro (Şefin Özel Tabağı)",
-    "menu-item-4-desc": "Özel kurutulmuş dana eti, yaban mantarları, renkli dolmalık biberler ve tıraşlanmış parmesan peyniri.",
-    "menu-item-5-title": "Penne Burrata",
-    "menu-item-5-desc": "Üzerinde bütün taze burrata peyniri ile zengin, kremalı domates ve fesleğen soslu kalem makarna.",
-    "menu-item-6-title": "Tagliatelli Pollo",
-    "menu-item-6-desc": "Izgara tavuk parçaları, taze adaçayı ve kadifemsi tereyağı sosu ile sotelenmiş yassı tagliatelli makarna.",
-    "menu-item-7-title": "Tagliatelli Scampi",
-    "menu-item-7-desc": "Sotelenmiş karides, sarımsak, maydanoz, limon kabuğu rendesi ve tıraşlanmış parmesanlı tagliatelli.",
-    "menu-item-8-title": "Tagliatelli Forester",
-    "menu-item-8-desc": "Sotelenmiş yaban orman mantarları, kestane mantarları ve adaçayı ile harmanlanmış şerit makarna.",
-
     // Reservation Section
     "reserve-title": "Masa Rezervasyonu",
     "reserve-subtitle": "İtalyan Gecenizi Şimdiden Planlayın",
@@ -156,24 +138,6 @@ const translations = {
     "size-large": "Large",
     "btn-confirm": "Confirm & Reserve",
 
-    // Individual Menu Items
-    "menu-item-1-title": "Pizza Margherita",
-    "menu-item-1-desc": "Fresh mozzarella, tomato sauce, and basil leaves on our signature Neapolitan crust.",
-    "menu-item-2-title": "Pizza Quattro Formaggi",
-    "menu-item-2-desc": "A rich blend of mozzarella, gorgonzola, parmesan, and fontina cheeses with fresh sage.",
-    "menu-item-3-title": "Pizza Pollo Picante",
-    "menu-item-3-desc": "Grilled chicken, spicy hot peppers, oregano, and mozzarella over fresh tomato sauce.",
-    "menu-item-4-title": "Pizza Pietro (Chef's Special)",
-    "menu-item-4-desc": "Premium cured beef (prosciutto style), wild mushrooms, colorful bell peppers, and shaved parmesan cheese.",
-    "menu-item-5-title": "Penne Burrata",
-    "menu-item-5-desc": "Penne pasta in a rich, creamy tomato-basil sauce topped with a whole fresh burrata ball.",
-    "menu-item-6-title": "Tagliatelli Pollo",
-    "menu-item-6-desc": "Flat tagliatelli pasta tossed with tender grilled chicken, fresh sage, and a velvety butter sauce.",
-    "menu-item-7-title": "Tagliatelli Scampi",
-    "menu-item-7-desc": "Tagliatelli pasta with sautéed shrimp, garlic, parsley, lemon zest, and shaved parmesan.",
-    "menu-item-8-title": "Tagliatelli Forester",
-    "menu-item-8-desc": "Flat ribbon pasta tossed with sautéed wild forest mushrooms, chestnut mushrooms, and sage.",
-
     // Reservation Section
     "reserve-title": "Book a Table",
     "reserve-subtitle": "Plan Your Italian Evening Now",
@@ -233,7 +197,7 @@ const translations = {
     // About Us Section
     "about-title": "تجربة إيطالية حقيقية",
     "about-subtitle": "قصة مطعم Pietro Coffee Pizzeria",
-    "about-text-1": "يقع Pietro Coffee Pizzeria in قلب يالوفا، وهو وجهتك المثالية لتناول النكهات الإيطالية الأصيلة. نحن ننقل الجوهر الحقيقي لإيطاليا إلى طاولتك من خلال البيتزا المخبوزة على الحطب، والباستا المصنوعة يدويًا، والقهوة الإيطالية الفاخرة.",
+    "about-text-1": "يقع Pietro Coffee Pizzeria في قلب يالوفا، وهو وجهتك المثالية لتناول النكهات الإيطالية الأصيلة. نحن ننقل الجوهر الحقيقي لإيطاليا إلى طاولتك من خلال البيتزا المخبوزة على الحطب، والباستا المصنوعة يدويًا، والقهوة الإيطالية الفاخرة.",
     "about-text-2": "يوفر مكاننا الدافئ، الذي يتميز بلمسات خشبية دافئة، وإضاءة مريحة، وجداريتنا النباتية المميزة لوجه امرأة، الأجواء المثالية لتجربة طعام لا تُنسى. يتم إعداد كل طبق بمكونات طازجة ووصفات تقليدية متوارثة عبر الأجيال.",
     "feat-woodfire": "بيتزا على الحطب",
     "feat-handpasta": "باستا يدوية الصنع",
@@ -258,24 +222,6 @@ const translations = {
     "size-medium": "متوسطة",
     "size-large": "كبيرة",
     "btn-confirm": "تأكيد الحجز",
-
-    // Individual Menu Items
-    "menu-item-1-title": "Pizza Margherita",
-    "menu-item-1-desc": "موزاريلا طازجة، صلصة طماطم، وأوراق ريحان طازجة على عجينتنا النابولية المميزة.",
-    "menu-item-2-title": "Pizza Quattro Formaggi",
-    "menu-item-2-desc": "مزيج غني من أربعة أجبان (موزاريلا، جورجونزولا، بارميزان، فونتينا) مع أوراق الميرمية الطازجة.",
-    "menu-item-3-title": "Pizza Pollo Picante",
-    "menu-item-3-desc": "دجاج مشوي، فلفل حار، أوريجانو، وجبنة موزاريلا فوق صلصة الطماطم الطازجة.",
-    "menu-item-4-title": "Pizza Pietro (طبق الشيف المميز)",
-    "menu-item-4-desc": "شرائح لحم بقري مجفف فاخر (بروشوتو)، فطر بري، فلفل ملون، ورقائق جبنة البارميزان.",
-    "menu-item-5-title": "Penne Burrata",
-    "menu-item-5-desc": "باستا بيني بصلصة طماطم كريمية غنية بالريحان تعلوها كرة كاملة من جبنة البوراتا الطازجة.",
-    "menu-item-6-title": "Tagliatelli Pollo",
-    "menu-item-6-desc": "تاليياتيلي مسطحة مطبوخة بقطع الدجاج المشوي والميرمية الطازجة وصلصة الزبدة الغنية.",
-    "menu-item-7-title": "Tagliatelli Scampi",
-    "menu-item-7-desc": "تاليياتيلي بالجمبري السوتيه مع الثوم، البقدونس، مبشور قشر الليمون ورقائق البارميزان.",
-    "menu-item-8-title": "Tagliatelli Forester",
-    "menu-item-8-desc": "باستا شريطية مسطحة مطبوخة بالفطر البري وفطر الكستناء السوتيه مع أوراق الميرمية والزبدة.",
 
     // Reservation Section
     "reserve-title": "حجز طاولة",
@@ -316,11 +262,13 @@ const translations = {
   }
 };
 
-// 2. Meal Database (Detail descriptions, ingredients & sizing prices - ALL STRICTLY IN TL)
-const dishesData = {
-  "1": {
+// 2. Baseline Database (8 default dishes WITH complete TR, EN, AR translations)
+const defaultDishes = [
+  {
+    id: "1",
+    category: "pizza",
     image: "images/pizza_margherita.jpg",
-    name: { tr: "Pizza Margherita", en: "Pizza Margherita", ar: "Pizza Margherita" },
+    name: { tr: "Pizza Margherita", en: "Pizza Margherita", ar: "بيتزا مارغريتا" },
     desc: {
       tr: "İmza Napoliten hamurumuz üzerinde taze mozzarella, domates sosu ve fesleğen yaprakları.",
       en: "Fresh mozzarella, tomato sauce, and basil leaves on our signature Neapolitan crust.",
@@ -337,9 +285,11 @@ const dishesData = {
       ar: { small: "340 TL", medium: "380 TL", large: "440 TL" }
     }
   },
-  "2": {
+  {
+    id: "2",
+    category: "pizza",
     image: "images/pizza_quattro.jpg",
-    name: { tr: "Pizza Quattro Formaggi", en: "Pizza Quattro Formaggi", ar: "Pizza Quattro Formaggi" },
+    name: { tr: "Pizza Quattro Formaggi", en: "Pizza Quattro Formaggi", ar: "بيتزا الأجبان الأربعة" },
     desc: {
       tr: "Taze adaçayı ile zenginleştirilmiş mozzarella, gorgonzola, parmesan ve fontina peynirleri karışımı.",
       en: "A rich blend of mozzarella, gorgonzola, parmesan, and fontina cheeses with fresh sage.",
@@ -356,16 +306,18 @@ const dishesData = {
       ar: { small: "430 TL", medium: "490 TL", large: "560 TL" }
     }
   },
-  "3": {
+  {
+    id: "3",
+    category: "pizza",
     image: "images/pizza_pollo.jpg",
-    name: { tr: "Pizza Pollo Picante", en: "Pizza Pollo Picante", ar: "Pizza Pollo Picante" },
+    name: { tr: "Pizza Pollo Picante", en: "Pizza Pollo Picante", ar: "بيتزا الدجاج الحار" },
     desc: {
       tr: "Taze domates sosu üzerinde ızgara tavuk, acı biberler, kekik ve mozzarella peyniri.",
       en: "Grilled chicken, spicy hot peppers, oregano, and mozzarella over fresh tomato sauce.",
       ar: "دجاج مشوي، فلفل حار، أوريجانو، وجبنة موزاريلا فوق صلصة الطماطم الطازجة."
     },
     ingredients: {
-      tr: ["Izgara Tavuk Göğsü", "Acı Kırmızı Biber", "Közlenmiş Renkli Biberler", "Kekik", "Mozzarella Peyniri", "Domates Sosu"],
+      tr: ["Izgara Tavuk Göğsü", "Acı Biber", "Közlenmiş Renkli Biberler", "Kekik", "Mozzarella Peyniri", "Domates Sosu"],
       en: ["Grilled Chicken Breast", "Hot Chili Pepper", "Roasted Bell Peppers", "Oregano", "Mozzarella", "Tomato Sauce"],
       ar: ["صدر دجاج مشوي", "فلفل حار", "فلفل حلو مشوي", "أوريجانو", "موزاريلا", "صلصة طماطم"]
     },
@@ -375,9 +327,11 @@ const dishesData = {
       ar: { small: "410 TL", medium: "460 TL", large: "520 TL" }
     }
   },
-  "4": {
+  {
+    id: "4",
+    category: "pizza",
     image: "images/pizza_pietro.jpg",
-    name: { tr: "Pizza Pietro", en: "Pizza Pietro", ar: "Pizza Pietro" },
+    name: { tr: "Pizza Pietro", en: "Pizza Pietro", ar: "بيتزا بيترو المميزة" },
     desc: {
       tr: "Özel kurutulmuş dana eti, yaban mantarları, renkli dolmalık biberler ve tıraşlanmış parmesan peyniri.",
       en: "Premium cured beef (prosciutto style), wild mushrooms, colorful bell peppers, and shaved parmesan cheese.",
@@ -394,9 +348,11 @@ const dishesData = {
       ar: { small: "480 TL", medium: "540 TL", large: "610 TL" }
     }
   },
-  "5": {
+  {
+    id: "5",
+    category: "pasta",
     image: "images/penne_burrata.jpg",
-    name: { tr: "Penne Burrata", en: "Penne Burrata", ar: "Penne Burrata" },
+    name: { tr: "Penne Burrata", en: "Penne Burrata", ar: "بيني بوراتا" },
     desc: {
       tr: "Üzerinde bütün taze burrata peyniri ile zengin, kremalı domates ve fesleğen soslu kalem makarna.",
       en: "Penne pasta in a rich, creamy tomato-basil sauce topped with a whole fresh burrata ball.",
@@ -404,7 +360,7 @@ const dishesData = {
     },
     ingredients: {
       tr: ["Kalem Makarna", "Bütün Taze Burrata", "Kremalı Domates Marinara", "Kiraz Domatesler", "Taze Fesleğen", "Parmesan Peyniri"],
-      en: ["Penne Pasta", "Whole Fresh Burrata", "Cherry Tomatoes", "Fresh Basil", "Parmesan Cheese"],
+      en: ["Penne Pasta", "Whole Fresh Burrata", "Creamy Tomato Marinara", "Cherry Tomatoes", "Fresh Basil", "Parmesan Cheese"],
       ar: ["مكرونة بيني", "كرة بوراتا كاملة", "صلصة مارينارا كريمية", "طماطم كرزية", "ريحان طازج", "جبن بارميزان"]
     },
     prices: {
@@ -413,9 +369,11 @@ const dishesData = {
       ar: { small: "390 TL", medium: "440 TL", large: "500 TL" }
     }
   },
-  "6": {
+  {
+    id: "6",
+    category: "pasta",
     image: "images/tagliatelli_pollo.jpg",
-    name: { tr: "Tagliatelli Pollo", en: "Tagliatelli Pollo", ar: "Tagliatelli Pollo" },
+    name: { tr: "Tagliatelli Pollo", en: "Tagliatelli Pollo", ar: "تاليياتيلي بالدجاج" },
     desc: {
       tr: "Izgara tavuk parçaları, taze adaçayı ve kadifemsi tereyağı sosu ile sotelenmiş yassı tagliatelli makarna.",
       en: "Flat tagliatelli pasta tossed with tender grilled chicken, fresh sage, and a velvety butter sauce.",
@@ -432,9 +390,11 @@ const dishesData = {
       ar: { small: "390 TL", medium: "440 TL", large: "500 TL" }
     }
   },
-  "7": {
+  {
+    id: "7",
+    category: "pasta",
     image: "images/tagliatelli_scampi.jpg",
-    name: { tr: "Tagliatelli Scampi", en: "Tagliatelli Scampi", ar: "Tagliatelli Scampi" },
+    name: { tr: "Tagliatelli Scampi", en: "Tagliatelli Scampi", ar: "تاليياتيلي بالجمبري" },
     desc: {
       tr: "Sotelenmiş karides, sarımsak, maydanoz, limon kabuğu rendesi ve tıraşlanmış parmesanlı tagliatelli.",
       en: "Tagliatelli pasta with sautéed shrimp, garlic, parsley, lemon zest, and shaved parmesan.",
@@ -451,9 +411,11 @@ const dishesData = {
       ar: { small: "460 TL", medium: "520 TL", large: "590 TL" }
     }
   },
-  "8": {
+  {
+    id: "8",
+    category: "pasta",
     image: "images/tagliatelli_forester.jpg",
-    name: { tr: "Tagliatelli Forester", en: "Tagliatelli Forester", ar: "Tagliatelli Forester" },
+    name: { tr: "Tagliatelli Forester", en: "Tagliatelli Forester", ar: "تاليياتيلي فوريستر" },
     desc: {
       tr: "Sotelenmiş yaban orman mantarları, kestane mantarları ve adaçayı ile harmanlanmış şerit makarna.",
       en: "Flat ribbon pasta tossed with sautéed wild forest mushrooms, chestnut mushrooms, and sage.",
@@ -470,7 +432,7 @@ const dishesData = {
       ar: { small: "370 TL", medium: "420 TL", large: "480 TL" }
     }
   }
-};
+];
 
 // Global state variables
 let currentLanguage = "tr";
@@ -478,6 +440,7 @@ let currentSelectedDishId = "";
 let currentSelectedSize = "medium"; // default
 let currentSlideIndex = 0;
 let totalSlides = 1;
+const dishesData = {}; // Global dictionary mapping active dishes
 
 // 3. Language Switcher Logic
 function setLanguage(lang) {
@@ -537,8 +500,8 @@ function setLanguage(lang) {
   // Update WhatsApp text on the link
   updateWhatsAppLink(lang);
   
-  // Re-render custom dishes in correct language
-  renderCustomDishes();
+  // Re-render menu using new active language translations
+  renderMenu();
 }
 
 // 4. Dynamic WhatsApp Link generator based on active language
@@ -564,53 +527,55 @@ filterButtons.forEach(btn => {
     // Update active filter button
     filterButtons.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-
-    const filterValue = btn.getAttribute("data-filter");
-    let visibleCount = 0;
-
-    // We select all cards including dynamic custom ones, skipping deleted defaults
-    document.querySelectorAll(".menu-card").forEach(card => {
-      if (card.classList.contains("deleted-default")) {
-        card.classList.add("hidden");
-        return;
-      }
-      
-      const category = card.getAttribute("data-category");
-      if (filterValue === "all" || category === filterValue) {
-        card.classList.remove("hidden");
-        card.style.opacity = "1";
-        visibleCount++;
-      } else {
-        card.classList.add("hidden");
-      }
-    });
-
-    // Handle empty category state (e.g. Drinks menu)
-    let placeholder = document.getElementById("menu-empty-placeholder");
-    if (visibleCount === 0) {
-      if (!placeholder) {
-        placeholder = document.createElement("div");
-        placeholder.id = "menu-empty-placeholder";
-        placeholder.className = "menu-empty-placeholder";
-        placeholder.style.textAlign = "center";
-        placeholder.style.gridColumn = "1 / -1";
-        placeholder.style.padding = "60px 20px";
-        placeholder.style.color = "var(--color-text-secondary)";
-        placeholder.style.fontStyle = "italic";
-        document.querySelector(".menu-grid").appendChild(placeholder);
-      }
-      placeholder.style.display = "block";
-      placeholder.innerHTML = `<i class="fa-solid fa-mug-hot" style="font-size: 3rem; color: rgba(255, 255, 255, 0.06); margin-bottom: 16px; display: block;"></i> <span style="font-weight:300;"></span>`;
-      
-      const emptyKey = currentLanguage === "tr" ? "İçecek menümüz yakında eklenecektir. İlginiz için teşekkür ederiz." :
-                       (currentLanguage === "en" ? "Our drinks menu is coming soon. Thank you for your interest." :
-                       "قائمة المشروبات ستتوفر قريباً. شكراً لاهتمامكم.");
-      placeholder.querySelector("span").textContent = emptyKey;
-    } else if (placeholder) {
-      placeholder.style.display = "none";
-    }
+    
+    applyActiveFilter();
   });
 });
+
+function applyActiveFilter() {
+  const activeFilterBtn = document.querySelector(".filter-btn.active");
+  if (!activeFilterBtn) return;
+
+  const filterValue = activeFilterBtn.getAttribute("data-filter");
+  let visibleCount = 0;
+
+  document.querySelectorAll(".menu-card").forEach(card => {
+    const category = card.getAttribute("data-category");
+    if (filterValue === "all" || category === filterValue) {
+      card.classList.remove("hidden");
+      card.style.opacity = "1";
+      visibleCount++;
+    } else {
+      card.classList.add("hidden");
+    }
+  });
+
+  // Show empty category placeholder if active (e.g. Empty Drinks menu)
+  let placeholder = document.getElementById("menu-empty-placeholder");
+  if (visibleCount === 0) {
+    if (!placeholder) {
+      const menuGrid = document.querySelector(".menu-grid");
+      placeholder = document.createElement("div");
+      placeholder.id = "menu-empty-placeholder";
+      placeholder.className = "menu-empty-placeholder";
+      placeholder.style.textAlign = "center";
+      placeholder.style.gridColumn = "1 / -1";
+      placeholder.style.padding = "60px 20px";
+      placeholder.style.color = "var(--color-text-secondary)";
+      placeholder.style.fontStyle = "italic";
+      if (menuGrid) menuGrid.appendChild(placeholder);
+    }
+    placeholder.style.display = "block";
+    placeholder.innerHTML = `<i class="fa-solid fa-mug-hot" style="font-size: 3rem; color: rgba(255, 255, 255, 0.06); margin-bottom: 16px; display: block;"></i> <span style="font-weight:300;"></span>`;
+    
+    const emptyKey = currentLanguage === "tr" ? "İçecek menümüz yakında eklenecektir. İlginiz için teşekkür ederiz." :
+                     (currentLanguage === "en" ? "Our drinks menu is coming soon. Thank you for your interest." :
+                     "قائمة المشروبات ستتوفر قريباً. شكراً لاهتمامكم.");
+    placeholder.querySelector("span").textContent = emptyKey;
+  } else if (placeholder) {
+    placeholder.style.display = "none";
+  }
+}
 
 // 6. Modal Interactions: Detail Carousel & Size Modals
 window.openDetailModal = function(id) {
@@ -882,56 +847,95 @@ function varHeaderHeight() {
   return header ? header.offsetHeight : 80;
 }
 
-// 11. Custom Dishes Rendering Engine & Deleted Default Filter
-function renderCustomDishes() {
-  // Hide default deleted dishes first
-  const deletedDefaultDishes = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
-  
-  document.querySelectorAll(".menu-grid .menu-card:not(.custom-card)").forEach((card, index) => {
-    const id = (index + 1).toString();
-    card.setAttribute("data-id", id);
-    if (deletedDefaultDishes.includes(id)) {
-      card.classList.add("deleted-default");
-      card.classList.add("hidden");
-      card.style.display = "none";
+// 11. Unified Dynamic Menu Card Rendering Engine
+function renderMenu() {
+  const menuGrid = document.querySelector(".menu-grid");
+  if (!menuGrid) return;
+  menuGrid.innerHTML = "";
+
+  const deletedDefaultIds = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
+  const customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+
+  // Create deep local copy of baseline default dishes
+  let activeDishes = defaultDishes.map(d => ({
+    id: d.id,
+    category: d.category,
+    image: d.image,
+    images: d.images || [d.image],
+    name: {...d.name},
+    desc: d.desc[currentLanguage] ? {...d.desc} : {tr: d.desc.tr, en: d.name.en, ar: d.name.ar},
+    ingredients: d.ingredients[currentLanguage] ? {...d.ingredients} : {tr: d.ingredients.tr, en: d.ingredients.tr, ar: d.ingredients.tr},
+    prices: {...d.prices}
+  }));
+
+  // Fallback defaults for missing baseline translations inside static object structure if any
+  activeDishes.forEach(d => {
+    if (!d.name.en) d.name.en = d.name.tr;
+    if (!d.name.ar) d.name.ar = d.name.tr;
+    if (!d.desc.en) d.desc.en = d.desc.tr;
+    if (!d.desc.ar) d.desc.ar = d.desc.tr;
+    if (!d.ingredients.en) d.ingredients.en = d.ingredients.tr;
+    if (!d.ingredients.ar) d.ingredients.ar = d.ingredients.tr;
+  });
+
+  // Filter out deleted default items completely
+  activeDishes = activeDishes.filter(d => !deletedDefaultIds.includes(d.id));
+
+  // Merge edits / custom new dishes (Overrides default dish by matching ID if edited)
+  customDishes.forEach(customDish => {
+    const defaultIndex = activeDishes.findIndex(d => d.id === customDish.id);
+    if (defaultIndex !== -1) {
+      activeDishes[defaultIndex] = customDish; // Override details in-place
     } else {
-      card.classList.remove("deleted-default");
-      card.style.display = ""; // restore default display
+      activeDishes.push(customDish); // Append new custom dishes at bottom
     }
   });
 
-  // Remove existing custom cards from grid
-  document.querySelectorAll(".menu-card.custom-card").forEach(el => el.remove());
-
-  const customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
-  const menuGrid = document.querySelector(".menu-grid");
-  if (!menuGrid) return;
-
-  customDishes.forEach(dish => {
-    // Inject custom dish details into dishesData object dynamically
+  // Populate global active dishes mapping dictionary for modal dialog lookups
+  activeDishes.forEach(dish => {
     dishesData[dish.id] = dish;
+  });
 
-    const card = document.createElement("div");
-    card.className = "menu-card custom-card";
-    card.setAttribute("data-category", dish.category);
+  if (activeDishes.length === 0) {
+    const placeholder = document.createElement("div");
+    placeholder.id = "menu-empty-placeholder";
+    placeholder.className = "menu-empty-placeholder";
+    placeholder.style.textAlign = "center";
+    placeholder.style.gridColumn = "1 / -1";
+    placeholder.style.padding = "60px 20px";
+    placeholder.style.color = "var(--color-text-secondary)";
+    placeholder.style.fontStyle = "italic";
+    menuGrid.appendChild(placeholder);
+    
+    const emptyKey = currentLanguage === "tr" ? "Menümüzde şu an aktif ürün bulunmuyor." :
+                     (currentLanguage === "en" ? "There are no active items in our menu." :
+                     "لا توجد عناصر نشطة في قائمتنا حالياً.");
+    placeholder.textContent = emptyKey;
+    return;
+  }
 
-    // Localize attributes
+  // Draw HTML Cards dynamically in order
+  activeDishes.forEach(dish => {
     const name = dish.name[currentLanguage] || dish.name["tr"];
     const desc = dish.desc[currentLanguage] || dish.desc["tr"];
     const priceMedium = (dish.prices[currentLanguage] || dish.prices["tr"]).medium;
 
+    const card = document.createElement("div");
+    card.className = "menu-card";
+    card.setAttribute("data-category", dish.category);
+
     card.innerHTML = `
-      <div class="menu-card-img">
-        <img src="${dish.image}" alt="${name}">
-        <div class="menu-image-disclaimer" data-key="image-disclaimer">
+      <div class="menu-card-img-wrapper">
+        <img src="${dish.image}" alt="${name}" class="menu-card-img">
+        <span class="image-disclaimer" data-key="image-disclaimer">
           ${translations[currentLanguage]["image-disclaimer"]}
-        </div>
+        </span>
       </div>
       <div class="menu-card-content">
-        <h3>${name}</h3>
-        <p>${desc}</p>
-        <div class="menu-card-footer">
-          <div class="menu-price-area">
+        <h4 class="menu-item-title">${name}</h4>
+        <p class="menu-item-desc">${desc}</p>
+        <div class="menu-item-footer">
+          <div class="price-area">
             <span class="price">${priceMedium}</span>
             <span class="price-note" data-key="price-note">
               ${translations[currentLanguage]["price-note"]}
@@ -951,6 +955,9 @@ function renderCustomDishes() {
 
     menuGrid.appendChild(card);
   });
+
+  // Re-apply current category filter rules
+  applyActiveFilter();
 }
 
 // 10. Initial Load Configuration
@@ -974,12 +981,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Listen to remote changes to reload custom dishes / bookings list in real-time
   window.addEventListener("storage", (event) => {
-    if (event.key === "pietro_custom_dishes" || event.key === "pietro_deleted_default_dishes") {
-      renderCustomDishes();
+    if (event.key === "pietro_custom_dishes" || event.key === "pietro_deleted_default_dishes" || event.key === "pietro_custom_dishes_updated_event") {
+      renderMenu();
     }
   });
 
   // Initialize page in Turkish language by default & render custom dishes
   setLanguage("tr");
-  renderCustomDishes();
+  renderMenu();
 });
