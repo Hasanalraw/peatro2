@@ -28,7 +28,7 @@ const translations = {
     "about-title": "Otantik Bir İtalyan Deneyimi",
     "about-subtitle": "Pietro Coffee Pizzeria'nın Hikayesi",
     "about-text-1": "Yalova'nın kalbinde yer alan Pietro Coffee Pizzeria, otantik İtalyan lezzetlerinin buluşma noktasıdır. Odun ateşinde pişen çıtır pizzalarımız, el yapımı makarnalarımız ve kaliteli İtalyan kahvelerimiz ile İtalya'nın gerçek ruhunu masanıza taşıyoruz.",
-    "about-text-2": "Sıcak ahşap dokuları, loş aydınlatmaları ve imza niteliğindeki botanik duvar resmimizle tasarlanan sıcak mekânımız, unutulmaz bir yemek deneyimi için memnuniyet verici bir atmosfer sunuyor. Her yemeğimiz, nesilden nesile aktarılan geleneksel tariflerle ve en taze malzemelerle özenle hazırlanmaktadır.",
+    "about-text-2": "Sıcak ahşap dokuları, loş aydınlatmaları ve imza niteliğindeki botanik duvar resmimizle tasarlanan sıcak mekânımız, memnuniyet verici bir atmosfer sunuyor. Her yemeğimiz, nesilden nesile aktarılan geleneksel tariflerle ve en taze malzemelerle özenle hazırlanmaktadır.",
     "feat-woodfire": "Odun Ateşinde Pizza",
     "feat-handpasta": "El Yapımı Makarna",
     "feat-coffee": "Nitelikli Kahve",
@@ -233,7 +233,7 @@ const translations = {
     // About Us Section
     "about-title": "تجربة إيطالية حقيقية",
     "about-subtitle": "قصة مطعم Pietro Coffee Pizzeria",
-    "about-text-1": "يقع Pietro Coffee Pizzeria في قلب يالوفا، وهو وجهتك المثالية لتناول النكهات الإيطالية الأصيلة. نحن ننقل الجوهر الحقيقي لإيطاليا إلى طاولتك من خلال البيتزا المخبوزة على الحطب، والباستا المصنوعة يدويًا، والقهوة الإيطالية الفاخرة.",
+    "about-text-1": "يقع Pietro Coffee Pizzeria in قلب يالوفا، وهو وجهتك المثالية لتناول النكهات الإيطالية الأصيلة. نحن ننقل الجوهر الحقيقي لإيطاليا إلى طاولتك من خلال البيتزا المخبوزة على الحطب، والباستا المصنوعة يدويًا، والقهوة الإيطالية الفاخرة.",
     "about-text-2": "يوفر مكاننا الدافئ، الذي يتميز بلمسات خشبية دافئة، وإضاءة مريحة، وجداريتنا النباتية المميزة لوجه امرأة، الأجواء المثالية لتجربة طعام لا تُنسى. يتم إعداد كل طبق بمكونات طازجة ووصفات تقليدية متوارثة عبر الأجيال.",
     "feat-woodfire": "بيتزا على الحطب",
     "feat-handpasta": "باستا يدوية الصنع",
@@ -476,6 +476,8 @@ const dishesData = {
 let currentLanguage = "tr";
 let currentSelectedDishId = "";
 let currentSelectedSize = "medium"; // default
+let currentSlideIndex = 0;
+let totalSlides = 1;
 
 // 3. Language Switcher Logic
 function setLanguage(lang) {
@@ -556,7 +558,6 @@ function updateWhatsAppLink(lang) {
 
 // 5. Menu Filtering System with Empty Category Placeholder handler
 const filterButtons = document.querySelectorAll(".filter-btn");
-const menuCards = document.querySelectorAll(".menu-card");
 
 filterButtons.forEach(btn => {
   btn.addEventListener("click", () => {
@@ -567,8 +568,13 @@ filterButtons.forEach(btn => {
     const filterValue = btn.getAttribute("data-filter");
     let visibleCount = 0;
 
-    // We select all cards including dynamic custom ones
+    // We select all cards including dynamic custom ones, skipping deleted defaults
     document.querySelectorAll(".menu-card").forEach(card => {
+      if (card.classList.contains("deleted-default")) {
+        card.classList.add("hidden");
+        return;
+      }
+      
       const category = card.getAttribute("data-category");
       if (filterValue === "all" || category === filterValue) {
         card.classList.remove("hidden");
@@ -606,13 +612,12 @@ filterButtons.forEach(btn => {
   });
 });
 
-// 6. Modal Interactions: Detail & Size Modals
+// 6. Modal Interactions: Detail Carousel & Size Modals
 window.openDetailModal = function(id) {
   const dish = dishesData[id];
   if (!dish) return;
 
   const modal = document.getElementById("detail-modal");
-  document.getElementById("modal-dish-img").src = dish.image;
   document.getElementById("modal-dish-title").textContent = dish.name[currentLanguage] || dish.name["tr"];
   document.getElementById("modal-dish-desc").textContent = dish.desc[currentLanguage] || dish.desc["tr"];
 
@@ -626,7 +631,60 @@ window.openDetailModal = function(id) {
     ingredientsList.appendChild(li);
   });
 
+  // Populate Carousel slides
+  const slidesContainer = document.getElementById("modal-carousel-slides");
+  slidesContainer.innerHTML = "";
+  
+  let imagesArray = [];
+  if (dish.images && dish.images.length > 0) {
+    imagesArray = dish.images;
+  } else {
+    imagesArray = [dish.image];
+  }
+  
+  imagesArray.forEach(imgUrl => {
+    const img = document.createElement("img");
+    img.src = imgUrl;
+    img.alt = dish.name[currentLanguage] || dish.name["tr"];
+    slidesContainer.appendChild(img);
+  });
+
+  // Reset Carousel Slider state
+  currentSlideIndex = 0;
+  totalSlides = imagesArray.length;
+  
+  const prevBtn = document.getElementById("carousel-prev");
+  const nextBtn = document.getElementById("carousel-next");
+  
+  if (totalSlides <= 1) {
+    if (prevBtn) prevBtn.style.display = "none";
+    if (nextBtn) nextBtn.style.display = "none";
+  } else {
+    if (prevBtn) prevBtn.style.display = "flex";
+    if (nextBtn) nextBtn.style.display = "flex";
+  }
+  
+  updateCarouselTranslate();
   modal.classList.add("active");
+};
+
+function updateCarouselTranslate() {
+  const slidesContainer = document.getElementById("modal-carousel-slides");
+  if (!slidesContainer) return;
+  
+  const isRTL = document.documentElement.dir === 'rtl';
+  const directionMultiplier = isRTL ? 1 : -1;
+  slidesContainer.style.transform = `translateX(${currentSlideIndex * 100 * directionMultiplier}%)`;
+}
+
+window.slideNext = function() {
+  currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+  updateCarouselTranslate();
+};
+
+window.slidePrev = function() {
+  currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+  updateCarouselTranslate();
 };
 
 window.closeDetailModal = function() {
@@ -824,8 +882,24 @@ function varHeaderHeight() {
   return header ? header.offsetHeight : 80;
 }
 
-// 11. Custom Dishes Rendering Engine
+// 11. Custom Dishes Rendering Engine & Deleted Default Filter
 function renderCustomDishes() {
+  // Hide default deleted dishes first
+  const deletedDefaultDishes = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
+  
+  document.querySelectorAll(".menu-grid .menu-card:not(.custom-card)").forEach((card, index) => {
+    const id = (index + 1).toString();
+    card.setAttribute("data-id", id);
+    if (deletedDefaultDishes.includes(id)) {
+      card.classList.add("deleted-default");
+      card.classList.add("hidden");
+      card.style.display = "none";
+    } else {
+      card.classList.remove("deleted-default");
+      card.style.display = ""; // restore default display
+    }
+  });
+
   // Remove existing custom cards from grid
   document.querySelectorAll(".menu-card.custom-card").forEach(el => el.remove());
 
@@ -900,7 +974,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Listen to remote changes to reload custom dishes / bookings list in real-time
   window.addEventListener("storage", (event) => {
-    if (event.key === "pietro_custom_dishes") {
+    if (event.key === "pietro_custom_dishes" || event.key === "pietro_deleted_default_dishes") {
       renderCustomDishes();
     }
   });

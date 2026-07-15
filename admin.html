@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pietro Coffee Pizzeria | Masa Rezervasyon Paneli</title>
+  <title>Pietro Coffee Pizzeria | Yönetici Kontrol Paneli</title>
   <link rel="icon" type="image/svg+xml" href="images/logo.svg">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
@@ -12,9 +12,10 @@
   
   <style>
     :root {
-      --color-bg-dark: #121212;
-      --color-bg-card: #1C1C1C;
-      --color-bg-item: #282828;
+      --color-bg-dark: #0A0A0A;
+      --color-bg-card: #141414;
+      --color-bg-item: #1E1E1E;
+      --color-border: rgba(255, 255, 255, 0.08);
       
       --color-text-primary: #F5F4F0;
       --color-text-secondary: #B8B5AE;
@@ -45,12 +46,119 @@
       background-color: var(--color-bg-dark);
       color: var(--color-text-primary);
       line-height: 1.6;
-      padding: 20px 20px 40px;
+      padding-top: 100px; /* Offset for sticky header */
+      padding-bottom: 60px;
     }
 
     .admin-container {
-      max-width: 1250px;
+      max-width: 1300px;
       margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Sticky Admin Header (Styled like Client Site Header) */
+    .admin-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      background-color: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      transition: var(--transition-smooth);
+    }
+
+    .header-container {
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      width: 44px;
+      height: 44px;
+    }
+
+    .logo-title {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-style: italic;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .logo-subtitle {
+      color: var(--color-gold);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 2px;
+    }
+
+    /* Admin Nav Links */
+    .admin-nav {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .admin-nav-link {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: var(--transition-smooth);
+      cursor: pointer;
+    }
+
+    .admin-nav-link:hover, .admin-nav-link.active {
+      color: var(--color-gold);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Language Switcher */
+    .lang-switcher {
+      display: flex;
+      gap: 6px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--color-text-secondary);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition-smooth);
+    }
+
+    .lang-btn.active, .lang-btn:hover {
+      background-color: var(--color-gold);
+      color: #FFFFFF;
+      border-color: var(--color-gold);
     }
 
     /* Security Warning Banner */
@@ -73,47 +181,7 @@
       flex-shrink: 0;
     }
 
-    /* Header */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding-bottom: 20px;
-    }
-
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .logo-img {
-      width: 50px;
-      height: 50px;
-    }
-
-    .logo-title {
-      font-family: var(--font-serif);
-      font-size: 2rem;
-      font-style: italic;
-      font-weight: 700;
-    }
-
-    .logo-subtitle {
-      color: var(--color-gold);
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-top: -4px;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 12px;
-    }
-
+    /* Action Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -125,6 +193,7 @@
       cursor: pointer;
       border: none;
       transition: var(--transition-smooth);
+      text-decoration: none;
     }
 
     .btn-gold {
@@ -146,30 +215,17 @@
       background: rgba(255, 255, 255, 0.06);
     }
 
-    /* Layout Columns */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1.3fr 0.7fr;
-      gap: 30px;
-    }
-
-    @media (max-width: 992px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
     /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
 
     .stat-card {
       background-color: var(--color-bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--color-border);
       border-radius: var(--border-radius);
       padding: 20px;
       text-align: center;
@@ -195,10 +251,24 @@
     .stat-card.confirmed { border-left: 4px solid var(--color-status-confirmed); }
     .stat-card.cancelled { border-left: 4px solid var(--color-status-cancelled); }
 
-    /* Bookings List Section */
+    /* Dashboard Layout Sections */
+    .admin-section {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .admin-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .dashboard-card {
       background-color: var(--color-bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--color-border);
       border-radius: var(--border-radius);
       padding: 30px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.3);
@@ -214,24 +284,7 @@
       align-items: center;
     }
 
-    .live-indicator {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      color: var(--color-green);
-      font-weight: 500;
-    }
-
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      background-color: var(--color-green);
-      border-radius: 50%;
-      animation: pulse 1.5s infinite;
-    }
-
-    /* Table & Bookings */
+    /* Reservations Table Specifics */
     .bookings-table-wrapper {
       overflow-x: auto;
     }
@@ -282,7 +335,7 @@
       font-size: 0.75rem;
       font-weight: 600;
       display: inline-block;
-      max-width: 180px;
+      max-width: 160px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
@@ -297,7 +350,7 @@
       font-size: 0.75rem;
       font-weight: 600;
       display: inline-block;
-      max-width: 180px;
+      max-width: 160px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
@@ -363,29 +416,77 @@
     .btn-delete { background-color: #444; }
     .btn-delete:hover { background-color: #666; }
 
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
+    /* Menu Management Grid Layout */
+    .menu-mgmt-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 30px;
+    }
+
+    @media (max-width: 992px) {
+      .menu-mgmt-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Menu List items styling */
+    .menu-mgmt-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 800px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .menu-mgmt-item {
+      background-color: var(--color-bg-item);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: var(--transition-smooth);
+    }
+
+    .menu-mgmt-item:hover {
+      border-color: rgba(197, 155, 39, 0.4);
+    }
+
+    .item-thumb {
+      width: 70px;
+      height: 70px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .item-details {
+      flex-grow: 1;
+    }
+
+    .item-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .item-category {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-gold);
+    }
+
+    .item-prices {
+      font-size: 0.75rem;
       color: var(--color-text-secondary);
+      margin-top: 4px;
     }
 
-    .empty-icon {
-      font-size: 3rem;
-      margin-bottom: 16px;
-      color: rgba(255,255,255,0.08);
-    }
-
-    /* Add Dish Form Card */
-    .add-dish-card {
-      background-color: var(--color-bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: var(--border-radius);
-      padding: 30px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-      height: fit-content;
-    }
-
+    /* Menu Form styling */
     .form-group {
       margin-bottom: 16px;
     }
@@ -438,6 +539,12 @@
       gap: 10px;
     }
 
+    .form-actions-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
     /* Notification Toast */
     .toast {
       position: fixed;
@@ -480,91 +587,105 @@
       color: var(--color-text-secondary);
     }
 
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.1); opacity: 0.6; }
-      100% { transform: scale(1); opacity: 1; }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--color-text-secondary);
     }
 
-    @media (max-width: 1200px) {
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      color: rgba(255,255,255,0.08);
     }
 
     @media (max-width: 576px) {
-      .stats-grid, .form-row, .price-row {
+      .stats-grid, .form-row, .price-row, .form-actions-row {
         grid-template-columns: 1fr;
-      }
-      header {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
+      }
+      .admin-nav {
+        display: none; /* simple mobile override */
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="admin-container">
-    <!-- Security Warning Banner (shown if opened via file://) -->
-    <div id="security-warning" class="security-banner">
-      <i class="fa-solid fa-triangle-exclamation"></i>
-      <div>
-        <strong>Tarayıcı Güvenlik Uyarısı:</strong> Sayfayı doğrudan bilgisayarınızdan yerel dosya olarak açtınız. 
-        Tarayıcınızın yerel dosya politikaları nedeniyle sekmeler arası rezervasyon senkronizasyonu engellenebilir. 
-        Müşteri arayüzünden gönderilen rezervasyonları burada canlı görmek için projeyi <strong>Vercel'e yükleyebilir</strong> veya <strong>yerel bir sunucu (localhost)</strong> kullanabilirsiniz. (Şu an test etmek için sağ üstteki "Test Rezervasyonu Ekle" butonunu kullanabilirsiniz).
-      </div>
-    </div>
-
-    <header>
+  <!-- Sticky Admin Header -->
+  <header class="admin-header">
+    <div class="header-container">
       <div class="logo-area">
         <img src="images/logo.svg" alt="Pietro Logo" class="logo-img">
         <div>
           <h1 class="logo-title">Pietro</h1>
-          <p class="logo-subtitle">Masa Rezervasyon Paneli</p>
+          <p class="logo-subtitle" id="lang-panel-tag">Yönetici Paneli</p>
         </div>
       </div>
-      <div class="header-actions">
-        <button class="btn btn-outline" onclick="simulateNewOrder()">
-          <i class="fa-solid fa-plus"></i> Test Rezervasyonu Ekle
-        </button>
-        <button class="btn btn-gold" onclick="clearAllBookings()">
-          <i class="fa-solid fa-trash-can"></i> Tümünü Temizle
-        </button>
-      </div>
-    </header>
+      
+      <!-- Middle Nav Menu Links -->
+      <nav>
+        <ul class="admin-nav">
+          <li><a onclick="showTab('reservations')" id="nav-btn-reservations" class="admin-nav-link active">Rezervasyonlar</a></li>
+          <li><a onclick="showTab('menu-mgmt')" id="nav-btn-menu-mgmt" class="admin-nav-link">Menü Yönetimi</a></li>
+          <li><a href="index.html" target="_blank" id="nav-btn-customer" class="admin-nav-link"><i class="fa-solid fa-up-right-from-square"></i> Müşteri Görünümü</a></li>
+        </ul>
+      </nav>
 
-    <!-- Stats summary -->
-    <div class="stats-grid">
-      <div class="stat-card total">
-        <div class="stat-value" id="stat-total">0</div>
-        <div class="stat-label">Toplam Rezervasyon</div>
+      <div class="header-actions">
+        <!-- Language selectors -->
+        <div class="lang-switcher">
+          <button class="lang-btn active" onclick="changeAdminLang('tr')">TR</button>
+          <button class="lang-btn" onclick="changeAdminLang('en')">EN</button>
+          <button class="lang-btn" onclick="changeAdminLang('ar')">AR</button>
+        </div>
       </div>
-      <div class="stat-card pending">
-        <div class="stat-value" id="stat-pending">0</div>
-        <div class="stat-label">Bekleyen</div>
-      </div>
-      <div class="stat-card confirmed">
-        <div class="stat-value" id="stat-confirmed">0</div>
-        <div class="stat-label">Onaylanan</div>
-      </div>
-      <div class="stat-card cancelled">
-        <div class="stat-value" id="stat-cancelled">0</div>
-        <div class="stat-label">İptal Edilen</div>
+    </div>
+  </header>
+
+  <div class="admin-container">
+    
+    <!-- Security Warning Banner (shown if opened via file://) -->
+    <div id="security-warning" class="security-banner">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div>
+        <strong id="lang-warning-title">Tarayıcı Güvenlik Uyarısı:</strong> 
+        <span id="lang-warning-desc">Sayfayı doğrudan bilgisayarınızdan yerel dosya olarak açtınız. Tarayıcınızın yerel dosya politikaları nedeniyle sekmeler arası rezervasyon senkronizasyonu engellenebilir. Müşteri arayüzünden gönderilen rezervasyonları burada canlı görmek için projeyi Vercel'e yükleyebilir veya yerel bir sunucu (localhost) kullanabilirsiniz.</span>
       </div>
     </div>
 
-    <!-- Main Grid Section -->
-    <div class="dashboard-grid">
-      
-      <!-- Left Column: Reservations Table -->
+    <!-- TAB 1: RESERVATIONS SECTION -->
+    <section id="section-reservations" class="admin-section active">
+      <!-- Stats summary -->
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <div class="stat-value" id="stat-total">0</div>
+          <div class="stat-label" id="lang-stat-total">Toplam Rezervasyon</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="stat-value" id="stat-pending">0</div>
+          <div class="stat-label" id="lang-stat-pending">Bekleyen</div>
+        </div>
+        <div class="stat-card confirmed">
+          <div class="stat-value" id="stat-confirmed">0</div>
+          <div class="stat-label" id="lang-stat-confirmed">Onaylanan</div>
+        </div>
+        <div class="stat-card cancelled">
+          <div class="stat-value" id="stat-cancelled">0</div>
+          <div class="stat-label" id="lang-stat-cancelled">İptal Edilen</div>
+        </div>
+      </div>
+
       <div class="dashboard-card">
         <div class="card-title">
-          <span>Gelen Rezervasyon Talepleri</span>
-          <div class="live-indicator">
-            <span class="live-dot"></span>
-            <span>Canlı Takip Aktif</span>
+          <span id="lang-reservations-title">Gelen Rezervasyon Talepleri</span>
+          <div class="header-actions" style="gap: 12px;">
+            <button class="btn btn-outline" onclick="simulateNewOrder()">
+              <i class="fa-solid fa-plus"></i> <span id="lang-btn-test-booking">Test Rezervasyonu Ekle</span>
+            </button>
+            <button class="btn btn-gold" onclick="clearAllBookings()">
+              <i class="fa-solid fa-trash-can"></i> <span id="lang-btn-clear-all">Tümünü Temizle</span>
+            </button>
           </div>
         </div>
 
@@ -572,12 +693,12 @@
           <table id="bookings-table">
             <thead>
               <tr>
-                <th>Müşteri</th>
-                <th>Rezervasyon Detayı</th>
-                <th>Seçilen Yemek</th>
-                <th>Seçilen İçecek</th>
-                <th>Durum</th>
-                <th>İşlemler</th>
+                <th id="lang-th-customer">Müşteri</th>
+                <th id="lang-th-details">Rezervasyon Detayı</th>
+                <th id="lang-th-food">Seçilen Yemek</th>
+                <th id="lang-th-drink">Seçilen İçecek</th>
+                <th id="lang-th-status">Durum</th>
+                <th id="lang-th-actions">İşlemler</th>
               </tr>
             </thead>
             <tbody id="bookings-tbody">
@@ -587,150 +708,367 @@
           
           <div id="bookings-empty" class="empty-state">
             <i class="fa-regular fa-clipboard empty-icon"></i>
-            <p>Henüz alınmış bir masa rezervasyon talebi bulunmuyor.</p>
+            <p id="lang-empty-reservations">Henüz alınmış bir masa rezervasyon talebi bulunmuyor.</p>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Right Column: Add New Dish Form -->
-      <div class="add-dish-card">
-        <h3 style="font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: var(--color-gold); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
-          <i class="fa-solid fa-utensils"></i> Menüye Yeni Yemek Ekle
-        </h3>
+    <!-- TAB 2: MENU MANAGEMENT SECTION -->
+    <section id="section-menu-mgmt" class="admin-section">
+      <div class="menu-mgmt-grid">
         
-        <form id="add-dish-form" onsubmit="handleNewDishSubmit(event)">
-          <div class="form-group">
-            <label>Kategori</label>
-            <select id="dish-category" required>
-              <option value="pizza">Pizzalar (Pizza)</option>
-              <option value="pasta">Makarnalar (Pasta)</option>
-              <option value="drinks">İçecekler (Drinks)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Yemek Adı (Türkçe)</label>
-            <input type="text" id="dish-name-tr" required placeholder="Örn. Pizza Diabolo">
+        <!-- Left: Active Dishes List -->
+        <div class="dashboard-card">
+          <div class="card-title">
+            <span id="lang-menu-list-title">Aktif Menü Listesi</span>
+            <span id="menu-list-count" style="font-size: 0.8rem; font-weight: normal; color: var(--color-text-secondary);"></span>
           </div>
           
-          <div class="form-row">
+          <div class="menu-mgmt-list" id="menu-items-list">
+            <!-- Dynamically populated menu list -->
+          </div>
+        </div>
+
+        <!-- Right: Add / Edit Dish Form -->
+        <div class="dashboard-card" id="dish-form-container">
+          <h3 id="form-dish-title" style="font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: var(--color-gold); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+            <i class="fa-solid fa-utensils"></i> Menüye Yeni Yemek Ekle
+          </h3>
+          
+          <form id="add-dish-form" onsubmit="handleDishFormSubmit(event)">
+            <input type="hidden" id="edit-dish-id" value="">
+
             <div class="form-group">
-              <label>Yemek Adı (EN)</label>
-              <input type="text" id="dish-name-en" required placeholder="e.g. Pizza Diabolo">
+              <label id="lang-label-category">Kategori</label>
+              <select id="dish-category" required>
+                <option value="pizza">Pizzalar (Pizza)</option>
+                <option value="pasta">Makarnalar (Pasta)</option>
+                <option value="drinks">İçecekler (Drinks)</option>
+              </select>
             </div>
+
             <div class="form-group">
-              <label>Yemek Adı (AR)</label>
-              <input type="text" id="dish-name-ar" required placeholder="مثال: بيتزا ديابولو">
+              <label id="lang-label-name-tr">Yemek Adı (Türkçe)</label>
+              <input type="text" id="dish-name-tr" required placeholder="Örn. Pizza Diabolo">
             </div>
-          </div>
-
-          <div class="form-group">
-            <label>Fiyatlar (Lira - TL)</label>
-            <div class="price-row">
-              <input type="number" id="dish-price-small" required placeholder="Küçük (S)">
-              <input type="number" id="dish-price-medium" required placeholder="Orta (M)">
-              <input type="number" id="dish-price-large" required placeholder="Büyük (L)">
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label id="lang-label-name-en">Yemek Adı (EN)</label>
+                <input type="text" id="dish-name-en" required placeholder="e.g. Pizza Diabolo">
+              </div>
+              <div class="form-group">
+                <label id="lang-label-name-ar">Yemek Adı (AR)</label>
+                <input type="text" id="dish-name-ar" required placeholder="مثال: بيتزا ديابولو">
+              </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label>Açıklama (Türkçe)</label>
-            <textarea id="dish-desc-tr" rows="2" required placeholder="İmza hamurumuz üzerine acılı salam..."></textarea>
-          </div>
-
-          <div class="form-row">
             <div class="form-group">
-              <label>Açıklama (EN)</label>
-              <textarea id="dish-desc-en" rows="2" required placeholder="Spicy salami on our signature crust..."></textarea>
+              <label id="lang-label-prices">Fiyatlar (Lira - TL)</label>
+              <div class="price-row">
+                <input type="text" id="dish-price-small" required placeholder="Küçük (S) Örn. 340 TL">
+                <input type="text" id="dish-price-medium" required placeholder="Orta (M) Örn. 380 TL">
+                <input type="text" id="dish-price-large" required placeholder="Büyük (L) Örn. 440 TL">
+              </div>
             </div>
+
             <div class="form-group">
-              <label>Açıklama (AR)</label>
-              <textarea id="dish-desc-ar" rows="2" required placeholder="سلامي حار فوق عجينتنا المميزة..."></textarea>
+              <label id="lang-label-desc-tr">Açıklama (Türkçe)</label>
+              <textarea id="dish-desc-tr" rows="2" required placeholder="İmza hamurumuz üzerine acılı salam..."></textarea>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label>İçindekiler (Türkçe - Virgülle ayırın)</label>
-            <input type="text" id="dish-ing-tr" required placeholder="Mozzarella, Acı Salam, Domates sosu">
-          </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label id="lang-label-desc-en">Açıklama (EN)</label>
+                <textarea id="dish-desc-en" rows="2" required placeholder="Spicy salami on our signature crust..."></textarea>
+              </div>
+              <div class="form-group">
+                <label id="lang-label-desc-ar">Açıklama (AR)</label>
+                <textarea id="dish-desc-ar" rows="2" required placeholder="سلامي حار فوق عجينتنا المميزة..."></textarea>
+              </div>
+            </div>
 
-          <div class="form-row">
             <div class="form-group">
-              <label>İçindekiler (EN - Virgülle ayırın)</label>
-              <input type="text" id="dish-ing-en" required placeholder="Mozzarella, Spicy Salami, Tomato sauce">
+              <label id="lang-label-ing-tr">İçindekiler (Türkçe - Virgülle ayırın)</label>
+              <input type="text" id="dish-ing-tr" required placeholder="Mozzarella, Acı Salam, Domates sosu">
             </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label id="lang-label-ing-en">İçindekiler (EN - Virgülle ayırın)</label>
+                <input type="text" id="dish-ing-en" required placeholder="Mozzarella, Spicy Salami, Tomato sauce">
+              </div>
+              <div class="form-group">
+                <label id="lang-label-ing-ar">İçindekiler (AR - Virgülle ayırın)</label>
+                <input type="text" id="dish-ing-ar" required placeholder="موزاريلا، سلامي حار، صلصة طماطم">
+              </div>
+            </div>
+
             <div class="form-group">
-              <label>İçindekiler (AR - Virgülle ayırın)</label>
-              <input type="text" id="dish-ing-ar" required placeholder="موزاريلا، سلامي حار، صلصة طماطم">
+              <label id="lang-label-images">Yemek Görselleri (Çoklu Seçebilirsiniz)</label>
+              <input type="file" id="dish-images" accept="image/*" multiple>
+              <p style="font-size: 0.7rem; color: var(--color-text-secondary); margin-top: 4px;" id="lang-image-tip">Önemli: Birden fazla fotoğraf seçerek detay penceresinde kaydırma (carousel) oluşturabilirsiniz. Düzenleme yaparken boş bırakırsanız eski resimler korunur.</p>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label>Yemek Görseli (Dosya Seçin)</label>
-            <input type="file" id="dish-image" accept="image/*" required>
-            <p style="font-size: 0.7rem; color: var(--color-text-secondary); margin-top: 4px;">Önemli: Görsel otomatik olarak optimize edilip veritabanına eklenecektir.</p>
-          </div>
+            <div class="form-actions-row">
+              <button type="submit" class="btn btn-gold" style="flex-grow: 1; justify-content: center;" id="btn-submit-dish">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Yemeği Menüye Ekle
+              </button>
+              <button type="button" class="btn btn-outline" id="btn-cancel-edit" style="display: none;" onclick="cancelEditMode()">
+                İptal Et
+              </button>
+            </div>
+          </form>
+        </div>
 
-          <button type="submit" class="btn btn-gold btn-block" style="width: 100%; margin-top: 10px; justify-content: center;">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Yemeği Menüye Ekle
-          </button>
-        </form>
       </div>
+    </section>
 
-    </div>
   </div>
 
   <!-- Realtime Toast Notification -->
   <div id="booking-toast" class="toast">
     <i class="fa-solid fa-bell toast-icon"></i>
     <div class="toast-content">
-      <h4>Yeni Rezervasyon Talebi!</h4>
+      <h4 id="toast-title">Yeni Rezervasyon Talebi!</h4>
       <p id="toast-booking-info">Bir müşteri yeni rezervasyon gönderdi.</p>
     </div>
   </div>
 
   <script>
-    // Audio synthesis using Web Audio API
-    function playNotificationSound() {
-      try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        const osc1 = audioCtx.createOscillator();
-        const gain1 = audioCtx.createGain();
-        osc1.connect(gain1);
-        gain1.connect(audioCtx.destination);
-        
-        osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5 note
-        gain1.gain.setValueAtTime(0, audioCtx.currentTime);
-        gain1.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.05);
-        gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-        
-        osc1.start();
-        osc1.stop(audioCtx.currentTime + 0.3);
+    // 1. Static Initial Database (Baseline 8 default dishes)
+    const defaultDishes = [
+      { id: "1", category: "pizza", image: "images/pizza_margherita.jpg", name: { tr: "Pizza Margherita", en: "Pizza Margherita", ar: "Pizza Margherita" }, prices: { tr: { small: "340 TL", medium: "380 TL", large: "440 TL" } }, desc: { tr: "İmza Napoliten hamurumuz üzerinde taze mozzarella, domates sosu ve fesleğen yaprakları." }, ingredients: { tr: ["Taze Mozzarella", "Domates Sosu", "Taze Fesleğen", "Sızma Zeytinyağı"] } },
+      { id: "2", category: "pizza", image: "images/pizza_quattro.jpg", name: { tr: "Pizza Quattro Formaggi", en: "Pizza Quattro Formaggi", ar: "Pizza Quattro Formaggi" }, prices: { tr: { small: "430 TL", medium: "490 TL", large: "560 TL" } }, desc: { tr: "Taze adaçayı ile peynirlerin zengin harmanı." }, ingredients: { tr: ["Mozzarella", "Gorgonzola", "Parmesan", "Fontina"] } },
+      { id: "3", category: "pizza", image: "images/pizza_pollo.jpg", name: { tr: "Pizza Pollo Picante", en: "Pizza Pollo Picante", ar: "Pizza Pollo Picante" }, prices: { tr: { small: "410 TL", medium: "460 TL", large: "520 TL" } }, desc: { tr: "Acı kırmızı biber ve ızgara tavuk parçaları." }, ingredients: { tr: ["Izgara Tavuk", "Acı Biber", "Mozzarella"] } },
+      { id: "4", category: "pizza", image: "images/pizza_pietro.jpg", name: { tr: "Pizza Pietro (Şefin Özel Tabağı)", en: "Pizza Pietro", ar: "Pizza Pietro" }, prices: { tr: { small: "480 TL", medium: "540 TL", large: "610 TL" } }, desc: { tr: "Özel kurutulmuş dana eti ve yaban mantarları." }, ingredients: { tr: ["Dana eti", "Yaban mantarları", "Parmesan"] } },
+      { id: "5", category: "pasta", image: "images/penne_burrata.jpg", name: { tr: "Penne Burrata", en: "Penne Burrata", ar: "Penne Burrata" }, prices: { tr: { small: "390 TL", medium: "440 TL", large: "500 TL" } }, desc: { tr: "Kremalı marinara sos ve bütün taze burrata peyniri." }, ingredients: { tr: ["Penne", "Taze Burrata", "Kiraz domates"] } },
+      { id: "6", category: "pasta", image: "images/tagliatelli_pollo.jpg", name: { tr: "Tagliatelli Pollo", en: "Tagliatelli Pollo", ar: "Tagliatelli Pollo" }, prices: { tr: { small: "390 TL", medium: "440 TL", large: "500 TL" } }, desc: { tr: "Adaçayı ve kadifemsi tereyağı soslu tagliatelli." }, ingredients: { tr: ["Tagliatelli", "Izgara tavuk", "Adaçayı"] } },
+      { id: "7", category: "pasta", image: "images/tagliatelli_scampi.jpg", name: { tr: "Tagliatelli Scampi", en: "Tagliatelli Scampi", ar: "Tagliatelli Scampi" }, prices: { tr: { small: "460 TL", medium: "520 TL", large: "590 TL" } }, desc: { tr: "Sarımsak, karides ve limon kabuğu rendeli tagliatelli." }, ingredients: { tr: ["Tagliatelli", "Karides", "Limon kabuğu"] } },
+      { id: "8", category: "pasta", image: "images/tagliatelli_forester.jpg", name: { tr: "Tagliatelli Forester", en: "Tagliatelli Forester", ar: "Tagliatelli Forester" }, prices: { tr: { small: "370 TL", medium: "420 TL", large: "480 TL" } }, desc: { tr: "Sotelenmiş orman mantarları ile bezenmiş pasta." }, ingredients: { tr: ["Tagliatelli", "Yaban mantarları", "Kestane mantarı"] } }
+    ];
 
-        setTimeout(() => {
-          const osc2 = audioCtx.createOscillator();
-          const gain2 = audioCtx.createGain();
-          osc2.connect(gain2);
-          gain2.connect(audioCtx.destination);
-          
-          osc2.type = 'sine';
-          osc2.frequency.setValueAtTime(659.25, audioCtx.currentTime); // E5 note
-          gain2.gain.setValueAtTime(0, audioCtx.currentTime);
-          gain2.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.05);
-          gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-          
-          osc2.start();
-          osc2.stop(audioCtx.currentTime + 0.35);
-        }, 150);
-
-      } catch (e) {
-        console.log("Audio play blocked or unsupported:", e);
+    // Admin Localization Texts
+    const adminLangDict = {
+      tr: {
+        "panel-tag": "Yönetici Paneli",
+        "btn-reservations": "Rezervasyonlar",
+        "btn-menu-mgmt": "Menü Yönetimi",
+        "btn-customer": "Müşteri Görünümü",
+        "stat-total": "Toplam Rezervasyon",
+        "stat-pending": "Bekleyen",
+        "stat-confirmed": "Onaylanan",
+        "stat-cancelled": "İptal Edilen",
+        "reservations-title": "Gelen Rezervasyon Talepleri",
+        "btn-test-booking": "Test Rezervasyonu Ekle",
+        "btn-clear-all": "Tümünü Temizle",
+        "th-customer": "Müşteri",
+        "th-details": "Rezervasyon Detayı",
+        "th-food": "Seçilen Yemek",
+        "th-drink": "Seçilen İçecek",
+        "th-status": "Durum",
+        "th-actions": "İşlemler",
+        "empty-reservations": "Henüz alınmış bir masa rezervasyon talebi bulunmuyor.",
+        "menu-list-title": "Aktif Menü Listesi",
+        "form-dish-add": "Menüye Yeni Yemek Ekle",
+        "form-dish-edit": "Yemeği Düzenle",
+        "label-category": "Kategori",
+        "label-name-tr": "Yemek Adı (Türkçe)",
+        "label-name-en": "Yemek Adı (EN)",
+        "label-name-ar": "Yemek Adı (AR)",
+        "label-prices": "Fiyatlar (Lira - TL)",
+        "label-desc-tr": "Açıklama (Türkçe)",
+        "label-desc-en": "Açıklama (EN)",
+        "label-desc-ar": "Açıklama (AR)",
+        "label-ing-tr": "İçindekiler (Türkçe - Virgülle ayırın)",
+        "label-ing-en": "İçindekiler (EN - Virgülle ayırın)",
+        "label-ing-ar": "İçindekiler (AR - Virgülle ayırın)",
+        "label-images": "Yemek Görselleri (Çoklu Seçebilirsiniz)",
+        "image-tip": "Önemli: Birden fazla fotoğraf seçerek detay penceresinde kaydırma (carousel) oluşturabilirsiniz. Düzenleme yaparken boş bırakırsanız eski resimler korunur.",
+        "btn-add": "Yemeği Menüye Ekle",
+        "btn-save": "Değişiklikleri Kaydet",
+        "btn-cancel": "İptal Et",
+        "warning-title": "Tarayıcı Güvenlik Uyarısı:",
+        "warning-desc": "Sayfayı doğrudan bilgisayarınızdan yerel dosya olarak açtınız. Tarayıcınızın yerel dosya politikaları nedeniyle sekmeler arası rezervasyon senkronizasyonu engellenebilir. Müşteri arayüzünden gönderilen rezervasyonları burada canlı görmek için projeyi Vercel'e yükleyebilir veya yerel bir sunucu (localhost) kullanabilirsiniz.",
+        "toast-title": "Yeni Rezervasyon Talebi!",
+        "toast-desc": "yeni bir rezervasyon talebi gönderdi."
+      },
+      en: {
+        "panel-tag": "Admin Panel",
+        "btn-reservations": "Reservations",
+        "btn-menu-mgmt": "Menu Management",
+        "btn-customer": "Customer View",
+        "stat-total": "Total Bookings",
+        "stat-pending": "Pending",
+        "stat-confirmed": "Confirmed",
+        "stat-cancelled": "Cancelled",
+        "reservations-title": "Incoming Reservations",
+        "btn-test-booking": "Add Test Booking",
+        "btn-clear-all": "Clear All",
+        "th-customer": "Customer",
+        "th-details": "Details",
+        "th-food": "Selected Food",
+        "th-drink": "Selected Drink",
+        "th-status": "Status",
+        "th-actions": "Actions",
+        "empty-reservations": "No table reservations received yet.",
+        "menu-list-title": "Active Menu Items",
+        "form-dish-add": "Add New Dish to Menu",
+        "form-dish-edit": "Edit Dish Details",
+        "label-category": "Category",
+        "label-name-tr": "Dish Name (Turkish)",
+        "label-name-en": "Dish Name (EN)",
+        "label-name-ar": "Dish Name (AR)",
+        "label-prices": "Prices (Lira - TL)",
+        "label-desc-tr": "Description (Turkish)",
+        "label-desc-en": "Description (EN)",
+        "label-desc-ar": "Description (AR)",
+        "label-ing-tr": "Ingredients (TR - comma separated)",
+        "label-ing-en": "Ingredients (EN - comma separated)",
+        "label-ing-ar": "Ingredients (AR - comma separated)",
+        "label-images": "Dish Images (Can Select Multiple)",
+        "image-tip": "Important: Select multiple images to create an sliding carousel in detail modal. If editing, leave blank to keep original images.",
+        "btn-add": "Add Dish to Menu",
+        "btn-save": "Save Changes",
+        "btn-cancel": "Cancel",
+        "warning-title": "Browser Security Warning:",
+        "warning-desc": "You opened the page directly from local files (file://). Due to browser security policies, real-time sync between tabs may be blocked. Upload to Vercel or use a local server (localhost) for real-time live sync.",
+        "toast-title": "New Booking Request!",
+        "toast-desc": "sent a new table reservation request."
+      },
+      ar: {
+        "panel-tag": "لوحة التحكم",
+        "btn-reservations": "الحجوزات",
+        "btn-menu-mgmt": "إدارة القائمة",
+        "btn-customer": "عرض الموقع",
+        "stat-total": "إجمالي الحجوزات",
+        "stat-pending": "قيد الانتظار",
+        "stat-confirmed": "تم التأكيد",
+        "stat-cancelled": "تم الإلغاء",
+        "reservations-title": "طلبات الحجز الواردة",
+        "btn-test-booking": "حجز تجريبي",
+        "btn-clear-all": "مسح الكل",
+        "th-customer": "العميل",
+        "th-details": "تفاصيل الحجز",
+        "th-food": "الوجبة المختارة",
+        "th-drink": "المشروب المختار",
+        "th-status": "الحالة",
+        "th-actions": "الإجراءات",
+        "empty-reservations": "لم يتم استلام أي طلبات حجز طاولات حتى الآن.",
+        "menu-list-title": "عناصر قائمة الطعام النشطة",
+        "form-dish-add": "إضافة طبق جديد للقائمة",
+        "form-dish-edit": "تعديل تفاصيل الطبق",
+        "label-category": "القسم",
+        "label-name-tr": "اسم الوجبة (التركية)",
+        "label-name-en": "اسم الوجبة (الإنجليزية)",
+        "label-name-ar": "اسم الوجبة (العربية)",
+        "label-prices": "الأسعار بالليرة التركية (TL)",
+        "label-desc-tr": "الوصف بالتركية",
+        "label-desc-en": "الوصف بالإنجليزية",
+        "label-desc-ar": "الوصف بالعربية",
+        "label-ing-tr": "المكونات (التركية - افصل بفاصلة)",
+        "label-ing-en": "المكونات (الإنجليزية - افصل بفاصلة)",
+        "label-ing-ar": "المكونات (العربية - افصل بفاصلة)",
+        "label-images": "صور الوجبة (يمكنك تحديد عدة صور)",
+        "image-tip": "ملاحظة: حدد أكثر من صورة لإنشاء معرض صور متحرك في تفاصيل الوجبة. عند التعديل، اترك فارغاً للاحتفاظ بالصور القديمة.",
+        "btn-add": "إضافة الوجبة للقائمة",
+        "btn-save": "حفظ التغييرات",
+        "btn-cancel": "إلغاء التعديل",
+        "warning-title": "تنبيه أمان المتصفح:",
+        "warning-desc": "لقد قمت بفتح الملف محلياً كمجلد ملفات. بسبب قيود أمان المتصفح، قد لا يتم مزامنة الطلبات بالوقت الفعلي. يرجى رفع المشروع على Vercel أو استخدام خادم محلي لتفعيل التزامن الفوري التلقائي.",
+        "toast-title": "طلب حجز جديد!",
+        "toast-desc": "أرسل طلب حجز طاولة جديد."
       }
+    };
+
+    let adminActiveLang = "tr";
+
+    // 2. Tab Navigation
+    window.showTab = function(tabId) {
+      document.querySelectorAll(".admin-section").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".admin-nav-link").forEach(l => l.classList.remove("active"));
+
+      document.getElementById(`section-${tabId}`).classList.add("active");
+      document.getElementById(`nav-btn-${tabId}`).classList.add("active");
+    };
+
+    // 3. Admin Language Switcher
+    window.changeAdminLang = function(lang) {
+      adminActiveLang = lang;
+      
+      // Update header buttons active status
+      document.querySelectorAll(".lang-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.textContent.toLowerCase() === lang);
+      });
+
+      // Update text values
+      const dict = adminLangDict[lang];
+      document.getElementById("lang-panel-tag").textContent = dict["panel-tag"];
+      document.getElementById("nav-btn-reservations").textContent = dict["btn-reservations"];
+      document.getElementById("nav-btn-menu-mgmt").textContent = dict["btn-menu-mgmt"];
+      document.getElementById("nav-btn-customer").innerHTML = `<i class="fa-solid fa-up-right-from-square"></i> ${dict["btn-customer"]}`;
+      
+      document.getElementById("lang-stat-total").textContent = dict["stat-total"];
+      document.getElementById("lang-stat-pending").textContent = dict["stat-pending"];
+      document.getElementById("lang-stat-confirmed").textContent = dict["stat-confirmed"];
+      document.getElementById("lang-stat-cancelled").textContent = dict["stat-cancelled"];
+      
+      document.getElementById("lang-reservations-title").textContent = dict["reservations-title"];
+      document.getElementById("lang-btn-test-booking").textContent = dict["btn-test-booking"];
+      document.getElementById("lang-btn-clear-all").textContent = dict["btn-clear-all"];
+      
+      document.getElementById("lang-th-customer").textContent = dict["th-customer"];
+      document.getElementById("lang-th-details").textContent = dict["th-details"];
+      document.getElementById("lang-th-food").textContent = dict["th-food"];
+      document.getElementById("lang-th-drink").textContent = dict["th-drink"];
+      document.getElementById("lang-th-status").textContent = dict["th-status"];
+      document.getElementById("lang-th-actions").textContent = dict["th-actions"];
+      document.getElementById("lang-empty-reservations").textContent = dict["empty-reservations"];
+      
+      document.getElementById("lang-menu-list-title").textContent = dict["menu-list-title"];
+      
+      document.getElementById("lang-label-category").textContent = dict["label-category"];
+      document.getElementById("lang-label-name-tr").textContent = dict["label-name-tr"];
+      document.getElementById("lang-label-name-en").textContent = dict["label-name-en"];
+      document.getElementById("lang-label-name-ar").textContent = dict["label-name-ar"];
+      document.getElementById("lang-label-prices").textContent = dict["label-prices"];
+      document.getElementById("lang-label-desc-tr").textContent = dict["label-desc-tr"];
+      document.getElementById("lang-label-desc-en").textContent = dict["label-desc-en"];
+      document.getElementById("lang-label-desc-ar").textContent = dict["label-desc-ar"];
+      document.getElementById("lang-label-ing-tr").textContent = dict["label-ing-tr"];
+      document.getElementById("lang-label-ing-en").textContent = dict["label-ing-en"];
+      document.getElementById("lang-label-ing-ar").textContent = dict["label-ing-ar"];
+      document.getElementById("lang-label-images").textContent = dict["label-images"];
+      document.getElementById("lang-image-tip").textContent = dict["image-tip"];
+      
+      const editingId = document.getElementById("edit-dish-id").value;
+      if (editingId) {
+        document.getElementById("form-dish-title").innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${dict["form-dish-edit"]}`;
+        document.getElementById("btn-submit-dish").textContent = dict["btn-save"];
+        document.getElementById("btn-cancel-edit").textContent = dict["btn-cancel"];
+      } else {
+        document.getElementById("form-dish-title").innerHTML = `<i class="fa-solid fa-utensils"></i> ${dict["form-dish-add"]}`;
+        document.getElementById("btn-submit-dish").textContent = dict["btn-add"];
+      }
+
+      document.getElementById("lang-warning-title").textContent = dict["warning-title"];
+      document.getElementById("lang-warning-desc").textContent = dict["warning-desc"];
+      document.getElementById("toast-title").textContent = dict["toast-title"];
+
+      // Set HTML reading direction based on Arabic lang selection
+      if (lang === "ar") {
+        document.documentElement.dir = "rtl";
+      } else {
+        document.documentElement.dir = "ltr";
+      }
+
+      // Reload lists
+      loadBookings();
+      loadMenuList();
     }
 
-    // Load and Render Bookings (Separating Food and Drink columns)
+    // 4. Load Bookings List
     function loadBookings() {
       const bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
       const tbody = document.getElementById("bookings-tbody");
@@ -761,7 +1099,6 @@
         const tr = document.createElement("tr");
         tr.id = booking.id;
 
-        // format date-time
         const dateObj = new Date(booking.date);
         const dateStr = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
         
@@ -791,16 +1128,16 @@
           </td>
           <td>
             <div class="action-buttons">
-              <button class="btn-action btn-confirm" onclick="setStatus('${booking.id}', 'confirmed')" title="Rezervasyonu Onayla">
+              <button class="btn-action btn-confirm" onclick="setStatus('${booking.id}', 'confirmed')" title="Onayla">
                 <i class="fa-solid fa-check"></i>
               </button>
               <button class="btn-action btn-cancel" onclick="setStatus('${booking.id}', 'cancelled')" title="İptal Et">
                 <i class="fa-solid fa-xmark"></i>
               </button>
-              <button class="btn-action btn-whatsapp" onclick="contactCustomer('${booking.id}')" title="WhatsApp ile İletişim (İBAN Gönder)">
+              <button class="btn-action btn-whatsapp" onclick="contactCustomer('${booking.id}')" title="İletişim & İBAN Gönder">
                 <i class="fa-brands fa-whatsapp"></i>
               </button>
-              <button class="btn-action btn-delete" onclick="deleteBooking('${booking.id}')" title="Rezervasyonu Sil">
+              <button class="btn-action btn-delete" onclick="deleteBooking('${booking.id}')" title="Sil">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </div>
@@ -820,19 +1157,18 @@
     }
 
     function translateStatus(status) {
-      if (status === "pending") return "Bekliyor";
-      if (status === "confirmed") return "Onaylandı";
-      if (status === "cancelled") return "İptal Edildi";
+      const lang = adminActiveLang;
+      if (status === "pending") return adminLangDict[lang]["stat-pending"];
+      if (status === "confirmed") return adminLangDict[lang]["stat-confirmed"];
+      if (status === "cancelled") return adminLangDict[lang]["stat-cancelled"];
       return status;
     }
 
     function escapeHTML(str) {
-      return str.replace(/[&<>'"]/g, 
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-      );
+      return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
     }
 
-    // Set Status (Confirm or Cancel)
+    // 5. Booking Action functions
     window.setStatus = function(id, status) {
       let bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
       bookings = bookings.map(b => {
@@ -843,7 +1179,6 @@
       loadBookings();
     };
 
-    // Delete Booking
     window.deleteBooking = function(id) {
       if (!confirm("Bu rezervasyon kaydını silmek istediğinize emin misiniz?")) return;
       let bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
@@ -852,41 +1187,300 @@
       loadBookings();
     };
 
-    // Clear all bookings
     window.clearAllBookings = function() {
-      if (!confirm("Tüm rezervasyon kayıtlarını silmek istediğinize emin misiniz? Bu işlem geri alınamaz.")) return;
+      if (!confirm("Tüm kayıtları silmek istediğinize emin misiniz?")) return;
       localStorage.removeItem("pietro_bookings");
       loadBookings();
     };
 
-    // Open WhatsApp link with prefilled template message containing IBAN
     window.contactCustomer = function(id) {
       const bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
       const booking = bookings.find(b => b.id === id);
       if (!booking) return;
 
       let cleanedPhone = booking.phone.replace(/[^0-9+]/g, "");
-      if (cleanedPhone.startsWith("05")) {
-        cleanedPhone = "+90" + cleanedPhone.substring(1);
-      } else if (cleanedPhone.startsWith("5")) {
-        cleanedPhone = "+90" + cleanedPhone;
-      }
+      if (cleanedPhone.startsWith("05")) cleanedPhone = "+90" + cleanedPhone.substring(1);
+      else if (cleanedPhone.startsWith("5")) cleanedPhone = "+90" + cleanedPhone;
 
-      // Format details based on food/drink choices
-      let itemsList = [];
-      if (booking.dish) itemsList.push(booking.dish);
-      if (booking.drink) itemsList.push(booking.drink);
-      const details = itemsList.join(" + ") || "Masa Rezervasyonu";
+      let items = [];
+      if (booking.dish) items.push(booking.dish);
+      if (booking.drink) items.push(booking.drink);
+      const details = items.join(" + ") || "Masa Rezervasyonu";
 
-      // Prefilled message template in Turkish
       const message = `Merhaba ${booking.name},\n\nPietro Coffee Pizzeria'dan yapmış olduğunuz rezervasyon talebiniz (${details}) alınmıştır. Rezervasyonunuzu onaylamak ve ödemenizi tamamlamak için İBAN adresimiz:\n\n🏦 ALICI: Pietro Coffee Pizzeria\n💳 IBAN: TR00 0000 0000 0000 0000 0000 00\n\nÖdemeyi tamamladıktan sonra lütfen buradan bilgi veriniz. Teşekkürler, görüşmek üzere!`;
-      
-      const encodedMsg = encodeURIComponent(message);
-      const url = `https://wa.me/${cleanedPhone}?text=${encodedMsg}`;
-      window.open(url, "_blank");
+      window.open(`https://wa.me/${cleanedPhone}?text=${encodeURIComponent(message)}`, "_blank");
     };
 
-    // Simulate Client Bookings for demonstration & testing
+    // 6. Menu Management CRUD Engine
+    function loadMenuList() {
+      const deletedDefaultIds = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
+      const customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+      
+      const listContainer = document.getElementById("menu-items-list");
+      listContainer.innerHTML = "";
+
+      // Combine active baseline dishes & custom dishes
+      const activeBaselineDishes = defaultDishes.filter(d => !deletedDefaultIds.includes(d.id));
+      const fullList = [...activeBaselineDishes, ...customDishes];
+
+      document.getElementById("menu-list-count").textContent = `(${fullList.length} Yemek Aktif)`;
+
+      if (fullList.length === 0) {
+        listContainer.innerHTML = `<p class="empty-state" style="padding:40px 0;">Menüde aktif yemek bulunmuyor.</p>`;
+        return;
+      }
+
+      fullList.forEach(dish => {
+        const item = document.createElement("div");
+        item.className = "menu-mgmt-item";
+
+        // Get localized properties
+        const name = dish.name[adminActiveLang] || dish.name["tr"];
+        const prices = dish.prices[adminActiveLang] || dish.prices["tr"];
+
+        item.innerHTML = `
+          <img src="${dish.image}" alt="${name}" class="item-thumb">
+          <div class="item-details">
+            <h4 class="item-name">${escapeHTML(name)}</h4>
+            <span class="item-category">${dish.category}</span>
+            <div class="item-prices">
+              S: ${prices.small} | M: ${prices.medium} | L: ${prices.large}
+            </div>
+          </div>
+          <div class="action-buttons">
+            <button class="btn-action btn-confirm" onclick="editMenuItem('${dish.id}')" title="Yemeği Düzenle" style="background-color: var(--color-gold);">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button class="btn-action btn-cancel" onclick="deleteMenuItem('${dish.id}')" title="Yemeği Sil">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        `;
+        listContainer.appendChild(item);
+      });
+    }
+
+    // Delete Menu Item (Default or Custom)
+    window.deleteMenuItem = function(id) {
+      if (!confirm("Bu yemeği menüden tamamen kaldırmak istediğinize emin misiniz?")) return;
+
+      if (id.startsWith("custom-")) {
+        // Remove from custom list
+        let customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+        customDishes = customDishes.filter(d => d.id !== id);
+        localStorage.setItem("pietro_custom_dishes", JSON.stringify(customDishes));
+      } else {
+        // Add to deleted defaults list
+        let deletedDefaultIds = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
+        if (!deletedDefaultIds.includes(id)) {
+          deletedDefaultIds.push(id);
+          localStorage.setItem("pietro_deleted_default_dishes", JSON.stringify(deletedDefaultIds));
+        }
+      }
+
+      // Sync state and notify index.html
+      localStorage.setItem("pietro_custom_dishes_updated_event", Date.now().toString());
+      loadMenuList();
+      alert("Yemek menüden kaldırıldı.");
+    };
+
+    // Edit Menu Item
+    window.editMenuItem = function(id) {
+      let dish = null;
+      if (id.startsWith("custom-")) {
+        const customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+        dish = customDishes.find(d => d.id === id);
+      } else {
+        dish = defaultDishes.find(d => d.id === id);
+      }
+
+      if (!dish) return;
+
+      // Set form in Edit Mode
+      document.getElementById("edit-dish-id").value = dish.id;
+      document.getElementById("dish-category").value = dish.category;
+      
+      document.getElementById("dish-name-tr").value = dish.name.tr || "";
+      document.getElementById("dish-name-en").value = dish.name.en || "";
+      document.getElementById("dish-name-ar").value = dish.name.ar || "";
+      
+      const currencyPrices = dish.prices.tr || dish.prices.en || dish.prices.ar;
+      document.getElementById("dish-price-small").value = currencyPrices.small;
+      document.getElementById("dish-price-medium").value = currencyPrices.medium;
+      document.getElementById("dish-price-large").value = currencyPrices.large;
+      
+      document.getElementById("dish-desc-tr").value = dish.desc.tr || "";
+      document.getElementById("dish-desc-en").value = dish.desc.en || "";
+      document.getElementById("dish-desc-ar").value = dish.desc.ar || "";
+      
+      document.getElementById("dish-ing-tr").value = (dish.ingredients.tr || []).join(", ");
+      document.getElementById("dish-ing-en").value = (dish.ingredients.en || []).join(", ");
+      document.getElementById("dish-ing-ar").value = (dish.ingredients.ar || []).join(", ");
+      
+      // Update form headers/buttons based on active language
+      const dict = adminLangDict[adminActiveLang];
+      document.getElementById("form-dish-title").innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${dict["form-dish-edit"]}`;
+      document.getElementById("btn-submit-dish").textContent = dict["btn-save"];
+      document.getElementById("btn-cancel-edit").style.display = "inline-flex";
+      document.getElementById("btn-cancel-edit").textContent = dict["btn-cancel"];
+      
+      // Scroll to form card
+      document.getElementById("dish-form-container").scrollIntoView({ behavior: "smooth" });
+    };
+
+    window.cancelEditMode = function() {
+      document.getElementById("add-dish-form").reset();
+      document.getElementById("edit-dish-id").value = "";
+      
+      const dict = adminLangDict[adminActiveLang];
+      document.getElementById("form-dish-title").innerHTML = `<i class="fa-solid fa-utensils"></i> ${dict["form-dish-add"]}`;
+      document.getElementById("btn-submit-dish").textContent = dict["btn-add"];
+      document.getElementById("btn-cancel-edit").style.display = "none";
+    };
+
+    // Save/Add Form Submit Handler
+    window.handleDishFormSubmit = function(event) {
+      event.preventDefault();
+
+      const editingId = document.getElementById("edit-dish-id").value;
+      const category = document.getElementById("dish-category").value;
+      
+      const nameTr = document.getElementById("dish-name-tr").value;
+      const nameEn = document.getElementById("dish-name-en").value;
+      const nameAr = document.getElementById("dish-name-ar").value;
+      
+      const priceSmall = document.getElementById("dish-price-small").value;
+      const priceMedium = document.getElementById("dish-price-medium").value;
+      const priceLarge = document.getElementById("dish-price-large").value;
+      
+      const descTr = document.getElementById("dish-desc-tr").value;
+      const descEn = document.getElementById("dish-desc-en").value;
+      const descAr = document.getElementById("dish-desc-ar").value;
+      
+      const ingTr = document.getElementById("dish-ing-tr").value.split(",").map(i => i.trim());
+      const ingEn = document.getElementById("dish-ing-en").value.split(",").map(i => i.trim());
+      const ingAr = document.getElementById("dish-ing-ar").value.split(",").map(i => i.trim());
+
+      const imageFiles = document.getElementById("dish-images").files;
+
+      // Helper function to update the storage
+      function saveDishData(imageUrlsArray) {
+        let customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+
+        if (editingId) {
+          // Editing existing dish
+          if (editingId.startsWith("custom-")) {
+            customDishes = customDishes.map(d => {
+              if (d.id === editingId) {
+                // If new images uploaded, overwrite them, else preserve old ones
+                const finalImg = imageUrlsArray.length > 0 ? imageUrlsArray[0] : d.image;
+                const finalImages = imageUrlsArray.length > 0 ? imageUrlsArray : d.images;
+                
+                return {
+                  id: editingId, category, image: finalImg, images: finalImages,
+                  name: { tr: nameTr, en: nameEn, ar: nameAr },
+                  desc: { tr: descTr, en: descEn, ar: descAr },
+                  ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
+                  prices: {
+                    tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
+                    en: { small: priceSmall, medium: priceMedium, large: priceLarge },
+                    ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
+                  }
+                };
+              }
+              return d;
+            });
+            localStorage.setItem("pietro_custom_dishes", JSON.stringify(customDishes));
+          } else {
+            // Editing default dishes: save it to custom dishes array by cloning its ID
+            // First make sure we remove the original ID from deleted defaults if it was there
+            let deletedDefaults = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
+            if (!deletedDefaults.includes(editingId)) {
+              deletedDefaults.push(editingId);
+              localStorage.setItem("pietro_deleted_default_dishes", JSON.stringify(deletedDefaults));
+            }
+            
+            // Look up original to preserve image if no new images uploaded
+            const orig = defaultDishes.find(d => d.id === editingId);
+            const finalImg = imageUrlsArray.length > 0 ? imageUrlsArray[0] : orig.image;
+            const finalImages = imageUrlsArray.length > 0 ? imageUrlsArray : [orig.image];
+
+            // Remove any old copy from customDishes first to prevent duplicates
+            customDishes = customDishes.filter(d => d.id !== editingId);
+            
+            const clonedDish = {
+              id: editingId, category, image: finalImg, images: finalImages,
+              name: { tr: nameTr, en: nameEn, ar: nameAr },
+              desc: { tr: descTr, en: descEn, ar: descAr },
+              ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
+              prices: {
+                tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
+                en: { small: priceSmall, medium: priceMedium, large: priceLarge },
+                ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
+              }
+            };
+            customDishes.push(clonedDish);
+            localStorage.setItem("pietro_custom_dishes", JSON.stringify(customDishes));
+          }
+          
+          alert("Yemek detayları başarıyla güncellendi.");
+          cancelEditMode();
+        } else {
+          // Creating a brand new custom dish
+          if (imageUrlsArray.length === 0) {
+            alert("Lütfen yemek için en az 1 görsel seçin.");
+            return;
+          }
+
+          const newDish = {
+            id: "custom-" + Date.now(), category,
+            image: imageUrlsArray[0],
+            images: imageUrlsArray,
+            name: { tr: nameTr, en: nameEn, ar: nameAr },
+            desc: { tr: descTr, en: descEn, ar: descAr },
+            ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
+            prices: {
+              tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
+              en: { small: priceSmall, medium: priceMedium, large: priceLarge },
+              ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
+            }
+          };
+          customDishes.push(newDish);
+          localStorage.setItem("pietro_custom_dishes", JSON.stringify(customDishes));
+          
+          alert(`"${nameTr}" yemeği menüye başarıyla eklendi!`);
+          document.getElementById("add-dish-form").reset();
+        }
+
+        // Notify index.html in real-time
+        localStorage.setItem("pietro_custom_dishes", JSON.stringify(JSON.parse(localStorage.getItem("pietro_custom_dishes"))));
+        loadMenuList();
+      }
+
+      // If user uploaded new files, process them into Base64 strings using FileReader
+      if (imageFiles.length > 0) {
+        const base64Images = [];
+        let filesProcessed = 0;
+
+        for (let i = 0; i < imageFiles.length; i++) {
+          const reader = new FileReader();
+          reader.onloadend = function() {
+            base64Images.push(reader.result);
+            filesProcessed++;
+
+            if (filesProcessed === imageFiles.length) {
+              saveDishData(base64Images);
+            }
+          };
+          reader.readAsDataURL(imageFiles[i]);
+        }
+      } else {
+        // No new images uploaded (only possible in editing mode)
+        saveDishData([]);
+      }
+    };
+
+    // 7. Simulation / Testing functions
     window.simulateNewOrder = function() {
       const mockNames = ["Ahmet Şahin", "Zeynep Yılmaz", "Can Demir", "Sarah Connor", "Ali El-Suri"];
       const mockPhones = ["+90 532 987 6543", "+90 535 123 4567", "+90 541 333 4455", "+44 7911 123456", "+90 530 555 1122"];
@@ -902,7 +1496,7 @@
       const randomIndex = Math.floor(Math.random() * mockNames.length);
       const randomGuests = Math.floor(Math.random() * 6) + 1;
       const today = new Date();
-      today.setDate(today.getDate() + Math.floor(Math.random() * 3)); // 0-2 days forward
+      today.setDate(today.getDate() + Math.floor(Math.random() * 3));
 
       const booking = {
         id: 'B-' + Date.now(),
@@ -931,73 +1525,16 @@
 
     function showToast(name) {
       const toast = document.getElementById("booking-toast");
-      document.getElementById("toast-booking-info").textContent = `${name} yeni bir rezervasyon talebi gönderdi.`;
+      const dict = adminLangDict[adminActiveLang];
+      
+      document.getElementById("toast-booking-info").textContent = `${name} ${dict["toast-desc"]}`;
       toast.classList.add("show");
       setTimeout(() => {
         toast.classList.remove("show");
       }, 4000);
     }
 
-    // Add New Dish Handler
-    window.handleNewDishSubmit = function(event) {
-      event.preventDefault();
-
-      const category = document.getElementById("dish-category").value;
-      const nameTr = document.getElementById("dish-name-tr").value;
-      const nameEn = document.getElementById("dish-name-en").value;
-      const nameAr = document.getElementById("dish-name-ar").value;
-      
-      const priceSmall = document.getElementById("dish-price-small").value;
-      const priceMedium = document.getElementById("dish-price-medium").value;
-      const priceLarge = document.getElementById("dish-price-large").value;
-      
-      const descTr = document.getElementById("dish-desc-tr").value;
-      const descEn = document.getElementById("dish-desc-en").value;
-      const descAr = document.getElementById("dish-desc-ar").value;
-      
-      const ingTr = document.getElementById("dish-ing-tr").value.split(",").map(i => i.trim());
-      const ingEn = document.getElementById("dish-ing-en").value.split(",").map(i => i.trim());
-      const ingAr = document.getElementById("dish-ing-ar").value.split(",").map(i => i.trim());
-
-      const imageFile = document.getElementById("dish-image").files[0];
-
-      if (!imageFile) {
-        alert("Lütfen yemek görseli seçin.");
-        return;
-      }
-
-      // Convert image to Base64 data URL
-      const reader = new FileReader();
-      reader.onloadend = function() {
-        const base64Image = reader.result;
-
-        const newDish = {
-          id: "custom-" + Date.now(),
-          category,
-          image: base64Image,
-          name: { tr: nameTr, en: nameEn, ar: nameAr },
-          desc: { tr: descTr, en: descEn, ar: descAr },
-          ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
-          prices: {
-            tr: { small: priceSmall + " TL", medium: priceMedium + " TL", large: priceLarge + " TL" },
-            en: { small: priceSmall + " TL", medium: priceMedium + " TL", large: priceLarge + " TL" },
-            ar: { small: priceSmall + " TL", medium: priceMedium + " TL", large: priceLarge + " TL" }
-          }
-        };
-
-        // Save custom dish to localStorage array
-        let customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
-        customDishes.push(newDish);
-        localStorage.setItem("pietro_custom_dishes", JSON.stringify(customDishes));
-
-        alert(`"${nameTr}" yemeği başarıyla menüye eklendi ve müşteri sayfasına yansıtıldı!`);
-        document.getElementById("add-dish-form").reset();
-      };
-
-      reader.readAsDataURL(imageFile);
-    };
-
-    // Realtime storage listener (communicates across tabs)
+    // 8. Real-time storage synchronization
     window.addEventListener("storage", (event) => {
       if (event.key === "pietro_bookings" || event.key === "pietro_new_booking_event") {
         const bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
@@ -1009,17 +1546,17 @@
       }
     });
 
-    // Check if running on local file system
+    // Check file system warnings
     function checkFileProtocol() {
       if (window.location.protocol === "file:") {
         document.getElementById("security-warning").style.display = "flex";
       }
     }
 
-    // Initial Load
+    // 9. Initial Load Configuration
     document.addEventListener("DOMContentLoaded", () => {
       checkFileProtocol();
-      loadBookings();
+      changeAdminLang("tr"); // Default in Turkish
     });
   </script>
 </body>

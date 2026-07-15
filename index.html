@@ -520,7 +520,13 @@
       <button class="modal-close-btn" onclick="closeDetailModal()">&times;</button>
       <div class="detail-modal-grid">
         <div class="detail-modal-image-area">
-          <img id="modal-dish-img" src="" alt="Dish Image">
+          <div class="modal-carousel-container">
+            <div id="modal-carousel-slides" class="modal-carousel-slides">
+              <!-- Dynamically populated images -->
+            </div>
+            <button id="carousel-prev" class="carousel-nav-btn prev" onclick="slidePrev()">&lt;</button>
+            <button id="carousel-next" class="carousel-nav-btn next" onclick="slideNext()">&gt;</button>
+          </div>
         </div>
         <div class="detail-modal-info-area">
           <h3 id="modal-dish-title" class="modal-dish-title">Dish Title</h3>
