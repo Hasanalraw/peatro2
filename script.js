@@ -593,7 +593,8 @@ window.addMoreFoodToCart = function() {
   renderCart();
   closeSizeModal();
 
-  alert(translations[currentLanguage]["added-to-cart-toast"]);
+  // Open the sliding cart drawer automatically to show addition
+  openCartDrawer();
 };
 
 window.confirmBookingWithCart = function() {
@@ -627,37 +628,114 @@ window.confirmBookingWithCart = function() {
 };
 
 window.renderCart = function() {
+  // 1. Update Booking Form Cart container
   const cartContainer = document.getElementById("booking-cart-container");
-  if (!cartContainer) return;
-
-  cartContainer.innerHTML = "";
-
-  if (bookingCart.length === 0) {
-    const emptyText = document.createElement("div");
-    emptyText.className = "cart-empty-text";
-    emptyText.textContent = translations[currentLanguage]["cart-empty"];
-    cartContainer.appendChild(emptyText);
-    return;
+  if (cartContainer) {
+    cartContainer.innerHTML = "";
+    if (bookingCart.length === 0) {
+      const emptyText = document.createElement("div");
+      emptyText.className = "cart-empty-text";
+      emptyText.textContent = translations[currentLanguage]["cart-empty"];
+      cartContainer.appendChild(emptyText);
+    } else {
+      bookingCart.forEach((item, index) => {
+        const tag = document.createElement("div");
+        tag.className = "cart-item-tag";
+        const name = item.name[currentLanguage] || item.name["tr"];
+        const sizeLabel = item.sizeLabel[currentLanguage][item.size];
+        tag.innerHTML = `
+          <span><strong>${name}</strong> (${sizeLabel} - ${item.price})</span>
+          <button type="button" class="cart-item-remove" onclick="removeCartItem(${index})" title="Kaldır">&times;</button>
+        `;
+        cartContainer.appendChild(tag);
+      });
+    }
   }
 
-  bookingCart.forEach((item, index) => {
-    const tag = document.createElement("div");
-    tag.className = "cart-item-tag";
+  // 2. Update Cart Drawer Body
+  const drawerItemsContainer = document.getElementById("cart-drawer-items");
+  if (drawerItemsContainer) {
+    drawerItemsContainer.innerHTML = "";
+    if (bookingCart.length === 0) {
+      const emptyMsg = document.createElement("div");
+      emptyMsg.className = "cart-drawer-empty";
+      emptyMsg.textContent = translations[currentLanguage]["cart-empty"];
+      drawerItemsContainer.appendChild(emptyMsg);
+    } else {
+      bookingCart.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "cart-drawer-item";
+        const name = item.name[currentLanguage] || item.name["tr"];
+        const sizeLabel = item.sizeLabel[currentLanguage][item.size];
+        div.innerHTML = `
+          <div class="cart-drawer-item-info">
+            <h4>${name}</h4>
+            <p>${sizeLabel} - ${item.price}</p>
+          </div>
+          <button class="cart-drawer-item-remove" onclick="removeCartItem(${index})">&times;</button>
+        `;
+        drawerItemsContainer.appendChild(div);
+      });
+    }
+  }
 
-    const name = item.name[currentLanguage] || item.name["tr"];
-    const sizeLabel = item.sizeLabel[currentLanguage][item.size];
-    
-    tag.innerHTML = `
-      <span><strong>${name}</strong> (${sizeLabel} - ${item.price})</span>
-      <button type="button" class="cart-item-remove" onclick="removeCartItem(${index})" title="Kaldır">&times;</button>
-    `;
-    cartContainer.appendChild(tag);
-  });
+  // 3. Update Cart Badge Count
+  const badge = document.getElementById("cart-badge");
+  if (badge) {
+    badge.textContent = bookingCart.length;
+    badge.style.display = bookingCart.length > 0 ? "flex" : "none";
+  }
+
+  // 4. Update Total Price inside Cart Drawer
+  const totalValElement = document.getElementById("cart-total-price");
+  if (totalValElement) {
+    let total = 0;
+    bookingCart.forEach(item => {
+      const numericPrice = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
+      total += numericPrice;
+    });
+    totalValElement.textContent = total + " TL";
+  }
 };
 
 window.removeCartItem = function(index) {
   bookingCart.splice(index, 1);
   renderCart();
+};
+
+window.toggleCartDrawer = function() {
+  const drawer = document.getElementById("cart-drawer");
+  const overlay = document.getElementById("cart-drawer-overlay");
+  if (drawer && overlay) {
+    drawer.classList.toggle("active");
+    overlay.classList.toggle("active");
+  }
+};
+
+window.openCartDrawer = function() {
+  const drawer = document.getElementById("cart-drawer");
+  const overlay = document.getElementById("cart-drawer-overlay");
+  if (drawer && overlay) {
+    drawer.classList.add("active");
+    overlay.classList.add("active");
+  }
+};
+
+window.closeCartDrawer = function() {
+  const drawer = document.getElementById("cart-drawer");
+  const overlay = document.getElementById("cart-drawer-overlay");
+  if (drawer && overlay) {
+    drawer.classList.remove("active");
+    overlay.classList.remove("active");
+  }
+};
+
+window.goToReservationFromCart = function() {
+  closeCartDrawer();
+  const bookingSection = document.getElementById("reservation");
+  if (bookingSection) {
+    bookingSection.scrollIntoView({ behavior: "smooth" });
+  }
 };
 
 // 7. Reservation Form Handler (Accumulates multiple reservations in localStorage)

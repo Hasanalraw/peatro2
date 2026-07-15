@@ -408,6 +408,31 @@
     </div>
   </div>
 
+  <!-- Floating Cart Button -->
+  <button id="floating-cart-btn" class="floating-cart-btn" onclick="toggleCartDrawer()">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span id="cart-badge" class="cart-badge">0</span>
+  </button>
+
+  <!-- Cart Drawer -->
+  <div id="cart-drawer" class="cart-drawer">
+    <div class="cart-drawer-header">
+      <h3 id="lang-cart-drawer-title" data-key="cart-drawer-title">Sepetiniz</h3>
+      <button class="cart-drawer-close" onclick="toggleCartDrawer()">&times;</button>
+    </div>
+    <div class="cart-drawer-body" id="cart-drawer-items">
+      <!-- Dynamic cart items list -->
+    </div>
+    <div class="cart-drawer-footer">
+      <div class="cart-drawer-total">
+        <span id="lang-cart-total-label" data-key="cart-total-label">Toplam:</span>
+        <span id="cart-total-price">0 TL</span>
+      </div>
+      <button class="btn btn-gold btn-block" onclick="goToReservationFromCart()" id="lang-btn-go-to-booking" data-key="btn-go-to-booking">Rezervasyonu Tamamla</button>
+    </div>
+  </div>
+  <div id="cart-drawer-overlay" class="cart-drawer-overlay" onclick="toggleCartDrawer()"></div>
+
   <!-- Custom Scripts -->
   <script src="script.js?v=2.0.2"></script>
 </body>
