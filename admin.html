@@ -436,7 +436,7 @@
       border-color: rgba(226, 161, 60, 0.2);
     }
     
-    .pay-select.transfer {
+    .pay-select.paid {
       background-color: rgba(37, 211, 102, 0.08);
       color: var(--color-green);
       border-color: rgba(37, 211, 102, 0.2);
@@ -950,7 +950,8 @@
         "btn-reset-menu": "Menüyü Sıfırla",
         "th-payment": "Ödeme Durumu",
         "pay-paid": "Ödendi",
-        "pay-unpaid": "Ödenmedi"
+        "pay-unpaid": "Ödenmedi",
+        "pay-arrival": "Mekanda Ödeme"
       },
       en: {
         "panel-tag": "Admin Panel",
@@ -997,7 +998,8 @@
         "btn-reset-menu": "Reset Menu",
         "th-payment": "Payment Status",
         "pay-paid": "Paid",
-        "pay-unpaid": "Not Paid"
+        "pay-unpaid": "Not Paid",
+        "pay-arrival": "Pay upon Arrival"
       },
       ar: {
         "panel-tag": "لوحة التحكم",
@@ -1044,7 +1046,8 @@
         "btn-reset-menu": "إعادة تعيين القائمة",
         "th-payment": "حالة الدفع",
         "pay-paid": "تم الدفع",
-        "pay-unpaid": "لم يدفع بعد"
+        "pay-unpaid": "لم يتم الدفع",
+        "pay-arrival": "الدفع عند الوصول"
       }
     };
 
@@ -1175,8 +1178,8 @@
         const paySelectHtml = `
           <select class="pay-select ${payStatus}" onchange="changePaymentStatus('${booking.id}', this.value)">
             <option value="unpaid" ${payStatus === 'unpaid' ? 'selected' : ''}>${dict["pay-unpaid"]}</option>
-            <option value="transfer" ${payStatus === 'transfer' ? 'selected' : ''}>${dict["pay-transfer"]}</option>
             <option value="arrival" ${payStatus === 'arrival' ? 'selected' : ''}>${dict["pay-arrival"]}</option>
+            <option value="paid" ${payStatus === 'paid' ? 'selected' : ''}>${dict["pay-paid"]}</option>
           </select>
         `;
 
