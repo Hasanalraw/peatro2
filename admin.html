@@ -1212,6 +1212,73 @@
     };
 
     // 6. Menu Management CRUD Engine
+    function normalizeDish(dish) {
+      const norm = { ...dish };
+      
+      // Normalize name
+      if (typeof norm.name === 'string') {
+        const val = norm.name;
+        norm.name = { tr: val, en: val, ar: val };
+      }
+      if (!norm.name) norm.name = { tr: 'Unnamed', en: 'Unnamed', ar: 'Unnamed' };
+      if (!norm.name.tr) norm.name.tr = norm.name.en || norm.name.ar || 'Unnamed';
+      if (!norm.name.en) norm.name.en = norm.name.tr;
+      if (!norm.name.ar) norm.name.ar = norm.name.tr;
+
+      // Normalize desc
+      if (typeof norm.desc === 'string') {
+        const val = norm.desc;
+        norm.desc = { tr: val, en: val, ar: val };
+      }
+      if (!norm.desc) norm.desc = { tr: '', en: '', ar: '' };
+      if (!norm.desc.tr) norm.desc.tr = norm.desc.en || norm.desc.ar || '';
+      if (!norm.desc.en) norm.desc.en = norm.desc.tr;
+      if (!norm.desc.ar) norm.desc.ar = norm.desc.tr;
+
+      // Normalize ingredients
+      if (Array.isArray(norm.ingredients)) {
+        const val = norm.ingredients;
+        norm.ingredients = { tr: val, en: val, ar: val };
+      }
+      if (!norm.ingredients) norm.ingredients = { tr: [], en: [], ar: [] };
+      if (!norm.ingredients.tr) norm.ingredients.tr = norm.ingredients.en || norm.ingredients.ar || [];
+      if (!norm.ingredients.en) norm.ingredients.en = norm.ingredients.tr;
+      if (!norm.ingredients.ar) norm.ingredients.ar = norm.ingredients.tr;
+
+      // Normalize prices
+      if (norm.prices) {
+        if (norm.prices.tr || norm.prices.en || norm.prices.ar) {
+          const basePrices = norm.prices.tr || norm.prices.en || norm.prices.ar || { small: '0 TL', medium: '0 TL', large: '0 TL' };
+          if (!norm.prices.tr) norm.prices.tr = { ...basePrices };
+          if (!norm.prices.en) norm.prices.en = { ...basePrices };
+          if (!norm.prices.ar) norm.prices.ar = { ...basePrices };
+        } else {
+          const flatPrices = { ...norm.prices };
+          norm.prices = {
+            tr: flatPrices,
+            en: flatPrices,
+            ar: flatPrices
+          };
+        }
+      } else {
+        norm.prices = {
+          tr: { small: '0 TL', medium: '0 TL', large: '0 TL' },
+          en: { small: '0 TL', medium: '0 TL', large: '0 TL' },
+          ar: { small: '0 TL', medium: '0 TL', large: '0 TL' }
+        };
+      }
+
+      // Normalize images
+      if (!norm.images || norm.images.length === 0) {
+        norm.images = [norm.image || 'images/pizza_margherita.jpg'];
+      }
+      if (!norm.image) {
+        norm.image = norm.images[0];
+      }
+
+      return norm;
+    }
+
     function loadMenuList() {
       const deletedDefaultIds = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
       const customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
@@ -1219,9 +1286,10 @@
       const listContainer = document.getElementById("menu-items-list");
       listContainer.innerHTML = "";
 
-      // Combine active baseline dishes & custom dishes
-      const activeBaselineDishes = defaultDishes.filter(d => !deletedDefaultIds.includes(d.id));
-      const fullList = [...activeBaselineDishes, ...customDishes];
+      // Combine active baseline dishes & custom dishes, and normalize all
+      const activeBaselineDishes = defaultDishes.filter(d => !deletedDefaultIds.includes(d.id)).map(d => normalizeDish(d));
+      const normalizedCustomDishes = customDishes.map(d => normalizeDish(d));
+      const fullList = [...activeBaselineDishes, ...normalizedCustomDishes];
 
       document.getElementById("menu-list-count").textContent = `(${fullList.length} Yemek Aktif)`;
 
@@ -1295,6 +1363,7 @@
       }
 
       if (!dish) return;
+      dish = normalizeDish(dish);
 
       // Set form in Edit Mode
       document.getElementById("edit-dish-id").value = dish.id;

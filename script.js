@@ -848,6 +848,73 @@ function varHeaderHeight() {
 }
 
 // 11. Unified Dynamic Menu Card Rendering Engine
+function normalizeDish(dish) {
+  const norm = { ...dish };
+  
+  // Normalize name
+  if (typeof norm.name === 'string') {
+    const val = norm.name;
+    norm.name = { tr: val, en: val, ar: val };
+  }
+  if (!norm.name) norm.name = { tr: 'Unnamed', en: 'Unnamed', ar: 'Unnamed' };
+  if (!norm.name.tr) norm.name.tr = norm.name.en || norm.name.ar || 'Unnamed';
+  if (!norm.name.en) norm.name.en = norm.name.tr;
+  if (!norm.name.ar) norm.name.ar = norm.name.tr;
+
+  // Normalize desc
+  if (typeof norm.desc === 'string') {
+    const val = norm.desc;
+    norm.desc = { tr: val, en: val, ar: val };
+  }
+  if (!norm.desc) norm.desc = { tr: '', en: '', ar: '' };
+  if (!norm.desc.tr) norm.desc.tr = norm.desc.en || norm.desc.ar || '';
+  if (!norm.desc.en) norm.desc.en = norm.desc.tr;
+  if (!norm.desc.ar) norm.desc.ar = norm.desc.tr;
+
+  // Normalize ingredients
+  if (Array.isArray(norm.ingredients)) {
+    const val = norm.ingredients;
+    norm.ingredients = { tr: val, en: val, ar: val };
+  }
+  if (!norm.ingredients) norm.ingredients = { tr: [], en: [], ar: [] };
+  if (!norm.ingredients.tr) norm.ingredients.tr = norm.ingredients.en || norm.ingredients.ar || [];
+  if (!norm.ingredients.en) norm.ingredients.en = norm.ingredients.tr;
+  if (!norm.ingredients.ar) norm.ingredients.ar = norm.ingredients.tr;
+
+  // Normalize prices (handles old flat vs new nested tr/en/ar format)
+  if (norm.prices) {
+    if (norm.prices.tr || norm.prices.en || norm.prices.ar) {
+      const basePrices = norm.prices.tr || norm.prices.en || norm.prices.ar || { small: '0 TL', medium: '0 TL', large: '0 TL' };
+      if (!norm.prices.tr) norm.prices.tr = { ...basePrices };
+      if (!norm.prices.en) norm.prices.en = { ...basePrices };
+      if (!norm.prices.ar) norm.prices.ar = { ...basePrices };
+    } else {
+      const flatPrices = { ...norm.prices };
+      norm.prices = {
+        tr: flatPrices,
+        en: flatPrices,
+        ar: flatPrices
+      };
+    }
+  } else {
+    norm.prices = {
+      tr: { small: '0 TL', medium: '0 TL', large: '0 TL' },
+      en: { small: '0 TL', medium: '0 TL', large: '0 TL' },
+      ar: { small: '0 TL', medium: '0 TL', large: '0 TL' }
+    };
+  }
+
+  // Normalize images
+  if (!norm.images || norm.images.length === 0) {
+    norm.images = [norm.image || 'images/pizza_margherita.jpg'];
+  }
+  if (!norm.image) {
+    norm.image = norm.images[0];
+  }
+
+  return norm;
+}
+
 function renderMenu() {
   const menuGrid = document.querySelector(".menu-grid");
   if (!menuGrid) return;
@@ -856,38 +923,20 @@ function renderMenu() {
   const deletedDefaultIds = JSON.parse(localStorage.getItem("pietro_deleted_default_dishes")) || [];
   const customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
 
-  // Create deep local copy of baseline default dishes
-  let activeDishes = defaultDishes.map(d => ({
-    id: d.id,
-    category: d.category,
-    image: d.image,
-    images: d.images || [d.image],
-    name: {...d.name},
-    desc: d.desc[currentLanguage] ? {...d.desc} : {tr: d.desc.tr, en: d.name.en, ar: d.name.ar},
-    ingredients: d.ingredients[currentLanguage] ? {...d.ingredients} : {tr: d.ingredients.tr, en: d.ingredients.tr, ar: d.ingredients.tr},
-    prices: {...d.prices}
-  }));
-
-  // Fallback defaults for missing baseline translations inside static object structure if any
-  activeDishes.forEach(d => {
-    if (!d.name.en) d.name.en = d.name.tr;
-    if (!d.name.ar) d.name.ar = d.name.tr;
-    if (!d.desc.en) d.desc.en = d.desc.tr;
-    if (!d.desc.ar) d.desc.ar = d.desc.tr;
-    if (!d.ingredients.en) d.ingredients.en = d.ingredients.tr;
-    if (!d.ingredients.ar) d.ingredients.ar = d.ingredients.tr;
-  });
+  // Create deep local copy of baseline default dishes and normalize them
+  let activeDishes = defaultDishes.map(d => normalizeDish(d));
 
   // Filter out deleted default items completely
   activeDishes = activeDishes.filter(d => !deletedDefaultIds.includes(d.id));
 
-  // Merge edits / custom new dishes (Overrides default dish by matching ID if edited)
+  // Merge edits / custom new dishes and normalize them
   customDishes.forEach(customDish => {
-    const defaultIndex = activeDishes.findIndex(d => d.id === customDish.id);
+    const normalizedCustom = normalizeDish(customDish);
+    const defaultIndex = activeDishes.findIndex(d => d.id === normalizedCustom.id);
     if (defaultIndex !== -1) {
-      activeDishes[defaultIndex] = customDish; // Override details in-place
+      activeDishes[defaultIndex] = normalizedCustom; // Override details in-place
     } else {
-      activeDishes.push(customDish); // Append new custom dishes at bottom
+      activeDishes.push(normalizedCustom); // Append new custom dishes at bottom
     }
   });
 
