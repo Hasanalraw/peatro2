@@ -277,177 +277,9 @@ const translations = {
   }
 };
 
-// 2. Baseline Database (8 default dishes WITH complete TR, EN, AR translations)
-const defaultDishes = [
-  {
-    id: "1",
-    category: "pizza",
-    image: "images/pizza_margherita.jpg",
-    name: { tr: "Pizza Margherita", en: "Pizza Margherita", ar: "بيتزا مارغريتا" },
-    desc: {
-      tr: "İmza Napoliten hamurumuz üzerinde taze mozzarella, domates sosu ve fesleğen yaprakları.",
-      en: "Fresh mozzarella, tomato sauce, and basil leaves on our signature Neapolitan crust.",
-      ar: "موزاريلا طازجة، صلصة طماطم، وأوراق ريحان طازجة على عجينتنا النابولية المميزة."
-    },
-    ingredients: {
-      tr: ["Taze Mozzarella", "Domates Sosu", "Taze Fesleğen", "Sızma Zeytinyağı", "Kekik"],
-      en: ["Fresh Mozzarella", "Tomato Sauce", "Fresh Basil", "Extra Virgin Olive Oil", "Oregano"],
-      ar: ["موزاريلا طازجة", "صلصة طماطم", "ريحان طازج", "زيت زيتون بكر ممتاز", "أوريجانو"]
-    },
-    prices: {
-      tr: { small: "340 TL", medium: "380 TL", large: "440 TL" },
-      en: { small: "340 TL", medium: "380 TL", large: "440 TL" },
-      ar: { small: "340 TL", medium: "380 TL", large: "440 TL" }
-    }
-  },
-  {
-    id: "2",
-    category: "pizza",
-    image: "images/pizza_quattro.jpg",
-    name: { tr: "Pizza Quattro Formaggi", en: "Pizza Quattro Formaggi", ar: "بيتزا الأجبان الأربعة" },
-    desc: {
-      tr: "Taze adaçayı ile zenginleştirilmiş mozzarella, gorgonzola, parmesan ve fontina peynirleri karışımı.",
-      en: "A rich blend of mozzarella, gorgonzola, parmesan, and fontina cheeses with fresh sage.",
-      ar: "مزيج غني من أربعة أجبان (موزاريلا، جورجونزولا، بارميزان، فونتينا) مع أوراق الميرمية الطازجة."
-    },
-    ingredients: {
-      tr: ["Mozzarella Peyniri", "Gorgonzola Peyniri", "Parmesan Peyniri", "Fontina Peyniri", "Taze Adaçayı", "Zeytinyağı"],
-      en: ["Mozzarella Cheese", "Gorgonzola Cheese", "Parmesan Cheese", "Fontina Cheese", "Fresh Sage", "Olive Oil"],
-      ar: ["جبن الموزاريلا", "جبن الجورجونزولا", "جبن البارميزان", "جبن الفونتينا", "ميرمية طازجة", "زيت زيتون"]
-    },
-    prices: {
-      tr: { small: "430 TL", medium: "490 TL", large: "560 TL" },
-      en: { small: "430 TL", medium: "490 TL", large: "560 TL" },
-      ar: { small: "430 TL", medium: "490 TL", large: "560 TL" }
-    }
-  },
-  {
-    id: "3",
-    category: "pizza",
-    image: "images/pizza_pollo.jpg",
-    name: { tr: "Pizza Pollo Picante", en: "Pizza Pollo Picante", ar: "بيتزا الدجاج الحار" },
-    desc: {
-      tr: "Taze domates sosu üzerinde ızgara tavuk, acı biberler, kekik ve mozzarella peyniri.",
-      en: "Grilled chicken, spicy hot peppers, oregano, and mozzarella over fresh tomato sauce.",
-      ar: "دجاج مشوي، فلفل حار، أوريجانو، وجبنة موزاريلا فوق صلصة الطماطم الطازجة."
-    },
-    ingredients: {
-      tr: ["Izgara Tavuk Göğsü", "Acı Biber", "Közlenmiş Renkli Biberler", "Kekik", "Mozzarella Peyniri", "Domates Sosu"],
-      en: ["Grilled Chicken Breast", "Hot Chili Pepper", "Roasted Bell Peppers", "Oregano", "Mozzarella", "Tomato Sauce"],
-      ar: ["صدر دجاج مشوي", "فلفل حار", "فلفل حلو مشوي", "أوريجانو", "موزاريلا", "صلصة طماطم"]
-    },
-    prices: {
-      tr: { small: "410 TL", medium: "460 TL", large: "520 TL" },
-      en: { small: "410 TL", medium: "460 TL", large: "520 TL" },
-      ar: { small: "410 TL", medium: "460 TL", large: "520 TL" }
-    }
-  },
-  {
-    id: "4",
-    category: "pizza",
-    image: "images/pizza_pietro.jpg",
-    name: { tr: "Pizza Pietro", en: "Pizza Pietro", ar: "بيتزا بيترو المميزة" },
-    desc: {
-      tr: "Özel kurutulmuş dana eti, yaban mantarları, renkli dolmalık biberler ve tıraşlanmış parmesan peyniri.",
-      en: "Premium cured beef (prosciutto style), wild mushrooms, colorful bell peppers, and shaved parmesan cheese.",
-      ar: "شرائح لحم بقري مجفف فاخر (بروشوتو)، فطر بري، فلفل ملون، ورقائق جبنة البارميزان."
-    },
-    ingredients: {
-      tr: ["Kurutulmuş Dana Eti", "Yaban Orman Mantarları", "Kültür Mantarı", "Renkli Dolmalık Biberler", "Tıraşlanmış Parmesan", "Taze Roka"],
-      en: ["Cured Prosciutto Beef", "Wild Forest Mushrooms", "White Button Mushrooms", "Bell Peppers", "Shaved Parmesan", "Fresh Arugula"],
-      ar: ["بروشوتو بقري مجفف", "فطر بري", "فطر أبيض", "فلفل ألوان", "شرائح بارميزان", "جرجير طازج"]
-    },
-    prices: {
-      tr: { small: "480 TL", medium: "540 TL", large: "610 TL" },
-      en: { small: "480 TL", medium: "540 TL", large: "610 TL" },
-      ar: { small: "480 TL", medium: "540 TL", large: "610 TL" }
-    }
-  },
-  {
-    id: "5",
-    category: "pasta",
-    image: "images/penne_burrata.jpg",
-    name: { tr: "Penne Burrata", en: "Penne Burrata", ar: "بيني بوراتا" },
-    desc: {
-      tr: "Üzerinde bütün taze burrata peyniri ile zengin, kremalı domates ve fesleğen soslu kalem makarna.",
-      en: "Penne pasta in a rich, creamy tomato-basil sauce topped with a whole fresh burrata ball.",
-      ar: "باستا بيني بصلصة طماطم كريمية غنية بالريحان تعلوها كرة كاملة من جبنة البوراتا الطازجة."
-    },
-    ingredients: {
-      tr: ["Kalem Makarna", "Bütün Taze Burrata", "Kremalı Domates Marinara", "Kiraz Domatesler", "Taze Fesleğen", "Parmesan Peyniri"],
-      en: ["Penne Pasta", "Whole Fresh Burrata", "Creamy Tomato Marinara", "Cherry Tomatoes", "Fresh Basil", "Parmesan Cheese"],
-      ar: ["مكرونة بيني", "كرة بوراتا كاملة", "صلصة مارينارا كريمية", "طماطم كرزية", "ريحان طازج", "جبن بارميزان"]
-    },
-    prices: {
-      tr: { small: "390 TL", medium: "440 TL", large: "500 TL" },
-      en: { small: "390 TL", medium: "440 TL", large: "500 TL" },
-      ar: { small: "390 TL", medium: "440 TL", large: "500 TL" }
-    }
-  },
-  {
-    id: "6",
-    category: "pasta",
-    image: "images/tagliatelli_pollo.jpg",
-    name: { tr: "Tagliatelli Pollo", en: "Tagliatelli Pollo", ar: "تاليياتيلي بالدجاج" },
-    desc: {
-      tr: "Izgara tavuk parçaları, taze adaçayı ve kadifemsi tereyağı sosu ile sotelenmiş yassı tagliatelli makarna.",
-      en: "Flat tagliatelli pasta tossed with tender grilled chicken, fresh sage, and a velvety butter sauce.",
-      ar: "تاليياتيلي مسطحة مطبوخة بقطع الدجاج المشوي والميرمية الطازجة وصلصة الزبدة الغنية."
-    },
-    ingredients: {
-      tr: ["Tagliatelli Makarna", "Izgara Tavuk Parçaları", "Taze Adaçayı", "Tereyağlı Özel Sos", "Sarımsak", "Rendelenmiş Parmesan"],
-      en: ["Tagliatelli Pasta", "Grilled Chicken Pieces", "Fresh Sage", "Special Butter Sauce", "Garlic", "Grated Parmesan"],
-      ar: ["باستا تاليياتيلي", "قطع دجاج مشوي", "ميرمية طازجة", "صلصة زبدة خاصة", "ثوم", "بارميزان مبشور"]
-    },
-    prices: {
-      tr: { small: "390 TL", medium: "440 TL", large: "500 TL" },
-      en: { small: "390 TL", medium: "440 TL", large: "500 TL" },
-      ar: { small: "390 TL", medium: "440 TL", large: "500 TL" }
-    }
-  },
-  {
-    id: "7",
-    category: "pasta",
-    image: "images/tagliatelli_scampi.jpg",
-    name: { tr: "Tagliatelli Scampi", en: "Tagliatelli Scampi", ar: "تاليياتيلي بالجمبري" },
-    desc: {
-      tr: "Sotelenmiş karides, sarımsak, maydanoz, limon kabuğu rendesi ve tıraşlanmış parmesanlı tagliatelli.",
-      en: "Tagliatelli pasta with sautéed shrimp, garlic, parsley, lemon zest, and shaved parmesan.",
-      ar: "تاليياتيلي بالجمبري السوتيه مع الثوم، البقدونس، مبشور قشر الليمون ورقائق البارميزان."
-    },
-    ingredients: {
-      tr: ["Tagliatelli Makarna", "Sotelenmiş Karides", "Sarımsaklı Tereyağı Sosu", "Taze Maydanoz", "Limon Kabuğu Rendesi", "Tıraşlanmış Parmesan"],
-      en: ["Tagliatelli Pasta", "Sautéed Shrimp", "Garlic Butter Sauce", "Fresh Parsley", "Lemon Zest", "Shaved Parmesan"],
-      ar: ["باستا تاليياتيلي", "جمبري سوتيه", "صلصة زبدة بالثوم", "بقدونس طازج", "قشر ليمون", "بارميزان مبشور"]
-    },
-    prices: {
-      tr: { small: "460 TL", medium: "520 TL", large: "590 TL" },
-      en: { small: "460 TL", medium: "520 TL", large: "590 TL" },
-      ar: { small: "460 TL", medium: "520 TL", large: "590 TL" }
-    }
-  },
-  {
-    id: "8",
-    category: "pasta",
-    image: "images/tagliatelli_forester.jpg",
-    name: { tr: "Tagliatelli Forester", en: "Tagliatelli Forester", ar: "تاليياتيلي فوريستر" },
-    desc: {
-      tr: "Sotelenmiş yaban orman mantarları, kestane mantarları ve adaçayı ile harmanlanmış şerit makarna.",
-      en: "Flat ribbon pasta tossed with sautéed wild forest mushrooms, chestnut mushrooms, and sage.",
-      ar: "باستا شريطية مسطحة مطبوخة بالفطر البري وفطر الكستناء السوتيه مع أوراق الميرمية والزبدة."
-    },
-    ingredients: {
-      tr: ["Tagliatelli Makarna", "Yaban Mantarları", "Kestane Mantarı", "Taze Adaçayı", "Tereyağlı ve Kremalı Sos", "Rendelenmiş Parmesan"],
-      en: ["Tagliatelli Pasta", "Wild Chanterelle Mushrooms", "Chestnut Mushrooms", "Fresh Sage", "Butter and Cream Sauce", "Grated Parmesan"],
-      ar: ["باستا تاليياتيلي", "فطر بري", "فطر كستنائي", "ميرمية طازجة", "صلصة زبدة بالكريمة", "بارميزان مبشور"]
-    },
-    prices: {
-      tr: { small: "370 TL", medium: "420 TL", large: "480 TL" },
-      en: { small: "370 TL", medium: "420 TL", large: "480 TL" },
-      ar: { small: "370 TL", medium: "420 TL", large: "480 TL" }
-    }
-  }
-];
+// 2. Baseline Database (Empty baseline menu as requested by user)
+const defaultDishes = [];
+
 
 // Global state variables
 let currentLanguage = "tr";
@@ -514,6 +346,9 @@ function setLanguage(lang) {
 
   // Update WhatsApp text on the link
   updateWhatsAppLink(lang);
+  
+  // Re-populate dynamic drinks dropdown based on current language
+  populateDrinksDropdown();
   
   // Re-render menu using new active language translations
   renderMenu();
@@ -1024,6 +859,40 @@ function renderMenu() {
   applyActiveFilter();
 }
 
+// 12. Populate Dynamic Drinks Select Dropdown
+function populateDrinksDropdown() {
+  const drinkSelect = document.getElementById("booking-drink");
+  if (!drinkSelect) return;
+
+  drinkSelect.innerHTML = "";
+
+  // Add the default select option
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.selected = true;
+  
+  const defaultLabel = currentLanguage === "tr" ? "İçecek seçin (İsteğe bağlı)" :
+                      (currentLanguage === "en" ? "Select a drink (Optional)" :
+                      "اختر مشروباً (اختياري)");
+  defaultOption.textContent = defaultLabel;
+  drinkSelect.appendChild(defaultOption);
+
+  // Load available drinks from localStorage
+  const drinksList = safeGetItem("pietro_custom_drinks");
+  
+  drinksList.forEach(drink => {
+    const option = document.createElement("option");
+    
+    // Get localized properties
+    const name = drink.name[currentLanguage] || drink.name["tr"] || "Unnamed Drink";
+    const price = drink.price ? ` - ${drink.price}` : "";
+    
+    option.value = `${name}${price}`;
+    option.textContent = `${name}${price}`;
+    drinkSelect.appendChild(option);
+  });
+}
+
 // 10. Initial Load Configuration
 document.addEventListener("DOMContentLoaded", () => {
   // Set default date for reservation (tomorrow)
@@ -1048,9 +917,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.key === "pietro_custom_dishes" || event.key === "pietro_deleted_default_dishes" || event.key === "pietro_custom_dishes_updated_event") {
       renderMenu();
     }
+    if (event.key === "pietro_custom_drinks" || event.key === "pietro_custom_drinks_updated_event") {
+      populateDrinksDropdown();
+    }
   });
 
   // Initialize page in Turkish language by default & render custom dishes
   setLanguage("tr");
   renderMenu();
+  populateDrinksDropdown();
 });

@@ -863,6 +863,59 @@
           </form>
         </div>
 
+        <!-- Left: Active Drinks List (Card 3) -->
+        <div class="dashboard-card" style="margin-top: 0px;">
+          <div class="card-title">
+            <span id="lang-drink-list-title">Aktif İçecek Listesi</span>
+            <span id="drink-list-count" style="font-size: 0.8rem; font-weight: normal; color: var(--color-text-secondary);"></span>
+          </div>
+          
+          <div class="menu-mgmt-list" id="drink-items-list" style="max-height: 400px; overflow-y: auto;">
+            <!-- Dynamically populated drinks list -->
+          </div>
+        </div>
+
+        <!-- Right: Add / Edit Drink Form (Card 4) -->
+        <div class="dashboard-card" id="drink-form-container" style="margin-top: 0px;">
+          <h3 id="form-drink-title" style="font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: var(--color-gold); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+            <i class="fa-solid fa-bottle-water"></i> Menüye Yeni İçecek Ekle
+          </h3>
+          
+          <form id="add-drink-form" onsubmit="handleDrinkFormSubmit(event)">
+            <input type="hidden" id="edit-drink-id" value="">
+
+            <div class="form-group">
+              <label id="lang-label-drink-name-tr">İçecek Adı (Türkçe)</label>
+              <input type="text" id="drink-name-tr" required placeholder="Örn. Coca-Cola 330ml">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label id="lang-label-drink-name-en">İçecek Adı (EN)</label>
+                <input type="text" id="drink-name-en" required placeholder="e.g. Coca-Cola 330ml">
+              </div>
+              <div class="form-group">
+                <label id="lang-label-drink-name-ar">İçecek Adı (AR)</label>
+                <input type="text" id="drink-name-ar" required placeholder="مثال: كوكاكولا 330 مل">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label id="lang-label-drink-price">Fiyat (Lira - TL - İsteğe Bağlı)</label>
+              <input type="text" id="drink-price" placeholder="Örn. 50 TL">
+            </div>
+
+            <div class="form-actions-row">
+              <button type="submit" class="btn btn-gold" style="flex-grow: 1; justify-content: center;" id="btn-submit-drink">
+                <i class="fa-solid fa-cloud-arrow-up"></i> İçeceği Menüye Ekle
+              </button>
+              <button type="button" class="btn btn-outline" id="btn-cancel-drink-edit" style="display: none;" onclick="cancelDrinkEditMode()">
+                İptal Et
+              </button>
+            </div>
+          </form>
+        </div>
+
       </div>
     </section>
 
@@ -891,17 +944,8 @@
       }
     }
 
-    // 1. Static Initial Database (Baseline 8 default dishes)
-    const defaultDishes = [
-      { id: "1", category: "pizza", image: "images/pizza_margherita.jpg", name: { tr: "Pizza Margherita", en: "Pizza Margherita", ar: "Pizza Margherita" }, prices: { tr: { small: "340 TL", medium: "380 TL", large: "440 TL" } }, desc: { tr: "İmza Napoliten hamurumuz üzerinde taze mozzarella, domates sosu ve fesleğen yaprakları." }, ingredients: { tr: ["Taze Mozzarella", "Domates Sosu", "Taze Fesleğen", "Sızma Zeytinyağı"] } },
-      { id: "2", category: "pizza", image: "images/pizza_quattro.jpg", name: { tr: "Pizza Quattro Formaggi", en: "Pizza Quattro Formaggi", ar: "Pizza Quattro Formaggi" }, prices: { tr: { small: "430 TL", medium: "490 TL", large: "560 TL" } }, desc: { tr: "Taze adaçayı ile peynirlerin zengin harmanı." }, ingredients: { tr: ["Mozzarella", "Gorgonzola", "Parmesan", "Fontina"] } },
-      { id: "3", category: "pizza", image: "images/pizza_pollo.jpg", name: { tr: "Pizza Pollo Picante", en: "Pizza Pollo Picante", ar: "Pizza Pollo Picante" }, prices: { tr: { small: "410 TL", medium: "460 TL", large: "520 TL" } }, desc: { tr: "Acı kırmızı biber ve ızgara tavuk parçaları." }, ingredients: { tr: ["Izgara Tavuk", "Acı Biber", "Mozzarella"] } },
-      { id: "4", category: "pizza", image: "images/pizza_pietro.jpg", name: { tr: "Pizza Pietro (Şefin Özel Tabağı)", en: "Pizza Pietro", ar: "Pizza Pietro" }, prices: { tr: { small: "480 TL", medium: "540 TL", large: "610 TL" } }, desc: { tr: "Özel kurutulmuş dana eti ve yaban mantarları." }, ingredients: { tr: ["Dana eti", "Yaban mantarları", "Parmesan"] } },
-      { id: "5", category: "pasta", image: "images/penne_burrata.jpg", name: { tr: "Penne Burrata", en: "Penne Burrata", ar: "Penne Burrata" }, prices: { tr: { small: "390 TL", medium: "440 TL", large: "500 TL" } }, desc: { tr: "Kremalı marinara sos ve bütün taze burrata peyniri." }, ingredients: { tr: ["Penne", "Taze Burrata", "Kiraz domates"] } },
-      { id: "6", category: "pasta", image: "images/tagliatelli_pollo.jpg", name: { tr: "Tagliatelli Pollo", en: "Tagliatelli Pollo", ar: "Tagliatelli Pollo" }, prices: { tr: { small: "390 TL", medium: "440 TL", large: "500 TL" } }, desc: { tr: "Adaçayı ve kadifemsi tereyağı soslu tagliatelli." }, ingredients: { tr: ["Tagliatelli", "Izgara tavuk", "Adaçayı"] } },
-      { id: "7", category: "pasta", image: "images/tagliatelli_scampi.jpg", name: { tr: "Tagliatelli Scampi", en: "Tagliatelli Scampi", ar: "Tagliatelli Scampi" }, prices: { tr: { small: "460 TL", medium: "520 TL", large: "590 TL" } }, desc: { tr: "Sarımsak, karides ve limon kabuğu rendeli tagliatelli." }, ingredients: { tr: ["Tagliatelli", "Karides", "Limon kabuğu"] } },
-      { id: "8", category: "pasta", image: "images/tagliatelli_forester.jpg", name: { tr: "Tagliatelli Forester", en: "Tagliatelli Forester", ar: "Tagliatelli Forester" }, prices: { tr: { small: "370 TL", medium: "420 TL", large: "480 TL" } }, desc: { tr: "Sotelenmiş orman mantarları ile bezenmiş pasta." }, ingredients: { tr: ["Tagliatelli", "Yaban mantarları", "Kestane mantarı"] } }
-    ];
+    // 1. Static Initial Database (Empty baseline menu as requested by user)
+    const defaultDishes = [];
 
     // Admin Localization Texts
     const adminLangDict = {
@@ -951,7 +995,16 @@
         "th-payment": "Ödeme Durumu",
         "pay-paid": "Ödendi",
         "pay-unpaid": "Ödenmedi",
-        "pay-arrival": "Mekanda Ödeme"
+        "pay-arrival": "Mekanda Ödeme",
+        "drink-list-title": "Aktif İçecek Listesi",
+        "form-drink-add": "Menüye Yeni İçecek Ekle",
+        "form-drink-edit": "İçeceği Düzenle",
+        "label-drink-name-tr": "İçecek Adı (Türkçe)",
+        "label-drink-name-en": "İçecek Adı (EN)",
+        "label-drink-name-ar": "İçecek Adı (AR)",
+        "label-drink-price": "Fiyat (Lira - TL - İsteğe Bağlı)",
+        "btn-add-drink": "İçeceği Menüye Ekle",
+        "btn-save-drink": "Değişiklikleri Kaydet"
       },
       en: {
         "panel-tag": "Admin Panel",
@@ -999,7 +1052,16 @@
         "th-payment": "Payment Status",
         "pay-paid": "Paid",
         "pay-unpaid": "Not Paid",
-        "pay-arrival": "Pay upon Arrival"
+        "pay-arrival": "Pay upon Arrival",
+        "drink-list-title": "Active Drinks List",
+        "form-drink-add": "Add New Drink to Menu",
+        "form-drink-edit": "Edit Drink Details",
+        "label-drink-name-tr": "Drink Name (Turkish)",
+        "label-drink-name-en": "Drink Name (EN)",
+        "label-drink-name-ar": "Drink Name (AR)",
+        "label-drink-price": "Price (Lira - TL - Optional)",
+        "btn-add-drink": "Add Drink to Menu",
+        "btn-save-drink": "Save Changes"
       },
       ar: {
         "panel-tag": "لوحة التحكم",
@@ -1047,7 +1109,16 @@
         "th-payment": "حالة الدفع",
         "pay-paid": "تم الدفع",
         "pay-unpaid": "لم يتم الدفع",
-        "pay-arrival": "الدفع عند الوصول"
+        "pay-arrival": "الدفع عند الوصول",
+        "drink-list-title": "قائمة المشروبات النشطة",
+        "form-drink-add": "إضافة مشروب جديد للقائمة",
+        "form-drink-edit": "تعديل تفاصيل المشروب",
+        "label-drink-name-tr": "اسم المشروب (التركية)",
+        "label-drink-name-en": "اسم المشروب (الإنجليزية)",
+        "label-drink-name-ar": "اسم المشروب (العربية)",
+        "label-drink-price": "السعر بالليرة التركية (TL - اختياري)",
+        "btn-add-drink": "إضافة المشروب للقائمة",
+        "btn-save-drink": "حفظ التغييرات"
       }
     };
 
@@ -1123,6 +1194,22 @@
         document.getElementById("btn-submit-dish").textContent = dict["btn-add"];
       }
 
+      document.getElementById("lang-drink-list-title").textContent = dict["drink-list-title"];
+      document.getElementById("lang-label-drink-name-tr").textContent = dict["label-drink-name-tr"];
+      document.getElementById("lang-label-drink-name-en").textContent = dict["label-drink-name-en"];
+      document.getElementById("lang-label-drink-name-ar").textContent = dict["label-drink-name-ar"];
+      document.getElementById("lang-label-drink-price").textContent = dict["label-drink-price"];
+      
+      const editingDrinkId = document.getElementById("edit-drink-id").value;
+      if (editingDrinkId) {
+        document.getElementById("form-drink-title").innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${dict["form-drink-edit"]}`;
+        document.getElementById("btn-submit-drink").textContent = dict["btn-save-drink"];
+        document.getElementById("btn-cancel-drink-edit").textContent = dict["btn-cancel"];
+      } else {
+        document.getElementById("form-drink-title").innerHTML = `<i class="fa-solid fa-bottle-water"></i> ${dict["form-drink-add"]}`;
+        document.getElementById("btn-submit-drink").textContent = dict["btn-add-drink"];
+      }
+
       document.getElementById("lang-warning-title").textContent = dict["warning-title"];
       document.getElementById("lang-warning-desc").textContent = dict["warning-desc"];
       document.getElementById("toast-title").textContent = dict["toast-title"];
@@ -1137,6 +1224,7 @@
       // Reload lists
       loadBookings();
       loadMenuList();
+      loadDrinkList();
     }
 
     // 4. Load Bookings List
@@ -1645,6 +1733,125 @@
       }
     };
 
+    // 6.b Drink Management CRUD functions
+    function loadDrinkList() {
+      const drinks = safeGetItem("pietro_custom_drinks");
+      const listContainer = document.getElementById("drink-items-list");
+      listContainer.innerHTML = "";
+
+      document.getElementById("drink-list-count").textContent = `(${drinks.length} İçecek Aktif)`;
+
+      if (drinks.length === 0) {
+        listContainer.innerHTML = `<p class="empty-state" style="padding:40px 0;">Menüde aktif içecek bulunmuyor.</p>`;
+        return;
+      }
+
+      drinks.forEach(drink => {
+        const item = document.createElement("div");
+        item.className = "menu-mgmt-item";
+
+        // Get localized properties
+        const name = drink.name[adminActiveLang] || drink.name["tr"] || "Unnamed Drink";
+        const price = drink.price || "";
+
+        item.innerHTML = `
+          <div class="item-details">
+            <h4 class="item-name"><i class="fa-solid fa-glass-water" style="color:var(--color-gold); margin-right:8px;"></i> ${escapeHTML(name)}</h4>
+            <div class="item-prices">${price ? `Fiyat: ${price}` : "Fiyat yok"}</div>
+          </div>
+          <div class="action-buttons">
+            <button class="btn-action btn-confirm" onclick="editDrinkItem('${drink.id}')" title="İçeceği Düzenle" style="background-color: var(--color-gold);">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button class="btn-action btn-cancel" onclick="deleteDrinkItem('${drink.id}')" title="İçeceği Sil">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        `;
+        listContainer.appendChild(item);
+      });
+    }
+
+    window.deleteDrinkItem = function(id) {
+      if (!confirm("Bu içeceği menüden tamamen kaldırmak istediğinize emin misiniz?")) return;
+      let drinks = safeGetItem("pietro_custom_drinks");
+      drinks = drinks.filter(d => d.id !== id);
+      localStorage.setItem("pietro_custom_drinks", JSON.stringify(drinks));
+      localStorage.setItem("pietro_custom_drinks_updated_event", Date.now().toString());
+      loadDrinkList();
+      alert("İçecek menüden kaldırıldı.");
+    };
+
+    window.editDrinkItem = function(id) {
+      const drinks = safeGetItem("pietro_custom_drinks");
+      const drink = drinks.find(d => d.id === id);
+      if (!drink) return;
+
+      document.getElementById("edit-drink-id").value = drink.id;
+      document.getElementById("drink-name-tr").value = drink.name.tr || "";
+      document.getElementById("drink-name-en").value = drink.name.en || "";
+      document.getElementById("drink-name-ar").value = drink.name.ar || "";
+      document.getElementById("drink-price").value = drink.price || "";
+
+      const dict = adminLangDict[adminActiveLang];
+      document.getElementById("form-drink-title").innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${dict["form-drink-edit"]}`;
+      document.getElementById("btn-submit-drink").textContent = dict["btn-save-drink"];
+      document.getElementById("btn-cancel-drink-edit").style.display = "inline-flex";
+      document.getElementById("btn-cancel-drink-edit").textContent = dict["btn-cancel"];
+
+      document.getElementById("drink-form-container").scrollIntoView({ behavior: "smooth" });
+    };
+
+    window.cancelDrinkEditMode = function() {
+      document.getElementById("add-drink-form").reset();
+      document.getElementById("edit-drink-id").value = "";
+
+      const dict = adminLangDict[adminActiveLang];
+      document.getElementById("form-drink-title").innerHTML = `<i class="fa-solid fa-bottle-water"></i> ${dict["form-drink-add"]}`;
+      document.getElementById("btn-submit-drink").textContent = dict["btn-add-drink"];
+      document.getElementById("btn-cancel-drink-edit").style.display = "none";
+    };
+
+    window.handleDrinkFormSubmit = function(event) {
+      event.preventDefault();
+
+      const editingId = document.getElementById("edit-drink-id").value;
+      const nameTr = document.getElementById("drink-name-tr").value;
+      const nameEn = document.getElementById("drink-name-en").value;
+      const nameAr = document.getElementById("drink-name-ar").value;
+      const price = document.getElementById("drink-price").value;
+
+      let drinks = safeGetItem("pietro_custom_drinks");
+
+      if (editingId) {
+        drinks = drinks.map(d => {
+          if (d.id === editingId) {
+            return {
+              id: editingId,
+              name: { tr: nameTr, en: nameEn, ar: nameAr },
+              price: price
+            };
+          }
+          return d;
+        });
+        alert("İçecek detayları başarıyla güncellendi.");
+        cancelDrinkEditMode();
+      } else {
+        const newDrink = {
+          id: "drink-" + Date.now(),
+          name: { tr: nameTr, en: nameEn, ar: nameAr },
+          price: price
+        };
+        drinks.push(newDrink);
+        alert(`"${nameTr}" içeceği menüye başarıyla eklendi!`);
+        document.getElementById("add-drink-form").reset();
+      }
+
+      localStorage.setItem("pietro_custom_drinks", JSON.stringify(drinks));
+      localStorage.setItem("pietro_custom_drinks_updated_event", Date.now().toString());
+      loadDrinkList();
+    };
+
     // 7. Simulation / Testing functions
     window.simulateNewOrder = function() {
       const mockNames = ["Ahmet Şahin", "Zeynep Yılmaz", "Can Demir", "Sarah Connor", "Ali El-Suri"];
@@ -1708,6 +1915,12 @@
           showToast(bookings[0].name);
         }
         loadBookings();
+      }
+      if (event.key === "pietro_custom_dishes" || event.key === "pietro_deleted_default_dishes" || event.key === "pietro_custom_dishes_updated_event") {
+        loadMenuList();
+      }
+      if (event.key === "pietro_custom_drinks" || event.key === "pietro_custom_drinks_updated_event") {
+        loadDrinkList();
       }
     });
 
