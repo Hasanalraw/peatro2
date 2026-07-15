@@ -49,7 +49,7 @@
     }
 
     .admin-container {
-      max-width: 1200px;
+      max-width: 1250px;
       margin: 0 auto;
     }
 
@@ -146,6 +146,19 @@
       background: rgba(255, 255, 255, 0.06);
     }
 
+    /* Layout Columns */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 30px;
+    }
+
+    @media (max-width: 992px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* Stats Grid */
     .stats-grid {
       display: grid;
@@ -158,19 +171,19 @@
       background-color: var(--color-bg-card);
       border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: var(--border-radius);
-      padding: 24px;
+      padding: 20px;
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
     .stat-value {
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 700;
       margin-bottom: 4px;
     }
 
     .stat-label {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--color-text-secondary);
       text-transform: uppercase;
@@ -189,6 +202,7 @@
       border-radius: var(--border-radius);
       padding: 30px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      margin-bottom: 30px;
     }
 
     .card-title {
@@ -230,7 +244,7 @@
 
     th {
       padding: 16px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -241,7 +255,7 @@
     td {
       padding: 16px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
 
     tr:hover td {
@@ -268,7 +282,22 @@
       font-size: 0.75rem;
       font-weight: 600;
       display: inline-block;
-      max-width: 250px;
+      max-width: 180px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .drink-tag {
+      background-color: rgba(37, 211, 102, 0.08);
+      border: 1px solid rgba(37, 211, 102, 0.2);
+      color: var(--color-green);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+      max-width: 180px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
@@ -305,18 +334,18 @@
 
     .action-buttons {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
     .btn-action {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       transition: var(--transition-smooth);
       color: #FFFFFF;
       border: none;
@@ -345,6 +374,68 @@
       font-size: 3rem;
       margin-bottom: 16px;
       color: rgba(255,255,255,0.08);
+    }
+
+    /* Add Dish Form Card */
+    .add-dish-card {
+      background-color: var(--color-bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      height: fit-content;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      background-color: var(--color-bg-item);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 10px 12px;
+      color: var(--color-text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      transition: var(--transition-smooth);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--color-gold);
+    }
+
+    input[type="file"] {
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      margin-top: 4px;
+    }
+
+    .price-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
     }
 
     /* Notification Toast */
@@ -395,14 +486,14 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
-    @media (max-width: 992px) {
+    @media (max-width: 1200px) {
       .stats-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
     @media (max-width: 576px) {
-      .stats-grid {
+      .stats-grid, .form-row, .price-row {
         grid-template-columns: 1fr;
       }
       header {
@@ -464,37 +555,128 @@
       </div>
     </div>
 
-    <!-- Booking details -->
-    <div class="dashboard-card">
-      <div class="card-title">
-        <span>Gelen Rezervasyon Talepleri</span>
-        <div class="live-indicator">
-          <span class="live-dot"></span>
-          <span>Canlı Takip Aktif</span>
+    <!-- Main Grid Section -->
+    <div class="dashboard-grid">
+      
+      <!-- Left Column: Reservations Table -->
+      <div class="dashboard-card">
+        <div class="card-title">
+          <span>Gelen Rezervasyon Talepleri</span>
+          <div class="live-indicator">
+            <span class="live-dot"></span>
+            <span>Canlı Takip Aktif</span>
+          </div>
+        </div>
+
+        <div class="bookings-table-wrapper">
+          <table id="bookings-table">
+            <thead>
+              <tr>
+                <th>Müşteri</th>
+                <th>Rezervasyon Detayı</th>
+                <th>Seçilen Yemek</th>
+                <th>Seçilen İçecek</th>
+                <th>Durum</th>
+                <th>İşlemler</th>
+              </tr>
+            </thead>
+            <tbody id="bookings-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+          
+          <div id="bookings-empty" class="empty-state">
+            <i class="fa-regular fa-clipboard empty-icon"></i>
+            <p>Henüz alınmış bir masa rezervasyon talebi bulunmuyor.</p>
+          </div>
         </div>
       </div>
 
-      <div class="bookings-table-wrapper">
-        <table id="bookings-table">
-          <thead>
-            <tr>
-              <th>Müşteri</th>
-              <th>Rezervasyon Detayı</th>
-              <th>Tercih Edilen Yemek & İçecek</th>
-              <th>Durum</th>
-              <th>İşlemler</th>
-            </tr>
-          </thead>
-          <tbody id="bookings-tbody">
-            <!-- Dynamically populated -->
-          </tbody>
-        </table>
+      <!-- Right Column: Add New Dish Form -->
+      <div class="add-dish-card">
+        <h3 style="font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: var(--color-gold); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+          <i class="fa-solid fa-utensils"></i> Menüye Yeni Yemek Ekle
+        </h3>
         
-        <div id="bookings-empty" class="empty-state">
-          <i class="fa-regular fa-clipboard empty-icon"></i>
-          <p>Henüz alınmış bir masa rezervasyon talebi bulunmuyor.</p>
-        </div>
+        <form id="add-dish-form" onsubmit="handleNewDishSubmit(event)">
+          <div class="form-group">
+            <label>Kategori</label>
+            <select id="dish-category" required>
+              <option value="pizza">Pizzalar (Pizza)</option>
+              <option value="pasta">Makarnalar (Pasta)</option>
+              <option value="drinks">İçecekler (Drinks)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Yemek Adı (Türkçe)</label>
+            <input type="text" id="dish-name-tr" required placeholder="Örn. Pizza Diabolo">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Yemek Adı (EN)</label>
+              <input type="text" id="dish-name-en" required placeholder="e.g. Pizza Diabolo">
+            </div>
+            <div class="form-group">
+              <label>Yemek Adı (AR)</label>
+              <input type="text" id="dish-name-ar" required placeholder="مثال: بيتزا ديابولو">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Fiyatlar (Lira - TL)</label>
+            <div class="price-row">
+              <input type="number" id="dish-price-small" required placeholder="Küçük (S)">
+              <input type="number" id="dish-price-medium" required placeholder="Orta (M)">
+              <input type="number" id="dish-price-large" required placeholder="Büyük (L)">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Açıklama (Türkçe)</label>
+            <textarea id="dish-desc-tr" rows="2" required placeholder="İmza hamurumuz üzerine acılı salam..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Açıklama (EN)</label>
+              <textarea id="dish-desc-en" rows="2" required placeholder="Spicy salami on our signature crust..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Açıklama (AR)</label>
+              <textarea id="dish-desc-ar" rows="2" required placeholder="سلامي حار فوق عجينتنا المميزة..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>İçindekiler (Türkçe - Virgülle ayırın)</label>
+            <input type="text" id="dish-ing-tr" required placeholder="Mozzarella, Acı Salam, Domates sosu">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>İçindekiler (EN - Virgülle ayırın)</label>
+              <input type="text" id="dish-ing-en" required placeholder="Mozzarella, Spicy Salami, Tomato sauce">
+            </div>
+            <div class="form-group">
+              <label>İçindekiler (AR - Virgülle ayırın)</label>
+              <input type="text" id="dish-ing-ar" required placeholder="موزاريلا، سلامي حار، صلصة طماطم">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Yemek Görseli (Dosya Seçin)</label>
+            <input type="file" id="dish-image" accept="image/*" required>
+            <p style="font-size: 0.7rem; color: var(--color-text-secondary); margin-top: 4px;">Önemli: Görsel otomatik olarak optimize edilip veritabanına eklenecektir.</p>
+          </div>
+
+          <button type="submit" class="btn btn-gold btn-block" style="width: 100%; margin-top: 10px; justify-content: center;">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Yemeği Menüye Ekle
+          </button>
+        </form>
       </div>
+
     </div>
   </div>
 
@@ -508,12 +690,11 @@
   </div>
 
   <script>
-    // Audio synthesis using Web Audio API (Native, no external asset needed)
+    // Audio synthesis using Web Audio API
     function playNotificationSound() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
-        // Ring tone oscillator 1
         const osc1 = audioCtx.createOscillator();
         const gain1 = audioCtx.createGain();
         osc1.connect(gain1);
@@ -528,7 +709,6 @@
         osc1.start();
         osc1.stop(audioCtx.currentTime + 0.3);
 
-        // Ring tone oscillator 2 (delay play for double ring ding sound)
         setTimeout(() => {
           const osc2 = audioCtx.createOscillator();
           const gain2 = audioCtx.createGain();
@@ -550,7 +730,7 @@
       }
     }
 
-    // Load and Render Bookings
+    // Load and Render Bookings (Separating Food and Drink columns)
     function loadBookings() {
       const bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
       const tbody = document.getElementById("bookings-tbody");
@@ -601,7 +781,10 @@
             </div>
           </td>
           <td>
-            ${booking.dish ? `<span class="dish-tag" title="${escapeHTML(booking.dish)}">${escapeHTML(booking.dish)}</span>` : '<em style="color: var(--color-text-secondary);">Masa Rezervasyonu</em>'}
+            ${booking.dish ? `<span class="dish-tag" title="${escapeHTML(booking.dish)}">${escapeHTML(booking.dish)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
+          </td>
+          <td>
+            ${booking.drink ? `<span class="drink-tag" title="${escapeHTML(booking.drink)}">${escapeHTML(booking.drink)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
           </td>
           <td>
             <span class="status-badge ${booking.status}">${translateStatus(booking.status)}</span>
@@ -617,7 +800,7 @@
               <button class="btn-action btn-whatsapp" onclick="contactCustomer('${booking.id}')" title="WhatsApp ile İletişim (İBAN Gönder)">
                 <i class="fa-brands fa-whatsapp"></i>
               </button>
-              <button class="btn-action btn-delete" onclick="deleteBooking('${booking.id}')" title="Kayıt Sil">
+              <button class="btn-action btn-delete" onclick="deleteBooking('${booking.id}')" title="Rezervasyonu Sil">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </div>
@@ -682,7 +865,6 @@
       const booking = bookings.find(b => b.id === id);
       if (!booking) return;
 
-      // Clean phone number (remove spaces, symbols)
       let cleanedPhone = booking.phone.replace(/[^0-9+]/g, "");
       if (cleanedPhone.startsWith("05")) {
         cleanedPhone = "+90" + cleanedPhone.substring(1);
@@ -690,8 +872,11 @@
         cleanedPhone = "+90" + cleanedPhone;
       }
 
-      // Check if details are selected, else general template
-      const details = booking.dish || "Masa Rezervasyonu";
+      // Format details based on food/drink choices
+      let itemsList = [];
+      if (booking.dish) itemsList.push(booking.dish);
+      if (booking.drink) itemsList.push(booking.drink);
+      const details = itemsList.join(" + ") || "Masa Rezervasyonu";
 
       // Prefilled message template in Turkish
       const message = `Merhaba ${booking.name},\n\nPietro Coffee Pizzeria'dan yapmış olduğunuz rezervasyon talebiniz (${details}) alınmıştır. Rezervasyonunuzu onaylamak ve ödemenizi tamamlamak için İBAN adresimiz:\n\n🏦 ALICI: Pietro Coffee Pizzeria\n💳 IBAN: TR00 0000 0000 0000 0000 0000 00\n\nÖdemeyi tamamladıktan sonra lütfen buradan bilgi veriniz. Teşekkürler, görüşmek üzere!`;
@@ -705,13 +890,14 @@
     window.simulateNewOrder = function() {
       const mockNames = ["Ahmet Şahin", "Zeynep Yılmaz", "Can Demir", "Sarah Connor", "Ali El-Suri"];
       const mockPhones = ["+90 532 987 6543", "+90 535 123 4567", "+90 541 333 4455", "+44 7911 123456", "+90 530 555 1122"];
-      const mockDetails = [
-        "Pizza Margherita (Orta - 380 TL) + Su (Yakında)", 
+      const mockDishes = [
+        "Pizza Margherita (Orta - 380 TL)", 
         "Pizza Pietro (Büyük - 610 TL)", 
-        "Penne Burrata (Küçük - 390 TL) + Cola (Yakında)", 
-        "Tagliatelli Scampi (Orta - 520 TL) + Fanta (Yakında)",
+        "Penne Burrata (Küçük - 390 TL)", 
+        "Tagliatelli Scampi (Orta - 520 TL)",
         "Pizza Quattro Formaggi (Büyük - 560 TL)"
       ];
+      const mockDrinks = ["Cola (Yakında)", "Su (Yakında)", "", "Fanta (Yakında)", "Su (Yakında)"];
 
       const randomIndex = Math.floor(Math.random() * mockNames.length);
       const randomGuests = Math.floor(Math.random() * 6) + 1;
@@ -725,7 +911,8 @@
         date: today.toISOString().split("T")[0],
         time: `${12 + Math.floor(Math.random() * 8)}:00`,
         guests: randomGuests.toString(),
-        dish: mockDetails[randomIndex],
+        dish: mockDishes[randomIndex],
+        drink: mockDrinks[randomIndex],
         status: "pending",
         timestamp: new Date().toISOString()
       };
@@ -751,22 +938,78 @@
       }, 4000);
     }
 
+    // Add New Dish Handler
+    window.handleNewDishSubmit = function(event) {
+      event.preventDefault();
+
+      const category = document.getElementById("dish-category").value;
+      const nameTr = document.getElementById("dish-name-tr").value;
+      const nameEn = document.getElementById("dish-name-en").value;
+      const nameAr = document.getElementById("dish-name-ar").value;
+      
+      const priceSmall = document.getElementById("dish-price-small").value;
+      const priceMedium = document.getElementById("dish-price-medium").value;
+      const priceLarge = document.getElementById("dish-price-large").value;
+      
+      const descTr = document.getElementById("dish-desc-tr").value;
+      const descEn = document.getElementById("dish-desc-en").value;
+      const descAr = document.getElementById("dish-desc-ar").value;
+      
+      const ingTr = document.getElementById("dish-ing-tr").value.split(",").map(i => i.trim());
+      const ingEn = document.getElementById("dish-ing-en").value.split(",").map(i => i.trim());
+      const ingAr = document.getElementById("dish-ing-ar").value.split(",").map(i => i.trim());
+
+      const imageFile = document.getElementById("dish-image").files[0];
+
+      if (!imageFile) {
+        alert("Lütfen yemek görseli seçin.");
+        return;
+      }
+
+      // Convert image to Base64 data URL
+      const reader = new FileReader();
+      reader.onloadend = function() {
+        const base64Image = reader.result;
+
+        const newDish = {
+          id: "custom-" + Date.now(),
+          category,
+          image: base64Image,
+          name: { tr: nameTr, en: nameEn, ar: nameAr },
+          desc: { tr: descTr, en: descEn, ar: descAr },
+          ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
+          prices: {
+            tr: { small: priceSmall + " TL", medium: priceMedium + " TL", large: priceLarge + " TL" },
+            en: { small: priceSmall + " TL", medium: priceMedium + " TL", large: priceLarge + " TL" },
+            ar: { small: priceSmall + " TL", medium: priceMedium + " TL", large: priceLarge + " TL" }
+          }
+        };
+
+        // Save custom dish to localStorage array
+        let customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+        customDishes.push(newDish);
+        localStorage.setItem("pietro_custom_dishes", JSON.stringify(customDishes));
+
+        alert(`"${nameTr}" yemeği başarıyla menüye eklendi ve müşteri sayfasına yansıtıldı!`);
+        document.getElementById("add-dish-form").reset();
+      };
+
+      reader.readAsDataURL(imageFile);
+    };
+
     // Realtime storage listener (communicates across tabs)
     window.addEventListener("storage", (event) => {
-      // Check if either bookings key changed, or custom event triggered
       if (event.key === "pietro_bookings" || event.key === "pietro_new_booking_event") {
         const bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
         if (bookings.length > 0) {
-          // Play ring bell sound
           playNotificationSound();
-          // Show popup toast
           showToast(bookings[0].name);
         }
         loadBookings();
       }
     });
 
-    // Check if running on local file system and warn user about Same-Origin policy limitations
+    // Check if running on local file system
     function checkFileProtocol() {
       if (window.location.protocol === "file:") {
         document.getElementById("security-warning").style.display = "flex";

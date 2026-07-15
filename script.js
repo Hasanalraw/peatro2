@@ -28,7 +28,7 @@ const translations = {
     "about-title": "Otantik Bir İtalyan Deneyimi",
     "about-subtitle": "Pietro Coffee Pizzeria'nın Hikayesi",
     "about-text-1": "Yalova'nın kalbinde yer alan Pietro Coffee Pizzeria, otantik İtalyan lezzetlerinin buluşma noktasıdır. Odun ateşinde pişen çıtır pizzalarımız, el yapımı makarnalarımız ve kaliteli İtalyan kahvelerimiz ile İtalya'nın gerçek ruhunu masanıza taşıyoruz.",
-    "about-text-2": "Sıcak ahşap dokuları, loş aydınlatmaları ve imza niteliğindeki botanik duvar resmimizle tasarlanan sıcak mekânımız, unutulmaz bir yemek deneyimi için mükemmel bir atmosfer sunuyor. Her yemeğimiz, nesilden nesile aktarılan geleneksel tariflerle ve en taze malzemelerle özenle hazırlanmaktadır.",
+    "about-text-2": "Sıcak ahşap dokuları, loş aydınlatmaları ve imza niteliğindeki botanik duvar resmimizle tasarlanan sıcak mekânımız, unutulmaz bir yemek deneyimi için memnuniyet verici bir atmosfer sunuyor. Her yemeğimiz, nesilden nesile aktarılan geleneksel tariflerle ve en taze malzemelerle özenle hazırlanmaktadır.",
     "feat-woodfire": "Odun Ateşinde Pizza",
     "feat-handpasta": "El Yapımı Makarna",
     "feat-coffee": "Nitelikli Kahve",
@@ -245,7 +245,7 @@ const translations = {
     "filter-all": "الكل",
     "filter-pizza": "البيتزا",
     "filter-pasta": "الباستا",
-    "filter-drinks": "المشروبات",
+    "filter-drinks": "المشاريب",
     "image-disclaimer": "هذه الصورة تم استخدامها بناءً على شكل تقريبي لكيف يجب أن يكون مطعمكم، وسيتم استبدالها بصوركم الخاصة.",
     "price-note": "سعر تقريبي مبدئي - يرجى تحديث السعر الفعلي",
     "btn-select": "اختر",
@@ -535,14 +535,8 @@ function setLanguage(lang) {
   // Update WhatsApp text on the link
   updateWhatsAppLink(lang);
   
-  // Refresh placeholder in menu empty filter if it exists
-  const placeholder = document.getElementById("menu-empty-placeholder");
-  if (placeholder && placeholder.style.display === "block") {
-    const emptyKey = lang === "tr" ? "İçecek menümüz yakında eklenecektir. İlginiz için teşekkür ederiz." :
-                     (lang === "en" ? "Our drinks menu is coming soon. Thank you for your interest." :
-                     "قائمة المشروبات ستتوفر قريباً. شكراً لاهتمامكم.");
-    placeholder.querySelector("span").textContent = emptyKey;
-  }
+  // Re-render custom dishes in correct language
+  renderCustomDishes();
 }
 
 // 4. Dynamic WhatsApp Link generator based on active language
@@ -573,7 +567,8 @@ filterButtons.forEach(btn => {
     const filterValue = btn.getAttribute("data-filter");
     let visibleCount = 0;
 
-    menuCards.forEach(card => {
+    // We select all cards including dynamic custom ones
+    document.querySelectorAll(".menu-card").forEach(card => {
       const category = card.getAttribute("data-category");
       if (filterValue === "all" || category === filterValue) {
         card.classList.remove("hidden");
@@ -599,7 +594,7 @@ filterButtons.forEach(btn => {
         document.querySelector(".menu-grid").appendChild(placeholder);
       }
       placeholder.style.display = "block";
-      placeholder.innerHTML = `<i class="fa-solid fa-mug-hot" style="font-size: 3rem; color: rgba(0,0,0,0.06); margin-bottom: 16px; display: block;"></i> <span style="font-weight:300;"></span>`;
+      placeholder.innerHTML = `<i class="fa-solid fa-mug-hot" style="font-size: 3rem; color: rgba(255, 255, 255, 0.06); margin-bottom: 16px; display: block;"></i> <span style="font-weight:300;"></span>`;
       
       const emptyKey = currentLanguage === "tr" ? "İçecek menümüz yakında eklenecektir. İlginiz için teşekkür ederiz." :
                        (currentLanguage === "en" ? "Our drinks menu is coming soon. Thank you for your interest." :
@@ -618,12 +613,14 @@ window.openDetailModal = function(id) {
 
   const modal = document.getElementById("detail-modal");
   document.getElementById("modal-dish-img").src = dish.image;
-  document.getElementById("modal-dish-title").textContent = dish.name[currentLanguage];
-  document.getElementById("modal-dish-desc").textContent = dish.desc[currentLanguage];
+  document.getElementById("modal-dish-title").textContent = dish.name[currentLanguage] || dish.name["tr"];
+  document.getElementById("modal-dish-desc").textContent = dish.desc[currentLanguage] || dish.desc["tr"];
 
   const ingredientsList = document.getElementById("modal-dish-ingredients");
   ingredientsList.innerHTML = "";
-  dish.ingredients[currentLanguage].forEach(ing => {
+  
+  const ingList = dish.ingredients[currentLanguage] || dish.ingredients["tr"] || [];
+  ingList.forEach(ing => {
     const li = document.createElement("li");
     li.textContent = ing;
     ingredientsList.appendChild(li);
@@ -650,10 +647,10 @@ window.openSizeModal = function(id) {
   currentSelectedSize = "medium"; // reset size selection to default
 
   const modal = document.getElementById("size-modal");
-  document.getElementById("size-modal-dish-title").textContent = dish.name[currentLanguage];
+  document.getElementById("size-modal-dish-title").textContent = dish.name[currentLanguage] || dish.name["tr"];
 
   // Set prices dynamically (ALL IN TL NOW FOR ALL LANGUAGES)
-  const currencyPrices = dish.prices[currentLanguage];
+  const currencyPrices = dish.prices[currentLanguage] || dish.prices["tr"];
   document.getElementById("price-small").textContent = currencyPrices.small;
   document.getElementById("price-medium").textContent = currencyPrices.medium;
   document.getElementById("price-large").textContent = currencyPrices.large;
@@ -692,8 +689,8 @@ window.confirmSizeSelection = function() {
   };
 
   const selectedSizeLabel = sizeLabels[currentLanguage][currentSelectedSize];
-  const selectedPriceLabel = dish.prices[currentLanguage][currentSelectedSize];
-  const dishName = dish.name[currentLanguage];
+  const selectedPriceLabel = (dish.prices[currentLanguage] || dish.prices["tr"])[currentSelectedSize];
+  const dishName = dish.name[currentLanguage] || dish.name["tr"];
 
   const reservationInput = document.getElementById("booking-dish");
   if (reservationInput) {
@@ -730,22 +727,11 @@ window.handleBookingSubmit = function(event) {
   // Format drink option name nicely
   let drink = "";
   if (drinkSelect && drinkSelect.value) {
-    const drinkText = drinkSelect.options[drinkSelect.selectedIndex].text;
-    drink = drinkText;
+    drink = drinkSelect.options[drinkSelect.selectedIndex].text;
   }
 
   // Simple validation helper
   if (!name || !phone || !date || !time) return;
-
-  // Append selected food + drink details into a combined summary if both exist
-  let orderSummary = dish;
-  if (drink) {
-    if (orderSummary) {
-      orderSummary += ` + ${drink}`;
-    } else {
-      orderSummary = drink;
-    }
-  }
 
   // Fetch bookings list, append new booking, and save
   let bookings = JSON.parse(localStorage.getItem("pietro_bookings")) || [];
@@ -756,7 +742,8 @@ window.handleBookingSubmit = function(event) {
     date,
     time,
     guests,
-    dish: orderSummary || "Masa Rezervasyonu",
+    dish: dish || "",      // SEPARATED!
+    drink: drink || "",    // SEPARATED!
     status: "pending",
     timestamp: new Date().toISOString()
   };
@@ -837,6 +824,61 @@ function varHeaderHeight() {
   return header ? header.offsetHeight : 80;
 }
 
+// 11. Custom Dishes Rendering Engine
+function renderCustomDishes() {
+  // Remove existing custom cards from grid
+  document.querySelectorAll(".menu-card.custom-card").forEach(el => el.remove());
+
+  const customDishes = JSON.parse(localStorage.getItem("pietro_custom_dishes")) || [];
+  const menuGrid = document.querySelector(".menu-grid");
+  if (!menuGrid) return;
+
+  customDishes.forEach(dish => {
+    // Inject custom dish details into dishesData object dynamically
+    dishesData[dish.id] = dish;
+
+    const card = document.createElement("div");
+    card.className = "menu-card custom-card";
+    card.setAttribute("data-category", dish.category);
+
+    // Localize attributes
+    const name = dish.name[currentLanguage] || dish.name["tr"];
+    const desc = dish.desc[currentLanguage] || dish.desc["tr"];
+    const priceMedium = (dish.prices[currentLanguage] || dish.prices["tr"]).medium;
+
+    card.innerHTML = `
+      <div class="menu-card-img">
+        <img src="${dish.image}" alt="${name}">
+        <div class="menu-image-disclaimer" data-key="image-disclaimer">
+          ${translations[currentLanguage]["image-disclaimer"]}
+        </div>
+      </div>
+      <div class="menu-card-content">
+        <h3>${name}</h3>
+        <p>${desc}</p>
+        <div class="menu-card-footer">
+          <div class="menu-price-area">
+            <span class="price">${priceMedium}</span>
+            <span class="price-note" data-key="price-note">
+              ${translations[currentLanguage]["price-note"]}
+            </span>
+          </div>
+          <div class="menu-card-actions">
+            <button class="btn-learn-more" onclick="openDetailModal('${dish.id}')" data-key="btn-learn-more">
+              ${translations[currentLanguage]["btn-learn-more"]}
+            </button>
+            <button class="btn-select-item" onclick="openSizeModal('${dish.id}')" data-key="btn-select">
+              ${translations[currentLanguage]["btn-select"]}
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    menuGrid.appendChild(card);
+  });
+}
+
 // 10. Initial Load Configuration
 document.addEventListener("DOMContentLoaded", () => {
   // Set default date for reservation (tomorrow)
@@ -856,6 +898,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Initialize page in Turkish language by default
+  // Listen to remote changes to reload custom dishes / bookings list in real-time
+  window.addEventListener("storage", (event) => {
+    if (event.key === "pietro_custom_dishes") {
+      renderCustomDishes();
+    }
+  });
+
+  // Initialize page in Turkish language by default & render custom dishes
   setLanguage("tr");
+  renderCustomDishes();
 });
