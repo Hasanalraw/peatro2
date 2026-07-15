@@ -416,6 +416,41 @@
     .btn-delete { background-color: #444; }
     .btn-delete:hover { background-color: #666; }
 
+    /* Payment Status Badges */
+    .pay-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: var(--transition-smooth);
+      background: none;
+    }
+    
+    .pay-badge.paid {
+      background-color: rgba(37, 211, 102, 0.1);
+      color: var(--color-green);
+      border-color: rgba(37, 211, 102, 0.2);
+    }
+    
+    .pay-badge.paid:hover {
+      background-color: rgba(37, 211, 102, 0.2);
+    }
+    
+    .pay-badge.unpaid {
+      background-color: rgba(226, 161, 60, 0.08);
+      color: var(--color-status-pending);
+      border-color: rgba(226, 161, 60, 0.2);
+    }
+    
+    .pay-badge.unpaid:hover {
+      background-color: rgba(226, 161, 60, 0.15);
+    }
+
     /* Menu Management Grid Layout */
     .menu-mgmt-grid {
       display: grid;
@@ -697,6 +732,7 @@
                 <th id="lang-th-details">Rezervasyon Detayı</th>
                 <th id="lang-th-food">Seçilen Yemek</th>
                 <th id="lang-th-drink">Seçilen İçecek</th>
+                <th id="lang-th-payment">Ödeme Durumu</th>
                 <th id="lang-th-status">Durum</th>
                 <th id="lang-th-actions">İşlemler</th>
               </tr>
@@ -909,7 +945,10 @@
         "warning-desc": "Sayfayı doğrudan bilgisayarınızdan yerel dosya olarak açtınız. Tarayıcınızın yerel dosya politikaları nedeniyle sekmeler arası rezervasyon senkronizasyonu engellenebilir. Müşteri arayüzünden gönderilen rezervasyonları burada canlı görmek için projeyi Vercel'e yükleyebilir veya yerel bir sunucu (localhost) kullanabilirsiniz.",
         "toast-title": "Yeni Rezervasyon Talebi!",
         "toast-desc": "yeni bir rezervasyon talebi gönderdi.",
-        "btn-reset-menu": "Menüyü Sıfırla"
+        "btn-reset-menu": "Menüyü Sıfırla",
+        "th-payment": "Ödeme Durumu",
+        "pay-paid": "Ödendi",
+        "pay-unpaid": "Ödenmedi"
       },
       en: {
         "panel-tag": "Admin Panel",
@@ -953,7 +992,10 @@
         "warning-desc": "You opened the page directly from local files (file://). Due to browser security policies, real-time sync between tabs may be blocked. Upload to Vercel or use a local server (localhost) for real-time live sync.",
         "toast-title": "New Booking Request!",
         "toast-desc": "sent a new table reservation request.",
-        "btn-reset-menu": "Reset Menu"
+        "btn-reset-menu": "Reset Menu",
+        "th-payment": "Payment Status",
+        "pay-paid": "Paid",
+        "pay-unpaid": "Not Paid"
       },
       ar: {
         "panel-tag": "لوحة التحكم",
@@ -997,7 +1039,10 @@
         "warning-desc": "لقد قمت بفتح الملف محلياً كمجلد ملفات. بسبب قيود أمان المتصفح، قد لا يتم مزامنة الطلبات بالوقت الفعلي. يرجى رفع المشروع على Vercel أو استخدام خادم محلي لتفعيل التزامن الفوري التلقائي.",
         "toast-title": "طلب حجز جديد!",
         "toast-desc": "أرسل طلب حجز طاولة جديد.",
-        "btn-reset-menu": "إعادة تعيين القائمة"
+        "btn-reset-menu": "إعادة تعيين القائمة",
+        "th-payment": "حالة الدفع",
+        "pay-paid": "تم الدفع",
+        "pay-unpaid": "لم يدفع بعد"
       }
     };
 
@@ -1047,6 +1092,7 @@
       
       document.getElementById("lang-menu-list-title").textContent = dict["menu-list-title"];
       document.getElementById("lang-btn-reset-menu").textContent = dict["btn-reset-menu"];
+      document.getElementById("lang-th-payment").textContent = dict["th-payment"];
       
       document.getElementById("lang-label-category").textContent = dict["label-category"];
       document.getElementById("lang-label-name-tr").textContent = dict["label-name-tr"];
@@ -1122,6 +1168,11 @@
         const dateObj = new Date(booking.date);
         const dateStr = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
         
+        const payStatus = booking.paymentStatus || "unpaid";
+        const payBadgeHtml = payStatus === "paid" ? 
+          `<button class="pay-badge paid" onclick="togglePaymentStatus('${booking.id}')"><i class="fa-solid fa-circle-check"></i> ${adminLangDict[adminActiveLang]["pay-paid"]}</button>` :
+          `<button class="pay-badge unpaid" onclick="togglePaymentStatus('${booking.id}')"><i class="fa-solid fa-circle-xmark"></i> ${adminLangDict[adminActiveLang]["pay-unpaid"]}</button>`;
+
         tr.innerHTML = `
           <td>
             <div class="customer-info">
@@ -1142,6 +1193,9 @@
           </td>
           <td>
             ${booking.drink ? `<span class="drink-tag" title="${escapeHTML(booking.drink)}">${escapeHTML(booking.drink)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
+          </td>
+          <td>
+            ${payBadgeHtml}
           </td>
           <td>
             <span class="status-badge ${booking.status}">${translateStatus(booking.status)}</span>
@@ -1193,6 +1247,18 @@
       let bookings = safeGetItem("pietro_bookings");
       bookings = bookings.map(b => {
         if (b.id === id) b.status = status;
+        return b;
+      });
+      localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
+      loadBookings();
+    };
+
+    window.togglePaymentStatus = function(id) {
+      let bookings = safeGetItem("pietro_bookings");
+      bookings = bookings.map(b => {
+        if (b.id === id) {
+          b.paymentStatus = (b.paymentStatus === "paid") ? "unpaid" : "paid";
+        }
         return b;
       });
       localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
