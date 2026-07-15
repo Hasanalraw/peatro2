@@ -1673,4 +1673,60 @@ html[dir="rtl"] .carousel-nav-btn.next {
   left: 12px;
 }
 
+/* Dynamic Booking Cart Styles */
+.booking-cart-container {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.cart-item-tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(197, 155, 39, 0.08);
+  border: 1px solid rgba(197, 155, 39, 0.2);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.cart-item-tag .cart-item-remove {
+  cursor: pointer;
+  color: var(--color-status-cancelled);
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-left: 8px;
+  transition: var(--transition-smooth);
+  border: none;
+  background: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.cart-item-tag .cart-item-remove:hover {
+  color: #ff4d4d;
+}
+
+.cart-empty-text {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 4px 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 

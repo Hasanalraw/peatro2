@@ -199,9 +199,11 @@
                 <option value="8">8 Kişi veya Üzeri</option>
               </select>
             </div>
-            <div class="form-group">
-              <label for="booking-dish" data-key="label-dish">Tercih Ettiğiniz Yemek (İsteğe Bağlı)</label>
-              <input type="text" id="booking-dish" placeholder="Örn. Pizza Pietro">
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label id="lang-label-selected-dishes" data-key="label-selected-dishes">Seçilen Yemekler</label>
+              <div id="booking-cart-container" class="booking-cart-container">
+                <!-- Dynamically populated cart items -->
+              </div>
             </div>
             <div class="form-group">
               <label for="booking-drink" data-key="label-drink">Tercih Ettiğiniz İçecek (İsteğe Bağlı)</label>
@@ -399,7 +401,10 @@
         </div>
       </div>
       
-      <button class="btn btn-gold btn-block" onclick="confirmSizeSelection()" data-key="btn-confirm" style="margin-top: 1.5rem;">Onayla ve Rezerve Et</button>
+      <div class="modal-action-buttons" style="display: flex; gap: 10px; margin-top: 1.5rem;">
+        <button class="btn btn-outline" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="addMoreFoodToCart()" data-key="btn-add-more">Daha Fazla Yemek Ekle</button>
+        <button class="btn btn-gold" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="confirmBookingWithCart()" data-key="btn-confirm-booking">Hemen Rezerve Et</button>
+      </div>
     </div>
   </div>
 

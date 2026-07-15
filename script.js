@@ -67,6 +67,11 @@ const translations = {
     "size-medium": "Orta",
     "size-large": "Büyük",
     "btn-confirm": "Onayla ve Rezerve Et",
+    "btn-add-more": "Daha Fazla Yemek Ekle",
+    "btn-confirm-booking": "Hemen Rezerve Et",
+    "label-selected-dishes": "Seçilen Yemekler",
+    "cart-empty": "Henüz yemek seçilmedi. Menümüzden yemek ekleyebilirsiniz.",
+    "added-to-cart-toast": "Yemek sepete eklendi!",
 
     // Reservation Section
     "reserve-title": "Masa Rezervasyonu",
@@ -152,6 +157,11 @@ const translations = {
     "size-medium": "Medium",
     "size-large": "Large",
     "btn-confirm": "Confirm & Reserve",
+    "btn-add-more": "Add More Food",
+    "btn-confirm-booking": "Book Table Now",
+    "label-selected-dishes": "Selected Dishes",
+    "cart-empty": "No food selected yet. You can add food from our menu.",
+    "added-to-cart-toast": "Food added to cart!",
 
     // Reservation Section
     "reserve-title": "Book a Table",
@@ -237,6 +247,11 @@ const translations = {
     "size-medium": "متوسطة",
     "size-large": "كبيرة",
     "btn-confirm": "تأكيد الحجز",
+    "btn-add-more": "إضافة المزيد من الطعام",
+    "btn-confirm-booking": "تأكيد الحجز",
+    "label-selected-dishes": "الوجبات المختارة",
+    "cart-empty": "لم يتم اختيار أي وجبة بعد. يمكنك إضافة الطعام من القائمة في الأعلى.",
+    "added-to-cart-toast": "تمت إضافة الوجبة للسلة!",
 
     // Reservation Section
     "reserve-title": "حجز طاولة",
@@ -282,6 +297,7 @@ const defaultDishes = [];
 
 
 // Global state variables
+let bookingCart = [];
 let currentLanguage = "tr";
 let currentSelectedDishId = "";
 let currentSelectedSize = "medium"; // default
@@ -349,6 +365,9 @@ function setLanguage(lang) {
   
   // Re-populate dynamic drinks dropdown based on current language
   populateDrinksDropdown();
+  
+  // Re-render dynamic cart items to apply active language translations
+  renderCart();
   
   // Re-render menu using new active language translations
   renderMenu();
@@ -551,7 +570,7 @@ window.closeSizeModalOnOutsideClick = function(event) {
   }
 };
 
-window.confirmSizeSelection = function() {
+window.addMoreFoodToCart = function() {
   const dish = dishesData[currentSelectedDishId];
   if (!dish) return;
 
@@ -561,21 +580,43 @@ window.confirmSizeSelection = function() {
     ar: { small: "صغيرة", medium: "متوسطة", large: "كبيرة" }
   };
 
-  const selectedSizeLabel = sizeLabels[currentLanguage][currentSelectedSize];
   const selectedPriceLabel = (dish.prices[currentLanguage] || dish.prices["tr"])[currentSelectedSize];
-  const dishName = dish.name[currentLanguage] || dish.name["tr"];
 
-  const reservationInput = document.getElementById("booking-dish");
-  if (reservationInput) {
-    reservationInput.value = `${dishName} (${selectedSizeLabel} - ${selectedPriceLabel})`;
-    
-    // Highlight input momentarily
-    reservationInput.style.borderColor = "var(--color-gold)";
-    setTimeout(() => {
-      reservationInput.style.borderColor = "rgba(255, 255, 255, 0.1)";
-    }, 1500);
-  }
+  bookingCart.push({
+    dishId: dish.id,
+    name: dish.name,
+    size: currentSelectedSize,
+    sizeLabel: sizeLabels,
+    price: selectedPriceLabel
+  });
 
+  renderCart();
+  closeSizeModal();
+
+  alert(translations[currentLanguage]["added-to-cart-toast"]);
+};
+
+window.confirmBookingWithCart = function() {
+  const dish = dishesData[currentSelectedDishId];
+  if (!dish) return;
+
+  const sizeLabels = {
+    tr: { small: "Küçük", medium: "Orta", large: "Büyük" },
+    en: { small: "Small", medium: "Medium", large: "Large" },
+    ar: { small: "صغيرة", medium: "متوسطة", large: "كبيرة" }
+  };
+
+  const selectedPriceLabel = (dish.prices[currentLanguage] || dish.prices["tr"])[currentSelectedSize];
+
+  bookingCart.push({
+    dishId: dish.id,
+    name: dish.name,
+    size: currentSelectedSize,
+    sizeLabel: sizeLabels,
+    price: selectedPriceLabel
+  });
+
+  renderCart();
   closeSizeModal();
 
   // Scroll to reservation
@@ -583,6 +624,40 @@ window.confirmSizeSelection = function() {
   if (bookingSection) {
     bookingSection.scrollIntoView({ behavior: "smooth" });
   }
+};
+
+window.renderCart = function() {
+  const cartContainer = document.getElementById("booking-cart-container");
+  if (!cartContainer) return;
+
+  cartContainer.innerHTML = "";
+
+  if (bookingCart.length === 0) {
+    const emptyText = document.createElement("div");
+    emptyText.className = "cart-empty-text";
+    emptyText.textContent = translations[currentLanguage]["cart-empty"];
+    cartContainer.appendChild(emptyText);
+    return;
+  }
+
+  bookingCart.forEach((item, index) => {
+    const tag = document.createElement("div");
+    tag.className = "cart-item-tag";
+
+    const name = item.name[currentLanguage] || item.name["tr"];
+    const sizeLabel = item.sizeLabel[currentLanguage][item.size];
+    
+    tag.innerHTML = `
+      <span><strong>${name}</strong> (${sizeLabel} - ${item.price})</span>
+      <button type="button" class="cart-item-remove" onclick="removeCartItem(${index})" title="Kaldır">&times;</button>
+    `;
+    cartContainer.appendChild(tag);
+  });
+};
+
+window.removeCartItem = function(index) {
+  bookingCart.splice(index, 1);
+  renderCart();
 };
 
 // 7. Reservation Form Handler (Accumulates multiple reservations in localStorage)
@@ -594,9 +669,15 @@ window.handleBookingSubmit = function(event) {
   const date = document.getElementById("booking-date").value;
   const time = document.getElementById("booking-time").value;
   const guests = document.getElementById("booking-guests").value;
-  const dish = document.getElementById("booking-dish").value;
   const drinkSelect = document.getElementById("booking-drink");
   
+  // Format dish name based on accumulated cart items
+  const dish = bookingCart.map(item => {
+    const name = item.name[currentLanguage] || item.name["tr"];
+    const sizeLabel = item.sizeLabel[currentLanguage][item.size];
+    return `${name} (${sizeLabel} - ${item.price})`;
+  }).join(" + ") || "";
+
   // Format drink option name nicely
   let drink = "";
   if (drinkSelect && drinkSelect.value) {
@@ -638,6 +719,10 @@ window.closePopup = function() {
   if (popup) {
     popup.classList.remove("active");
   }
+  // Clear cart
+  bookingCart = [];
+  renderCart();
+  
   // Reset the form
   const form = document.getElementById("booking-form");
   if (form) form.reset();

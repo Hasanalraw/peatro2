@@ -1287,7 +1287,7 @@
             </div>
           </td>
           <td>
-            ${booking.dish ? `<span class="dish-tag" title="${escapeHTML(booking.dish)}">${escapeHTML(booking.dish)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
+            ${booking.dish ? booking.dish.split(" + ").map(d => `<span class="dish-tag" style="display:block; margin-bottom:4px;" title="${escapeHTML(d)}">${escapeHTML(d)}</span>`).join('') : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
           </td>
           <td>
             ${booking.drink ? `<span class="drink-tag" title="${escapeHTML(booking.drink)}">${escapeHTML(booking.drink)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
