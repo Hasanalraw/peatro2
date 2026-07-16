@@ -2,9 +2,6 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <script>
-    window.location.href = "index.html?admin=true";
-  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pietro Coffee Pizzeria | Yönetici Kontrol Paneli</title>
   <link rel="icon" type="image/svg+xml" href="images/logo.svg">
@@ -575,7 +572,7 @@
 
     .price-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
 
@@ -665,14 +662,17 @@
       
       <!-- Middle Nav Menu Links -->
       <nav>
-        <ul class="admin-nav">
-          <li><a onclick="showTab('reservations')" id="nav-btn-reservations" class="admin-nav-link active">Rezervasyonlar</a></li>
-          <li><a onclick="showTab('menu-mgmt')" id="nav-btn-menu-mgmt" class="admin-nav-link">Menü Yönetimi</a></li>
-          <li><a href="index.html" target="_blank" id="nav-btn-customer" class="admin-nav-link"><i class="fa-solid fa-up-right-from-square"></i> Müşteri Görünümü</a></li>
+        <ul class="admin-nav" style="display: flex; gap: 16px; list-style: none;">
+          <li><a onclick="showTab('reservations')" id="nav-btn-reservations" class="admin-nav-link active" style="cursor: pointer;">Rezervasyonlar</a></li>
+          <li><a onclick="showTab('menu-mgmt')" id="nav-btn-menu-mgmt" class="admin-nav-link" style="cursor: pointer;">Menü Yönetimi</a></li>
         </ul>
       </nav>
 
       <div class="header-actions">
+        <!-- Small Edit Link inside Admin header -->
+        <a onclick="showTab('customer-editor')" id="nav-btn-customer-editor" class="admin-nav-link" style="font-size: 0.85rem; text-transform: none; color: var(--color-gold); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-right: 15px; font-weight: 600;">
+          <i class="fa-solid fa-pen-to-square"></i> Sayfayı Düzenle / Edit Page
+        </a>
         <!-- Language selectors -->
         <div class="lang-switcher">
           <button class="lang-btn active" onclick="changeAdminLang('tr')">TR</button>
@@ -788,7 +788,8 @@
               <select id="dish-category" required>
                 <option value="pizza">Pizzalar (Pizza)</option>
                 <option value="pasta">Makarnalar (Pasta)</option>
-                <option value="drinks">İçecekler (Drinks)</option>
+                <option value="coffee">Kahve (Coffee)</option>
+                <option value="dessert">Tatlı (Dessert)</option>
               </select>
             </div>
 
@@ -811,7 +812,6 @@
             <div class="form-group">
               <label id="lang-label-prices">Fiyatlar (Lira - TL)</label>
               <div class="price-row">
-                <input type="text" id="dish-price-small" required placeholder="Küçük (S) Örn. 340 TL">
                 <input type="text" id="dish-price-medium" required placeholder="Orta (M) Örn. 380 TL">
                 <input type="text" id="dish-price-large" required placeholder="Büyük (L) Örn. 440 TL">
               </div>
@@ -919,6 +919,13 @@
           </form>
         </div>
 
+      </div>
+    </section>
+
+    <!-- TAB 3: CUSTOMER PAGE EDITOR SECTION -->
+    <section id="section-customer-editor" class="admin-section" style="width: 100%; padding: 0;">
+      <div class="dashboard-card" style="padding: 10px; margin-top: 0; background: none; border: none;">
+        <iframe src="index.html?admin=true&v=2.1.0" id="customer-editor-iframe" style="width: 100%; height: calc(100vh - 120px); border: none; border-radius: 8px; background: #0A0A0A;"></iframe>
       </div>
     </section>
 
@@ -1150,7 +1157,11 @@
       document.getElementById("lang-panel-tag").textContent = dict["panel-tag"];
       document.getElementById("nav-btn-reservations").textContent = dict["btn-reservations"];
       document.getElementById("nav-btn-menu-mgmt").textContent = dict["btn-menu-mgmt"];
-      document.getElementById("nav-btn-customer").innerHTML = `<i class="fa-solid fa-up-right-from-square"></i> ${dict["btn-customer"]}`;
+      
+      const editorBtn = document.getElementById("nav-btn-customer-editor");
+      if (editorBtn) {
+        editorBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${lang === "ar" ? "تعديل الموقع" : (lang === "en" ? "Edit Page" : "Sayfayı Düzenle")}`;
+      }
       
       document.getElementById("lang-stat-total").textContent = dict["stat-total"];
       document.getElementById("lang-stat-pending").textContent = dict["stat-pending"];
@@ -1285,8 +1296,9 @@
             <div class="booking-details">
               <strong>${escapeHTML(booking.time)}</strong> | ${dateStr}
               <div style="font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 2px;">
-                <i class="fa-solid fa-users"></i> ${booking.guests} Kişi
+                <i class="fa-solid fa-users"></i> ${booking.guests} Kişi ${booking.table ? `| <span style="color:var(--color-gold); font-weight:600;">${translateTable(booking.table)}</span>` : ''}
               </div>
+              ${booking.notes ? `<div style="font-size:0.75rem; color:#d4af37; margin-top:4px; font-style:italic; max-width:200px; white-space:normal; word-break:break-word;">📝 ${escapeHTML(booking.notes)}</div>` : ''}
             </div>
           </td>
           <td>
@@ -1339,6 +1351,16 @@
       return status;
     }
 
+    function translateTable(table) {
+      if (!table) return "";
+      const tableNames = {
+        indoor: adminActiveLang === "tr" ? "İç Mekan" : (adminActiveLang === "en" ? "Indoor" : "صالة داخلية"),
+        garden: adminActiveLang === "tr" ? "Bahçe" : (adminActiveLang === "en" ? "Garden" : "الحديقة"),
+        window: adminActiveLang === "tr" ? "Cam Kenarı" : (adminActiveLang === "en" ? "Window Side" : "بجانب النافذة")
+      };
+      return tableNames[table] || table;
+    }
+
     function escapeHTML(str) {
       return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
     }
@@ -1352,6 +1374,29 @@
       });
       localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
       loadBookings();
+
+      if (status === "confirmed") {
+        const booking = bookings.find(b => b.id === id);
+        if (booking) {
+          let cleanedPhone = booking.phone.replace(/[^0-9+]/g, "");
+          if (cleanedPhone.startsWith("05")) cleanedPhone = "+90" + cleanedPhone.substring(1);
+          else if (cleanedPhone.startsWith("5")) cleanedPhone = "+90" + cleanedPhone;
+
+          const dateObj = new Date(booking.date);
+          const dateStr = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
+
+          let message = "";
+          if (adminActiveLang === "tr") {
+            message = `Merhaba ${booking.name},\n\nPietro Coffee Pizzeria'dan yapmış olduğunuz masa rezervasyonu talebiniz ONAYLANMIŞTIR.\n\n📅 Tarih: ${dateStr}\n⏰ Saat: ${booking.time}\n👥 Kişi Sayısı: ${booking.guests} Kişi\n📍 Masa: ${translateTable(booking.table)}\n\nSizleri ağırlamaktan mutluluk duyacağız. Görüşmek üzere!`;
+          } else if (adminActiveLang === "en") {
+            message = `Hello ${booking.name},\n\nYour table reservation at Pietro Coffee Pizzeria has been CONFIRMED.\n\n📅 Date: ${dateStr}\n⏰ Time: ${booking.time}\n👥 Guests: ${booking.guests} People\n📍 Table: ${translateTable(booking.table)}\n\nWe look forward to hosting you. See you soon!`;
+          } else {
+            message = `مرحباً ${booking.name}،\n\nتم تأكيد حجز الطاولة الخاص بك في مطعم Pietro Coffee Pizzeria بنجاح.\n\n📅 التاريخ: ${dateStr}\n⏰ الوقت: ${booking.time}\n👥 عدد الأفراد: ${booking.guests} أفراد\n📍 الطاولة: ${translateTable(booking.table)}\n\nنتطلع لاستضافتكم. نراكم قريباً!`;
+          }
+
+          window.open(`https://wa.me/${cleanedPhone}?text=${encodeURIComponent(message)}`, "_blank");
+        }
+      }
     };
 
     window.changePaymentStatus = function(id, newStatus) {
@@ -1435,7 +1480,7 @@
       // Normalize prices
       if (norm.prices) {
         if (norm.prices.tr || norm.prices.en || norm.prices.ar) {
-          const basePrices = norm.prices.tr || norm.prices.en || norm.prices.ar || { small: '0 TL', medium: '0 TL', large: '0 TL' };
+          const basePrices = norm.prices.tr || norm.prices.en || norm.prices.ar || { medium: '0 TL', large: '0 TL' };
           if (!norm.prices.tr) norm.prices.tr = { ...basePrices };
           if (!norm.prices.en) norm.prices.en = { ...basePrices };
           if (!norm.prices.ar) norm.prices.ar = { ...basePrices };
@@ -1449,9 +1494,9 @@
         }
       } else {
         norm.prices = {
-          tr: { small: '0 TL', medium: '0 TL', large: '0 TL' },
-          en: { small: '0 TL', medium: '0 TL', large: '0 TL' },
-          ar: { small: '0 TL', medium: '0 TL', large: '0 TL' }
+          tr: { medium: '0 TL', large: '0 TL' },
+          en: { medium: '0 TL', large: '0 TL' },
+          ar: { medium: '0 TL', large: '0 TL' }
         };
       }
 
@@ -1499,7 +1544,7 @@
             <h4 class="item-name">${escapeHTML(name)}</h4>
             <span class="item-category">${dish.category}</span>
             <div class="item-prices">
-              S: ${prices.small} | M: ${prices.medium} | L: ${prices.large}
+              M: ${prices.medium} | L: ${prices.large}
             </div>
           </div>
           <div class="action-buttons">
@@ -1561,7 +1606,6 @@
       document.getElementById("dish-name-ar").value = dish.name.ar || "";
       
       const currencyPrices = dish.prices.tr || dish.prices.en || dish.prices.ar;
-      document.getElementById("dish-price-small").value = currencyPrices.small;
       document.getElementById("dish-price-medium").value = currencyPrices.medium;
       document.getElementById("dish-price-large").value = currencyPrices.large;
       
@@ -1605,7 +1649,6 @@
       const nameEn = document.getElementById("dish-name-en").value;
       const nameAr = document.getElementById("dish-name-ar").value;
       
-      const priceSmall = document.getElementById("dish-price-small").value;
       const priceMedium = document.getElementById("dish-price-medium").value;
       const priceLarge = document.getElementById("dish-price-large").value;
       
@@ -1638,9 +1681,9 @@
                   desc: { tr: descTr, en: descEn, ar: descAr },
                   ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
                   prices: {
-                    tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
-                    en: { small: priceSmall, medium: priceMedium, large: priceLarge },
-                    ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
+                    tr: { medium: priceMedium, large: priceLarge },
+                    en: { medium: priceMedium, large: priceLarge },
+                    ar: { medium: priceMedium, large: priceLarge }
                   }
                 };
               }
@@ -1670,9 +1713,9 @@
               desc: { tr: descTr, en: descEn, ar: descAr },
               ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
               prices: {
-                tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
-                en: { small: priceSmall, medium: priceMedium, large: priceLarge },
-                ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
+                tr: { medium: priceMedium, large: priceLarge },
+                en: { medium: priceMedium, large: priceLarge },
+                ar: { medium: priceMedium, large: priceLarge }
               }
             };
             customDishes.push(clonedDish);
@@ -1696,9 +1739,9 @@
             desc: { tr: descTr, en: descEn, ar: descAr },
             ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
             prices: {
-              tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
-              en: { small: priceSmall, medium: priceMedium, large: priceLarge },
-              ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
+              tr: { medium: priceMedium, large: priceLarge },
+              en: { medium: priceMedium, large: priceLarge },
+              ar: { medium: priceMedium, large: priceLarge }
             }
           };
           customDishes.push(newDish);

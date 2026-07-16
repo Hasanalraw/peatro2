@@ -14,7 +14,7 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=2.0.2">
+  <link rel="stylesheet" href="style.css?v=2.1.0">
 </head>
 <body>
 
@@ -25,6 +25,9 @@
       <span id="admin-mode-text">Yönetici Düzenleme Modu Aktif | Admin Editing Mode Active</span>
     </div>
     <div class="admin-control-actions" style="display: flex; gap: 8px;">
+      <a href="admin.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem; border-color: var(--color-gold); color: var(--color-gold); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+        <i class="fa-solid fa-gauge"></i> Yönetici Paneli | Admin Panel
+      </a>
       <button class="btn btn-gold" style="padding: 6px 12px; font-size: 0.75rem;" onclick="openNewDishModal()">
         <i class="fa-solid fa-plus"></i> Yeni Yemek Ekle
       </button>
@@ -43,6 +46,12 @@
   <!-- Header & Navigation -->
   <header class="site-header">
     <div class="header-container">
+      <!-- Header Cart Icon -->
+      <button class="header-cart-icon" onclick="toggleCartDrawer()" aria-label="Cart" style="position: relative; background: none; border: none; color: var(--color-text-light); font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 8px;">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="header-cart-badge" class="header-cart-badge" style="position: absolute; top: -2px; right: -2px; background-color: var(--color-gold); color: #000000; font-size: 0.65rem; font-weight: bold; min-width: 16px; height: 16px; border-radius: 8px; display: none; align-items: center; justify-content: center; padding: 0 2px;">0</span>
+      </button>
+
       <a href="#home" class="logo-area">
         <img src="images/logo.svg" alt="Pietro Logo" class="header-logo" data-img-key="header-logo-img">
         <span class="logo-text" data-key="logo-text">Pietro</span>
@@ -69,11 +78,6 @@
 
       <!-- Language & CTA Actions -->
       <div class="header-actions">
-        <!-- Header Cart Icon -->
-        <button class="header-cart-icon" onclick="toggleCartDrawer()" aria-label="Cart" style="position: relative; background: none; border: none; color: var(--color-text-light); font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 8px;">
-          <i class="fa-solid fa-cart-shopping"></i>
-          <span id="header-cart-badge" class="header-cart-badge" style="position: absolute; top: -2px; right: -2px; background-color: var(--color-gold); color: #000000; font-size: 0.65rem; font-weight: bold; min-width: 16px; height: 16px; border-radius: 8px; display: none; align-items: center; justify-content: center; padding: 0 2px;">0</span>
-        </button>
         <!-- Language Selector -->
         <div class="lang-selector">
           <button class="lang-btn active" data-lang="tr">TR</button>
@@ -152,9 +156,10 @@
       <!-- Menu Filters -->
       <div class="menu-filters">
         <button class="filter-btn active" data-filter="all" data-key="filter-all">Tümü</button>
-        <button class="filter-btn" data-filter="pizza" data-key="filter-pizza">Pizzalar</button>
-        <button class="filter-btn" data-filter="pasta" data-key="filter-pasta">Makarnalar</button>
-        <button class="filter-btn" data-filter="drinks" data-key="filter-drinks">İçecekler</button>
+        <button class="filter-btn" data-filter="pizza" data-key="filter-pizza">Pizza</button>
+        <button class="filter-btn" data-filter="pasta" data-key="filter-pasta">Makarna</button>
+        <button class="filter-btn" data-filter="coffee" data-key="filter-coffee">Kahve</button>
+        <button class="filter-btn" data-filter="dessert" data-key="filter-dessert">Tatlı</button>
       </div>
     </div>
 
@@ -171,14 +176,14 @@
         <h3 class="section-subtitle text-gold" data-key="reserve-subtitle">İtalyan Gecenizi Şimdiden Planlayın</h3>
         <p class="reservation-info-text" data-key="reserve-text">Pietro Coffee Pizzeria'da kendiniz ve sevdikleriniz için bir masa ayırtın. Sıcak atmosferimiz ve benzersiz İtalyan tatlarımızla sizleri ağırlamaktan mutluluk duyacağız.</p>
         <div class="contact-details-list">
-          <div class="contact-detail-item">
+          <div class="contact-detail-item" data-contact-group="phone">
             <i class="fa-solid fa-phone text-gold"></i>
             <div>
               <h5 data-key="contact-phone">Telefon</h5>
               <p data-key="contact-phone-val">+90 530 000 00 00</p>
             </div>
           </div>
-          <div class="contact-detail-item">
+          <div class="contact-detail-item" data-contact-group="hours">
             <i class="fa-solid fa-clock text-gold"></i>
             <div>
               <h5 data-key="contact-hours">Çalışma Saatleri</h5>
@@ -220,8 +225,19 @@
                 <option value="8">8 Kişi veya Üzeri</option>
               </select>
             </div>
+            <div class="form-group">
+              <label for="booking-table" data-key="label-table">Masa Tercihi</label>
+              <select id="booking-table" required>
+                <option value="indoor" data-key="option-table-indoor" selected>İç Mekan</option>
+                <option value="garden" data-key="option-table-garden">Bahçe</option>
+                <option value="window" data-key="option-table-window">Cam Kenarı</option>
+              </select>
+            </div>
             <div class="form-group" style="grid-column: 1 / -1;">
-              <label id="lang-label-selected-dishes" data-key="label-selected-dishes">Seçilen Yemekler</label>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <label id="lang-label-selected-dishes" data-key="label-selected-dishes" style="margin-bottom: 0;">Seçilen Yemekler</label>
+                <button type="button" class="btn-edit-cart-link" onclick="openCartDrawer()" data-key="btn-edit-cart-link" style="color: var(--color-gold); font-size: 0.85rem; font-weight: 500; cursor: pointer; text-decoration: underline; background: none; border: none; padding: 0;">Sepeti Düzenle</button>
+              </div>
               <div id="booking-cart-container" class="booking-cart-container">
                 <!-- Dynamically populated cart items -->
               </div>
@@ -231,6 +247,10 @@
               <select id="booking-drink">
                 <!-- Dynamically populated via script.js -->
               </select>
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label for="booking-notes" data-key="label-notes">Rezervasyon Notları</label>
+              <textarea id="booking-notes" rows="3" placeholder="Özel talepleriniz veya notlarınız..."></textarea>
             </div>
           </div>
           <button type="submit" class="btn btn-gold btn-block" data-key="btn-book-now" style="margin-top: 1.5rem;">Şimdi Rezervasyon Yap</button>
@@ -310,19 +330,19 @@
         <h3 class="section-subtitle text-gold" data-key="contact-subtitle">Bizleri Ziyaret Edin</h3>
         
         <ul class="contact-info-list">
-          <li>
+          <li data-contact-group="address">
             <i class="fa-solid fa-location-dot"></i>
             <span data-key="contact-address-val">Rüstempaşa Mahallesi, Park Sk. No:3 D:1, 77200 Yalova Merkez/Yalova, Türkiye</span>
           </li>
-          <li>
+          <li data-contact-group="phone">
             <i class="fa-solid fa-phone"></i>
             <span data-key="contact-phone-val">+90 530 000 00 00</span>
           </li>
-          <li>
+          <li data-contact-group="email">
             <i class="fa-solid fa-envelope"></i>
             <span data-key="contact-email-val">info@pietroyalova.com</span>
           </li>
-          <li>
+          <li data-contact-group="hours">
             <i class="fa-solid fa-clock"></i>
             <span data-key="contact-hours-desc">Her Gün: 10:00 - 20:00</span>
           </li>
@@ -396,14 +416,6 @@
       <h4 id="size-modal-dish-title" class="size-modal-dish-title">Dish Title</h4>
       
       <div class="size-options-container">
-        <!-- Small Size Option -->
-        <div class="size-option-card" onclick="selectSize('small')" id="size-card-small">
-          <div class="size-option-details">
-            <span class="size-name" data-key="size-small">Küçük</span>
-            <span class="size-price" id="price-small">0 TL</span>
-          </div>
-          <div class="size-selector-radio"></div>
-        </div>
         <!-- Medium Size Option -->
         <div class="size-option-card active" onclick="selectSize('medium')" id="size-card-medium">
           <div class="size-option-details">
@@ -423,8 +435,8 @@
       </div>
       
       <div class="modal-action-buttons" style="display: flex; gap: 10px; margin-top: 1.5rem;">
-        <button class="btn btn-outline" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="addMoreFoodToCart()" data-key="btn-add-more">Daha Fazla Yemek Ekle</button>
-        <button class="btn btn-gold" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="confirmBookingWithCart()" data-key="btn-confirm-booking">Hemen Rezerve Et</button>
+        <button class="btn btn-outline" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="closeSizeModal()" data-key="btn-close">Kapat</button>
+        <button class="btn btn-gold" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="addMoreFoodToCart()" data-key="btn-add-to-cart">Sepete Ekle</button>
       </div>
     </div>
   </div>
@@ -582,9 +594,10 @@
           <div style="flex:1;">
             <label style="display:block; font-size:0.8rem; color:var(--color-text-secondary); margin-bottom:4px;">Kategori | Category</label>
             <select id="edit-dish-category" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:#0F0F0F; color:#FFF;">
-              <option value="pizza">Pizza</option>
-              <option value="pasta">Pasta</option>
-              <option value="drinks">Drink</option>
+              <option value="pizza" data-key="filter-pizza">Pizza</option>
+              <option value="pasta" data-key="filter-pasta">Makarna</option>
+              <option value="coffee" data-key="filter-coffee">Kahve</option>
+              <option value="dessert" data-key="filter-dessert">Tatlı</option>
             </select>
           </div>
         </div>
@@ -609,11 +622,7 @@
 
         <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:10px;">
           <h4 style="color:var(--color-gold); font-size:0.9rem; margin-bottom:10px;">Fiyatlar | Prices</h4>
-          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
-            <div>
-              <label style="display:block; font-size:0.75rem; color:var(--color-text-secondary); margin-bottom:4px;">Küçük | Small</label>
-              <input type="text" id="edit-dish-price-small" placeholder="340 TL" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF;">
-            </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <div>
               <label style="display:block; font-size:0.75rem; color:var(--color-text-secondary); margin-bottom:4px;">Orta | Medium</label>
               <input type="text" id="edit-dish-price-medium" placeholder="380 TL" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF;">
@@ -684,7 +693,66 @@
     </div>
   </div>
 
+  <!-- Unified Contact Group Modal -->
+  <div id="admin-contact-modal" class="modal-overlay" onclick="closeAdminModalOnOutsideClick('admin-contact-modal', event)">
+    <div class="modal-card" style="max-width: 500px; max-height: 90vh; overflow-y: auto; background-color: var(--color-bg-card); padding: 25px; border-radius: 8px; border: 1px solid var(--color-gold); position: relative; margin: 30px auto;">
+      <button class="modal-close-btn" onclick="closeAdminModal('admin-contact-modal')" style="color:#FFF;">&times;</button>
+      <h3 id="admin-contact-modal-title" style="font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: var(--color-gold); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+        İletişim Düzenle | Edit Contact
+      </h3>
+      
+      <input type="hidden" id="edit-contact-group-id" value="">
+      <input type="hidden" id="edit-contact-title-keys" value="">
+      <input type="hidden" id="edit-contact-value-keys" value="">
+
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <!-- Title fields (TR, EN, AR) -->
+        <div id="contact-title-fields-container">
+          <h4 style="color:var(--color-gold); font-size:0.9rem; margin-bottom:10px;">Başlık | Title</h4>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div>
+              <label style="display:block; font-size:0.75rem; color:var(--color-text-secondary); margin-bottom:4px;">TR</label>
+              <input type="text" id="edit-contact-title-tr" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.75rem; color:var(--color-text-secondary); margin-bottom:4px;">EN</label>
+              <input type="text" id="edit-contact-title-en" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.75rem; color:var(--color-text-secondary); margin-bottom:4px;">AR</label>
+              <input type="text" id="edit-contact-title-ar" dir="rtl" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Value fields (TR, EN, AR) -->
+        <div>
+          <h4 style="color:var(--color-gold); font-size:0.9rem; margin-bottom:10px;">Değer / İçerik | Value / Content</h4>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div>
+              <label style="display:block; font-size:0.75rem; color:var(--color-text-secondary); margin-bottom:4px;">TR</label>
+              <textarea id="edit-contact-value-tr" rows="2" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF; font-family:var(--font-sans);"></textarea>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.75rem; color:var(--color-text-secondary); margin-bottom:4px;">EN</label>
+              <textarea id="edit-contact-value-en" rows="2" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF; font-family:var(--font-sans);"></textarea>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.75rem; color:var(--color-text-secondary); margin-bottom:4px;">AR</label>
+              <textarea id="edit-contact-value-ar" rows="2" dir="rtl" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF; font-family:var(--font-sans);"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 10px; margin-top:25px;">
+        <button class="btn btn-outline" style="flex:1;" onclick="closeAdminModal('admin-contact-modal')">İptal | Cancel</button>
+        <button class="btn btn-gold" style="flex:1;" onclick="saveAdminContact()">Kaydet | Save</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Custom Scripts -->
-  <script src="script.js?v=2.0.2"></script>
+  <script src="script.js?v=2.1.0"></script>
 </body>
 </html>

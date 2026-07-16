@@ -94,6 +94,14 @@ const defaultTranslations = {
     "label-date": "Tarih",
     "label-time": "Saat",
     "label-guests": "Kişi Sayısı",
+    "label-table": "Masa Tercihi",
+    "option-table-indoor": "İç Mekan",
+    "option-table-garden": "Bahçe",
+    "option-table-window": "Cam Kenarı",
+    "label-notes": "Rezervasyon Notları",
+    "btn-edit-cart-link": "Sepeti Düzenle",
+    "filter-coffee": "Kahve",
+    "filter-dessert": "Tatlı",
     "label-dish": "Tercih Ettiğiniz Yemek (İsteğe Bağlı)",
     "label-drink": "Tercih Ettiğiniz İçecek (İsteğe Bağlı)",
     "option-no-drink": "İçecek seçin (İsteğe bağlı)",
@@ -194,6 +202,14 @@ const defaultTranslations = {
     "label-date": "Date",
     "label-time": "Time",
     "label-guests": "Number of Guests",
+    "label-table": "Table Choice",
+    "option-table-indoor": "Indoor",
+    "option-table-garden": "Garden",
+    "option-table-window": "Window Side",
+    "label-notes": "Reservation Notes",
+    "btn-edit-cart-link": "Edit Cart",
+    "filter-coffee": "Coffee",
+    "filter-dessert": "Dessert",
     "label-dish": "Preferred Dish (Optional)",
     "label-drink": "Preferred Drink (Optional)",
     "option-no-drink": "Select a drink (Optional)",
@@ -294,6 +310,14 @@ const defaultTranslations = {
     "label-date": "التاريخ",
     "label-time": "الوقت",
     "label-guests": "عدد الأفراد",
+    "label-table": "اختيار الطاولة",
+    "option-table-indoor": "صالة داخلية",
+    "option-table-garden": "الحديقة",
+    "option-table-window": "بجانب النافذة",
+    "label-notes": "ملاحظات الحجز",
+    "btn-edit-cart-link": "تعديل السلة",
+    "filter-coffee": "القهوة",
+    "filter-dessert": "الحلويات",
     "label-dish": "الوجبة المفضلة (اختياري)",
     "label-drink": "المشروب المفضل (اختياري)",
     "option-no-drink": "اختر مشروباً (اختياري)",
@@ -372,9 +396,17 @@ let adminMode = false;
 // 4.1 Admin Mode Management
 window.checkAdminMode = function() {
   const params = new URLSearchParams(window.location.search);
-  if (params.get("admin") === "true") {
+  const isAdminParam = params.get("admin") === "true";
+  
+  if (isAdminParam) {
+    if (window.self === window.top) {
+      // Standalone page loaded with ?admin=true - redirect to admin dashboard!
+      window.location.href = "admin.html";
+      return;
+    }
     activateAdminMode();
   } else {
+    // Standalone page loaded without ?admin=true - do not redirect so they can view the customer page normally
     const stored = sessionStorage.getItem("pietro_admin_mode");
     if (stored === "true") {
       activateAdminMode();
@@ -405,7 +437,8 @@ window.activateAdminMode = function() {
 window.promptAdminLogin = function() {
   const pw = prompt("Yönetici Şifresi / Admin Password:");
   if (pw === "admin123") {
-    activateAdminMode();
+    sessionStorage.setItem("pietro_admin_mode", "true");
+    window.location.href = "admin.html"; // Go directly to admin panel dashboard!
   } else if (pw !== null) {
     alert("Hatalı Şifre! / Incorrect Password!");
   }
@@ -492,6 +525,54 @@ function persistSiteConfig() {
   initializeVisualEditor();
 }
 
+// Helper to create circular, consistent edit buttons with forced inline styles
+function createEditButton(title, onClick) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "edit-overlay-btn";
+  
+  // Set all properties with !important to override any cached/polluted CSS rules
+  btn.style.setProperty("position", "absolute", "important");
+  btn.style.setProperty("top", "-10px", "important");
+  btn.style.setProperty("right", "-10px", "important");
+  btn.style.setProperty("width", "22px", "important");
+  btn.style.setProperty("height", "22px", "important");
+  btn.style.setProperty("border-radius", "50%", "important");
+  btn.style.setProperty("background-color", "var(--color-gold)", "important");
+  btn.style.setProperty("border", "1px solid #FFFFFF", "important");
+  btn.style.setProperty("padding", "0", "important");
+  btn.style.setProperty("font-size", "0.75rem", "important");
+  btn.style.setProperty("cursor", "pointer", "important");
+  btn.style.setProperty("z-index", "900", "important"); // lower than header (1000) and admin bar (5000)
+  btn.style.setProperty("display", "inline-flex", "important");
+  btn.style.setProperty("align-items", "center", "important");
+  btn.style.setProperty("justify-content", "center", "important");
+  btn.style.setProperty("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.4)", "important");
+  btn.style.setProperty("transition", "transform 0.2s, background-color 0.2s", "important");
+  
+  btn.title = title;
+  btn.innerHTML = `<i class="fa-solid fa-pen" style="color: #000000 !important; font-size: 0.75rem !important; pointer-events: none !important;"></i>`;
+  btn.onclick = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    onClick(e);
+  };
+
+  // Hover animations
+  btn.onmouseenter = function() {
+    btn.style.setProperty("transform", "scale(1.15)", "important");
+    btn.style.setProperty("background-color", "#FFFFFF", "important");
+    btn.querySelector("i").style.setProperty("color", "var(--color-gold)", "important");
+  };
+  btn.onmouseleave = function() {
+    btn.style.setProperty("transform", "none", "important");
+    btn.style.setProperty("background-color", "var(--color-gold)", "important");
+    btn.querySelector("i").style.setProperty("color", "#000000", "important");
+  };
+
+  return btn;
+}
+
 // 4.3 Visual Inline Editing Overlay Injections
 window.initializeVisualEditor = function() {
   // Remove existing edit buttons
@@ -500,47 +581,44 @@ window.initializeVisualEditor = function() {
 
   if (!adminMode) return;
 
-  // 1. Text elements with data-key (skip system elements)
+  // 1. Text elements with data-key (skip system elements and grouped contact items)
   document.querySelectorAll("[data-key]").forEach(el => {
     if (el.tagName === "OPTION" || el.tagName === "SCRIPT" || el.tagName === "STYLE" || el.tagName === "BUTTON") return;
+    if (el.closest("[data-contact-group]")) return; // Skip grouped contact elements
     
-    // Skip if child has edit overlay
     el.classList.add("editable-parent");
     const key = el.getAttribute("data-key");
     
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "edit-overlay-btn";
-    btn.innerHTML = `<i class="fa-solid fa-pen"></i>`;
-    btn.title = "Metni Düzenle / Edit Text";
-    btn.onclick = function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+    const btn = createEditButton("Metni Düzenle / Edit Text", function() {
       openTextEditModal(key);
-    };
+    });
     el.appendChild(btn);
   });
 
-  // 2. Images with data-img-key
+  // 2. Contact Groups (Phone, Hours, Email, Address)
+  document.querySelectorAll("[data-contact-group]").forEach(el => {
+    el.classList.add("editable-parent");
+    const groupName = el.getAttribute("data-contact-group");
+
+    const btn = createEditButton("İletişimi Düzenle / Edit Contact Group", function() {
+      openContactEditModal(groupName);
+    });
+    el.appendChild(btn);
+  });
+
+  // 3. Images with data-img-key
   document.querySelectorAll("[data-img-key]").forEach(el => {
     const parent = el.parentElement;
     parent.classList.add("editable-parent");
     const key = el.getAttribute("data-img-key");
 
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "edit-overlay-btn";
-    btn.innerHTML = `<i class="fa-solid fa-camera"></i>`;
-    btn.title = "Görseli Değiştir / Replace Image";
-    btn.onclick = function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+    const btn = createEditButton("Görseli Değiştir / Replace Image", function() {
       openImageEditModal(key);
-    };
+    });
     parent.appendChild(btn);
   });
 
-  // 3. Section Backgrounds
+  // 4. Section Backgrounds
   const sectionsWithBg = [
     { id: "home", name: "Hero", key: "heroBg" },
     { id: "reservation", name: "Reservation", key: "reservationBg" },
@@ -551,36 +629,110 @@ window.initializeVisualEditor = function() {
     const el = document.getElementById(sec.id);
     if (el) {
       el.classList.add("editable-parent");
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "edit-overlay-btn";
-      btn.style.top = "15px";
-      btn.style.right = "15px";
-      btn.innerHTML = `<i class="fa-solid fa-image"></i> Edit Bg`;
-      btn.onclick = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+      const btn = createEditButton("Arka Planı Düzenle / Edit Background", function() {
         openBgEditModal(sec.id, sec.key);
-      };
+      });
+      // Section background buttons are offset differently so they sit inside the section padded area
+      btn.style.setProperty("top", "15px", "important");
+      btn.style.setProperty("right", "15px", "important");
+      btn.className = "edit-overlay-btn edit-bg-btn";
       el.appendChild(btn);
     }
   });
 
-  // 4. Social Links Container
+  // 5. Social Links Container
   const socialContainer = document.getElementById("site-social-links-container");
   if (socialContainer) {
     socialContainer.classList.add("editable-parent");
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "edit-overlay-btn";
-    btn.innerHTML = `<i class="fa-solid fa-share-nodes"></i>`;
-    btn.onclick = function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+    const btn = createEditButton("Sosyal Medya Linklerini Düzenle / Edit Social Links", function() {
       openSocialEditModal();
-    };
+    });
     socialContainer.appendChild(btn);
   }
+};
+
+window.openContactEditModal = function(groupName) {
+  const groupConfig = {
+    phone: {
+      title: "Telefon Düzenle | Edit Phone",
+      titleKey: "contact-phone",
+      valueKey: "contact-phone-val"
+    },
+    hours: {
+      title: "Çalışma Saatleri Düzenle | Edit Working Hours",
+      titleKey: "contact-hours",
+      valueKey: "contact-hours-desc"
+    },
+    address: {
+      title: "Adres Düzenle | Edit Address",
+      titleKey: null,
+      valueKey: "contact-address-val"
+    },
+    email: {
+      title: "E-posta Düzenle | Edit Email",
+      titleKey: null,
+      valueKey: "contact-email-val"
+    }
+  };
+
+  const config = groupConfig[groupName];
+  if (!config) return;
+
+  document.getElementById("edit-contact-group-id").value = groupName;
+  document.getElementById("admin-contact-modal-title").textContent = config.title;
+  
+  if (config.titleKey) {
+    document.getElementById("contact-title-fields-container").style.display = "block";
+    document.getElementById("edit-contact-title-keys").value = config.titleKey;
+    document.getElementById("edit-contact-title-tr").value = translations.tr[config.titleKey] || "";
+    document.getElementById("edit-contact-title-en").value = translations.en[config.titleKey] || "";
+    document.getElementById("edit-contact-title-ar").value = translations.ar[config.titleKey] || "";
+  } else {
+    document.getElementById("contact-title-fields-container").style.display = "none";
+    document.getElementById("edit-contact-title-keys").value = "";
+  }
+
+  document.getElementById("edit-contact-value-keys").value = config.valueKey;
+  document.getElementById("edit-contact-value-tr").value = translations.tr[config.valueKey] || "";
+  document.getElementById("edit-contact-value-en").value = translations.en[config.valueKey] || "";
+  document.getElementById("edit-contact-value-ar").value = translations.ar[config.valueKey] || "";
+
+  openModal("admin-contact-modal");
+};
+
+window.saveAdminContact = function() {
+  const groupName = document.getElementById("edit-contact-group-id").value;
+  const titleKey = document.getElementById("edit-contact-title-keys").value;
+  const valueKey = document.getElementById("edit-contact-value-keys").value;
+
+  if (!translations.tr) translations.tr = {};
+  if (!translations.en) translations.en = {};
+  if (!translations.ar) translations.ar = {};
+
+  if (titleKey) {
+    translations.tr[titleKey] = document.getElementById("edit-contact-title-tr").value;
+    translations.en[titleKey] = document.getElementById("edit-contact-title-en").value;
+    translations.ar[titleKey] = document.getElementById("edit-contact-title-ar").value;
+  }
+
+  translations.tr[valueKey] = document.getElementById("edit-contact-value-tr").value;
+  translations.en[valueKey] = document.getElementById("edit-contact-value-en").value;
+  translations.ar[valueKey] = document.getElementById("edit-contact-value-ar").value;
+
+  // Also update standard values in siteConfig for compatibility (if any)
+  if (groupName === "phone") {
+    siteConfig.phoneVal = document.getElementById("edit-contact-value-tr").value;
+  } else if (groupName === "email") {
+    siteConfig.emailVal = document.getElementById("edit-contact-value-tr").value;
+  } else if (groupName === "address") {
+    siteConfig.addressVal = document.getElementById("edit-contact-value-tr").value;
+  }
+
+  localStorage.setItem("pietro_translations", JSON.stringify(translations));
+  persistSiteConfig();
+  closeAdminModal("admin-contact-modal");
+  setLanguage(currentLanguage);
+  initializeVisualEditor();
 };
 
 // 4.4 Admin Modal Windows Action Triggers
@@ -806,27 +958,32 @@ function setLanguage(lang) {
     tr: {
       name: "Örn. Ahmet Yılmaz",
       phone: "Örn. +90 530 123 4567",
-      dish: "Örn. Pizza Pietro (Orta - 540 TL)"
+      dish: "Örn. Pizza Pietro (Orta - 540 TL)",
+      notes: "Örn. Doğum günü kutlaması, bahçe katı vb."
     },
     en: {
       name: "e.g. John Doe",
       phone: "e.g. +1 (555) 123-4567",
-      dish: "e.g. Pizza Pietro (Medium - 540 TL)"
+      dish: "e.g. Pizza Pietro (Medium - 540 TL)",
+      notes: "e.g. Birthday celebration, window seat etc."
     },
     ar: {
       name: "مثال: أحمد محمد",
       phone: "مثال: +966 50 123 4567",
-      dish: "مثال: بيتزا بيترو (متوسطة - 540 TL)"
+      dish: "مثال: بيتزا بيترو (متوسطة - 540 TL)",
+      notes: "مثال: حفل عيد ميلاد، طاولة بجانب النافذة إلخ."
     }
   };
 
   const nameInput = document.getElementById("booking-name");
   const phoneInput = document.getElementById("booking-phone");
   const dishInput = document.getElementById("booking-dish");
+  const notesInput = document.getElementById("booking-notes");
 
   if (nameInput) nameInput.placeholder = placeholders[lang].name;
   if (phoneInput) phoneInput.placeholder = placeholders[lang].phone;
   if (dishInput) dishInput.placeholder = placeholders[lang].dish;
+  if (notesInput) notesInput.placeholder = placeholders[lang].notes;
 
   // Update WhatsApp text on the link
   updateWhatsAppLink(lang);
@@ -839,6 +996,9 @@ function setLanguage(lang) {
   
   // Re-render menu using new active language translations
   renderMenu();
+
+  // Re-apply admin overlays in visual editor
+  initializeVisualEditor();
 }
 
 // 4. Dynamic WhatsApp Link generator based on active language
@@ -1285,6 +1445,8 @@ window.handleBookingSubmit = function(event) {
   const date = document.getElementById("booking-date").value;
   const time = document.getElementById("booking-time").value;
   const guests = document.getElementById("booking-guests").value;
+  const table = document.getElementById("booking-table").value;
+  const notes = document.getElementById("booking-notes").value;
   const drinkSelect = document.getElementById("booking-drink");
   
   // Format dish name based on accumulated cart items
@@ -1312,9 +1474,12 @@ window.handleBookingSubmit = function(event) {
     date,
     time,
     guests,
-    dish: dish || "",      // SEPARATED!
-    drink: drink || "",    // SEPARATED!
+    table,
+    notes,
+    dish: dish || "",
+    drink: drink || "",
     status: "pending",
+    paymentStatus: "unpaid",
     timestamp: new Date().toISOString()
   };
   bookings.unshift(newBooking); // add to top
@@ -1323,12 +1488,62 @@ window.handleBookingSubmit = function(event) {
   // Dispatch storage update trigger event for local tab-to-tab sync
   localStorage.setItem("pietro_new_booking_event", Date.now().toString());
 
+  // Trigger WhatsApp API message checkout
+  let messageText = "";
+  if (currentLanguage === "tr") {
+    messageText = `Merhaba, Pietro Coffee Pizzeria'dan masa rezervasyonu yapmak istiyorum:\n\n` +
+                  `👤 İsim: ${name}\n` +
+                  `📞 Telefon: ${phone}\n` +
+                  `📅 Tarih: ${date}\n` +
+                  `⏰ Saat: ${time}\n` +
+                  `👥 Kişi Sayısı: ${guests}\n` +
+                  `📍 Masa Tercihi: ${translateTableLocal(table, "tr")}\n` +
+                  (dish ? `🍕 Seçilen Yemekler: ${dish}\n` : "") +
+                  (drink ? `🍹 Seçilen İçecek: ${drink}\n` : "") +
+                  (notes ? `📝 Notlar: ${notes}\n` : "");
+  } else if (currentLanguage === "en") {
+    messageText = `Hello, I would like to book a table at Pietro Coffee Pizzeria:\n\n` +
+                  `👤 Name: ${name}\n` +
+                  `📞 Phone: ${phone}\n` +
+                  `📅 Date: ${date}\n` +
+                  `⏰ Time: ${time}\n` +
+                  `👥 Guests: ${guests}\n` +
+                  `📍 Table Preference: ${translateTableLocal(table, "en")}\n` +
+                  (dish ? `🍕 Selected Dishes: ${dish}\n` : "") +
+                  (drink ? `🍹 Selected Drink: ${drink}\n` : "") +
+                  (notes ? `📝 Notes: ${notes}\n` : "");
+  } else {
+    messageText = `مرحباً، أود حجز طاولة في مطعم Pietro Coffee Pizzeria:\n\n` +
+                  `👤 الاسم: ${name}\n` +
+                  `📞 الهاتف: ${phone}\n` +
+                  `📅 التاريخ: ${date}\n` +
+                  `⏰ الوقت: ${time}\n` +
+                  `👥 عدد الأفراد: ${guests}\n` +
+                  `📍 تفضيل الطاولة: ${translateTableLocal(table, "ar")}\n` +
+                  (dish ? `🍕 الوجبات المختارة: ${dish}\n` : "") +
+                  (drink ? `🍹 المشروب المختار: ${drink}\n` : "") +
+                  (notes ? `📝 ملاحظات: ${notes}\n` : "");
+  }
+
+  const encodedMessage = encodeURIComponent(messageText);
+  window.open(`https://wa.me/905300000000?text=${encodedMessage}`, "_blank");
+
   // Show Success Popup Modal card
   const popup = document.getElementById("form-success-popup");
   if (popup) {
     popup.classList.add("active");
   }
 };
+
+function translateTableLocal(table, lang) {
+  if (!table) return "";
+  const tableNames = {
+    tr: { indoor: "İç Mekan", garden: "Bahçe", window: "Cam Kenarı" },
+    en: { indoor: "Indoor", garden: "Garden", window: "Window Side" },
+    ar: { indoor: "صالة داخلية", garden: "الحديقة", window: "بجانب النافذة" }
+  };
+  return (tableNames[lang] || tableNames["tr"])[table] || table;
+}
 
 window.closePopup = function() {
   const popup = document.getElementById("form-success-popup");
@@ -1435,7 +1650,7 @@ function normalizeDish(dish) {
   // Normalize prices (handles old flat vs new nested tr/en/ar format)
   if (norm.prices) {
     if (norm.prices.tr || norm.prices.en || norm.prices.ar) {
-      const basePrices = norm.prices.tr || norm.prices.en || norm.prices.ar || { small: '0 TL', medium: '0 TL', large: '0 TL' };
+      const basePrices = norm.prices.tr || norm.prices.en || norm.prices.ar || { medium: '0 TL', large: '0 TL' };
       if (!norm.prices.tr) norm.prices.tr = { ...basePrices };
       if (!norm.prices.en) norm.prices.en = { ...basePrices };
       if (!norm.prices.ar) norm.prices.ar = { ...basePrices };
@@ -1449,9 +1664,9 @@ function normalizeDish(dish) {
     }
   } else {
     norm.prices = {
-      tr: { small: '0 TL', medium: '0 TL', large: '0 TL' },
-      en: { small: '0 TL', medium: '0 TL', large: '0 TL' },
-      ar: { small: '0 TL', medium: '0 TL', large: '0 TL' }
+      tr: { medium: '0 TL', large: '0 TL' },
+      en: { medium: '0 TL', large: '0 TL' },
+      ar: { medium: '0 TL', large: '0 TL' }
     };
   }
 
@@ -1661,7 +1876,6 @@ window.openNewDishModal = function() {
   document.getElementById("edit-dish-name-en").value = "";
   document.getElementById("edit-dish-name-ar").value = "";
 
-  document.getElementById("edit-dish-price-small").value = "";
   document.getElementById("edit-dish-price-medium").value = "";
   document.getElementById("edit-dish-price-large").value = "";
 
@@ -1699,7 +1913,6 @@ window.openEditDishModal = function(id, event) {
   document.getElementById("edit-dish-name-en").value = dish.name.en || "";
   document.getElementById("edit-dish-name-ar").value = dish.name.ar || "";
 
-  document.getElementById("edit-dish-price-small").value = dish.prices.tr.small || "";
   document.getElementById("edit-dish-price-medium").value = dish.prices.tr.medium || "";
   document.getElementById("edit-dish-price-large").value = dish.prices.tr.large || "";
 
@@ -1729,7 +1942,6 @@ window.saveAdminDish = function() {
   const nameEn = document.getElementById("edit-dish-name-en").value.trim();
   const nameAr = document.getElementById("edit-dish-name-ar").value.trim();
 
-  const priceSmall = document.getElementById("edit-dish-price-small").value.trim() || "0 TL";
   const priceMedium = document.getElementById("edit-dish-price-medium").value.trim() || "0 TL";
   const priceLarge = document.getElementById("edit-dish-price-large").value.trim() || "0 TL";
 
@@ -1757,9 +1969,9 @@ window.saveAdminDish = function() {
       desc: { tr: descTr, en: descEn || descTr, ar: descAr || descTr },
       ingredients: { tr: ingTr, en: ingEn || ingTr, ar: ingAr || ingTr },
       prices: {
-        tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
-        en: { small: priceSmall, medium: priceMedium, large: priceLarge },
-        ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
+        tr: { medium: priceMedium, large: priceLarge },
+        en: { medium: priceMedium, large: priceLarge },
+        ar: { medium: priceMedium, large: priceLarge }
       },
       image: imagesList[0],
       images: imagesList

@@ -1978,32 +1978,63 @@ body.admin-mode-active .site-header {
 
 .edit-overlay-btn {
   position: absolute;
-  top: 2px;
-  right: 2px;
+  top: -10px;
+  right: -10px;
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
   background-color: var(--color-gold) !important;
   color: #000000 !important;
-  border: none !important;
-  border-radius: 4px !important;
-  padding: 4px 8px !important;
-  font-size: 0.7rem !important;
-  font-weight: bold !important;
+  border: 1px solid #FFFFFF !important;
+  padding: 0 !important;
+  font-size: 0.75rem !important;
   cursor: pointer !important;
-  z-index: 9999 !important;
+  z-index: 900 !important;
   display: none !important;
   align-items: center !important;
-  gap: 4px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
-  font-family: var(--font-sans) !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4) !important;
   transition: transform 0.2s, background-color 0.2s !important;
 }
 
+.edit-overlay-btn i {
+  color: #000000 !important;
+}
+
+body.admin-mode-active span.editable-parent, 
+body.admin-mode-active a.editable-parent, 
+body.admin-mode-active p.editable-parent, 
+body.admin-mode-active h1.editable-parent, 
+body.admin-mode-active h2.editable-parent, 
+body.admin-mode-active h3.editable-parent, 
+body.admin-mode-active h4.editable-parent, 
+body.admin-mode-active h5.editable-parent {
+  display: inline-block !important;
+}
+
+html[dir="rtl"] .edit-overlay-btn {
+  right: auto !important;
+  left: -10px !important;
+}
+
 .edit-overlay-btn:hover {
-  transform: scale(1.05) !important;
+  transform: scale(1.15) !important;
   background-color: #FFFFFF !important;
+  color: var(--color-gold) !important;
 }
 
 body.admin-mode-active .edit-overlay-btn {
-  display: inline-flex !important;
+  display: flex !important;
+}
+
+.edit-bg-btn {
+  top: 15px !important;
+  right: 15px !important;
+  left: auto !important;
+}
+html[dir="rtl"] .edit-bg-btn {
+  right: auto !important;
+  left: 15px !important;
 }
 
 /* Special styling for image editing outline */
@@ -2012,9 +2043,52 @@ body.admin-mode-active img[data-img-key] {
   cursor: pointer;
 }
 
+/* Dark theme for all admin modals */
+.modal-overlay[id^="admin-"] .modal-card,
+#admin-text-modal .modal-card,
+#admin-image-modal .modal-card,
+#admin-bg-modal .modal-card,
+#admin-social-modal .modal-card,
+#admin-dish-modal .modal-card,
+#admin-contact-modal .modal-card {
+  background-color: #141414 !important;
+  color: #FFFFFF !important;
+  border: 1px solid var(--color-gold) !important;
+}
+
+.modal-overlay[id^="admin-"] label,
+#admin-text-modal label,
+#admin-image-modal label,
+#admin-bg-modal label,
+#admin-social-modal label,
+#admin-dish-modal label,
+#admin-contact-modal label {
+  color: var(--color-text-secondary) !important;
+}
+
+.modal-overlay input,
+.modal-overlay textarea,
+.modal-overlay select,
+.modal-card input,
+.modal-card textarea,
+.modal-card select {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  padding: 10px !important;
+  border-radius: 6px !important;
+}
+
+.modal-overlay[id^="admin-"] input:focus,
+.modal-overlay[id^="admin-"] textarea:focus,
+.modal-overlay[id^="admin-"] select:focus {
+  border-color: var(--color-gold) !important;
+}
+
 /* Floating cart icon modifications */
 .header-cart-icon {
   transition: transform 0.2s;
+  order: -1; /* Placed first (left) of the elements in LTR */
 }
 .header-cart-icon:hover {
   transform: scale(1.1);
@@ -2023,17 +2097,10 @@ body.admin-mode-active img[data-img-key] {
   box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
-/* LTR and RTL header cart positioning */
 .header-actions {
   display: flex;
   align-items: center;
   gap: 20px;
-}
-.header-cart-icon {
-  order: -1; /* Placed first (left) of the action elements in LTR */
-}
-html[dir="rtl"] .header-cart-icon {
-  order: 3; /* Placed last (right) of the action elements in RTL */
 }
 
 /* Quantity controls inside Cart Drawer */
