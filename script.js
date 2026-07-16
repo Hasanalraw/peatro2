@@ -19,7 +19,7 @@ function safeGetItem(key, defaultValue = []) {
 
 
 // 1. i18n Translations Dictionary
-const translations = {
+const defaultTranslations = {
   tr: {
     // Header & Nav
     "nav-home": "Ana Sayfa",
@@ -38,6 +38,7 @@ const translations = {
     "btn-book-hero": "Masa Rezervasyonu",
     "btn-menu-hero": "Menüyü İncele",
     "hero-badge-title": "Şefin İmza Tabağı",
+    "hero-badge-subtitle": "Pizza Pietro",
 
     // About Us Section
     "about-title": "Otantik Bir İtalyan Deneyimi",
@@ -59,6 +60,8 @@ const translations = {
     "price-note": "Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin",
     "btn-select": "Seç",
     "btn-learn-more": "Daha Fazla",
+    "btn-reserve-table": "Masa Rezerve Et",
+    "btn-add-to-cart": "Sepete Ekle",
 
     // Modals Translations
     "modal-ingredients": "İçindekiler",
@@ -67,17 +70,23 @@ const translations = {
     "size-medium": "Orta",
     "size-large": "Büyük",
     "btn-confirm": "Onayla ve Rezerve Et",
-    "btn-add-more": "Daha Fazla Yemek Ekle",
-    "btn-confirm-booking": "Hemen Rezerve Et",
+    "btn-add-more": "Sepete Ekle",
+    "btn-confirm-booking": "Masa Rezerve Et",
     "label-selected-dishes": "Seçilen Yemekler",
     "cart-empty": "Henüz yemek seçilmedi. Menümüzden yemek ekleyebilirsiniz.",
     "added-to-cart-toast": "Yemek sepete eklendi!",
+    "cart-drawer-title": "Sepetiniz",
+    "cart-total-label": "Toplam:",
+    "btn-go-to-booking": "Rezervasyonu Tamamla",
 
     // Reservation Section
     "reserve-title": "Masa Rezervasyonu",
     "reserve-subtitle": "İtalyan Gecenizi Şimdiden Planlayın",
     "reserve-text": "Pietro Coffee Pizzeria'da kendiniz ve sevdikleriniz için bir masa ayırtın. Sıcak atmosferimiz ve benzersiz İtalyan tatlarımızla sizleri ağırlamaktan mutluluk duyacağız.",
     "contact-phone": "Telefon",
+    "contact-phone-val": "+90 530 000 00 00",
+    "contact-email-val": "info@pietroyalova.com",
+    "contact-address-val": "Rüstempaşa Mahallesi, Park Sk. No:3 D:1, 77200 Yalova Merkez/Yalova, Türkiye",
     "contact-hours": "Çalışma Saatleri",
     "contact-hours-desc": "Her Gün: 10:00 - 20:00",
     "label-name": "Adınız Soyadınız",
@@ -95,6 +104,7 @@ const translations = {
     "popup-title": "Rezervasyon Talebi Gönderildi",
     "popup-message": "Rezervasyon talebiniz alınmıştır. Onaylamak için en kısa sürede sizinle iletişime geçeceğiz. Teşekkürler!",
     "btn-close": "Kapat",
+    "logo-text": "Pietro",
 
     // Testimonials
     "reviews-title": "Müşteri Yorumları",
@@ -128,6 +138,7 @@ const translations = {
     "btn-book-hero": "Book a Table",
     "btn-menu-hero": "Explore Menu",
     "hero-badge-title": "Chef's Signature",
+    "hero-badge-subtitle": "Pizza Pietro",
 
     // About Us Section
     "about-title": "An Authentic Italian Experience",
@@ -149,6 +160,8 @@ const translations = {
     "price-note": "Approximate price - please update real price",
     "btn-select": "Select",
     "btn-learn-more": "Learn More",
+    "btn-reserve-table": "Reserve Table",
+    "btn-add-to-cart": "Add to Cart",
 
     // Modals Translations
     "modal-ingredients": "Ingredients",
@@ -157,17 +170,23 @@ const translations = {
     "size-medium": "Medium",
     "size-large": "Large",
     "btn-confirm": "Confirm & Reserve",
-    "btn-add-more": "Add More Food",
-    "btn-confirm-booking": "Book Table Now",
+    "btn-add-more": "Add to Cart",
+    "btn-confirm-booking": "Reserve Table",
     "label-selected-dishes": "Selected Dishes",
     "cart-empty": "No food selected yet. You can add food from our menu.",
     "added-to-cart-toast": "Food added to cart!",
+    "cart-drawer-title": "Your Cart",
+    "cart-total-label": "Total:",
+    "btn-go-to-booking": "Complete Reservation",
 
     // Reservation Section
     "reserve-title": "Book a Table",
     "reserve-subtitle": "Plan Your Italian Evening Now",
     "reserve-text": "Reserve a table for yourself and your loved ones at Pietro Coffee Pizzeria. We will be delighted to host you with our warm hospitality and unique Italian flavors.",
     "contact-phone": "Phone",
+    "contact-phone-val": "+90 530 000 00 00",
+    "contact-email-val": "info@pietroyalova.com",
+    "contact-address-val": "Rüstempaşa Mahallesi, Park Sk. No:3 D:1, 77200 Yalova Merkez/Yalova, Türkiye",
     "contact-hours": "Opening Hours",
     "contact-hours-desc": "Daily: 10:00 AM - 8:00 PM",
     "label-name": "Your Full Name",
@@ -185,6 +204,7 @@ const translations = {
     "popup-title": "Booking Request Received",
     "popup-message": "Your table reservation request has been received. We will contact you shortly to confirm your booking. Thank you!",
     "btn-close": "Close",
+    "logo-text": "Pietro",
 
     // Testimonials
     "reviews-title": "Guest Reviews",
@@ -218,6 +238,7 @@ const translations = {
     "btn-book-hero": "احجز طاولتك",
     "btn-menu-hero": "شاهد القائمة",
     "hero-badge-title": "طبق الشيف المميز",
+    "hero-badge-subtitle": "بيتزا بيترو",
 
     // About Us Section
     "about-title": "تجربة إيطالية حقيقية",
@@ -239,6 +260,8 @@ const translations = {
     "price-note": "سعر تقريبي مبدئي - يرجى تحديث السعر الفعلي",
     "btn-select": "اختر",
     "btn-learn-more": "تعرّف عليها أكثر",
+    "btn-reserve-table": "احجز طاولة",
+    "btn-add-to-cart": "إضافة إلى السلة",
 
     // Modals Translations
     "modal-ingredients": "المكونات",
@@ -247,17 +270,23 @@ const translations = {
     "size-medium": "متوسطة",
     "size-large": "كبيرة",
     "btn-confirm": "تأكيد الحجز",
-    "btn-add-more": "إضافة المزيد من الطعام",
-    "btn-confirm-booking": "تأكيد الحجز",
+    "btn-add-more": "إضافة إلى السلة",
+    "btn-confirm-booking": "احجز طاولة",
     "label-selected-dishes": "الوجبات المختارة",
     "cart-empty": "لم يتم اختيار أي وجبة بعد. يمكنك إضافة الطعام من القائمة في الأعلى.",
     "added-to-cart-toast": "تمت إضافة الوجبة للسلة!",
+    "cart-drawer-title": "سلتك",
+    "cart-total-label": "الإجمالي:",
+    "btn-go-to-booking": "إتمام الحجز",
 
     // Reservation Section
     "reserve-title": "حجز طاولة",
     "reserve-subtitle": "خطط لأمسيتك الإيطالية الآن",
     "reserve-text": "احجز طاولة لك ولمن تحب في Pietro Coffee Pizzeria. سنسعد باستضافتكم وتقديم أرقى مستويات الخدمة مع أشهى الأطباق الإيطالية الفريدة.",
     "contact-phone": "الهاتف",
+    "contact-phone-val": "+90 530 000 00 00",
+    "contact-email-val": "info@pietroyalova.com",
+    "contact-address-val": "Rüstempaşa Mahallesi, Park Sk. No:3 D:1, 77200 Yalova Merkez/Yalova, Türkiye",
     "contact-hours": "ساعات العمل",
     "contact-hours-desc": "يومياً: 10:00 صباحاً - 8:00 مساءً",
     "label-name": "الاسم الكامل",
@@ -275,6 +304,7 @@ const translations = {
     "popup-title": "تم استلام طلب الحجز",
     "popup-message": "لقد تلقينا طلب حجز الطاولة الخاص بك بنجاح. سنتواصل معك في أقرب وقت لتأكيد الحجز. شكراً لك!",
     "btn-close": "إغلاق",
+    "logo-text": "Pietro",
 
     // Testimonials
     "reviews-title": "تقييمات العملاء",
@@ -292,6 +322,38 @@ const translations = {
   }
 };
 
+// 2. Load translations from localStorage or fallback
+let translations = safeGetItem("pietro_translations", defaultTranslations);
+
+// 3. Baseline Config and Storage
+const defaultConfig = {
+  logoImg: "images/logo.svg",
+  heroBg: "images/pizza_pietro.jpg",
+  heroOverlay1: "0.8",
+  heroOverlay2: "0.9",
+  aboutGalleryImg1: "images/penne_burrata.jpg",
+  aboutGalleryImg2: "images/tagliatelli_scampi.jpg",
+  phoneVal: "+90 530 000 00 00",
+  emailVal: "info@pietroyalova.com",
+  addressVal: "Rüstempaşa Mahallesi, Park Sk. No:3 D:1, 77200 Yalova Merkez/Yalova, Türkiye",
+  mapsLink: "https://www.google.com/maps/search/?api=1&query=Pietro+Coffee+Pizzeria+Yalova",
+  mapsEmbed: "https://maps.google.com/maps?q=R%C3%BCstempa%C5%9Fa%20Mahallesi,%20Park%20Sk.%20No:3%20D:1,%2077200%20Yalova%20Merkez/Yalova,%20T%C3%BCrkiye&t=&z=17&ie=UTF8&iwloc=&output=embed",
+  reservationBg: "",
+  reservationOverlay: "0.8",
+  contactBg: "",
+  contactOverlay: "0.9",
+  socialLinks: [
+    { platform: "instagram", url: "#", icon: "fab fa-instagram" },
+    { platform: "facebook", url: "#", icon: "fab fa-facebook-f" },
+    { platform: "tripadvisor", url: "#", icon: "fab fa-tripadvisor" }
+  ]
+};
+
+let siteConfig = safeGetItem("pietro_site_config", null);
+if (!siteConfig) {
+  siteConfig = defaultConfig;
+}
+
 // 2. Baseline Database (Empty baseline menu as requested by user)
 const defaultDishes = [];
 
@@ -304,6 +366,412 @@ let currentSelectedSize = "medium"; // default
 let currentSlideIndex = 0;
 let totalSlides = 1;
 const dishesData = {}; // Global dictionary mapping active dishes
+
+let adminMode = false;
+
+// 4.1 Admin Mode Management
+window.checkAdminMode = function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("admin") === "true") {
+    activateAdminMode();
+  } else {
+    const stored = sessionStorage.getItem("pietro_admin_mode");
+    if (stored === "true") {
+      activateAdminMode();
+    }
+  }
+};
+
+window.logoutAdmin = function() {
+  sessionStorage.removeItem("pietro_admin_mode");
+  adminMode = false;
+  document.body.classList.remove("admin-mode-active");
+  const bar = document.getElementById("admin-control-bar");
+  if (bar) bar.style.display = "none";
+  initializeVisualEditor();
+  renderMenu();
+};
+
+window.activateAdminMode = function() {
+  sessionStorage.setItem("pietro_admin_mode", "true");
+  adminMode = true;
+  document.body.classList.add("admin-mode-active");
+  const bar = document.getElementById("admin-control-bar");
+  if (bar) bar.style.display = "flex";
+  initializeVisualEditor();
+  renderMenu();
+};
+
+window.promptAdminLogin = function() {
+  const pw = prompt("Yönetici Şifresi / Admin Password:");
+  if (pw === "admin123") {
+    activateAdminMode();
+  } else if (pw !== null) {
+    alert("Hatalı Şifre! / Incorrect Password!");
+  }
+};
+
+// 4.2 Apply Visual Configurations from siteConfig
+window.applySiteConfig = function() {
+  // Logo
+  const logo = document.querySelector(".header-logo");
+  if (logo && siteConfig.logoImg) logo.src = siteConfig.logoImg;
+
+  // Hero background and overlays
+  const hero = document.getElementById("home");
+  if (hero && siteConfig.heroBg) {
+    const o1 = siteConfig.heroOverlay1 || "0.8";
+    const o2 = siteConfig.heroOverlay2 || "0.9";
+    hero.style.backgroundImage = `linear-gradient(rgba(18, 18, 18, ${o1}), rgba(18, 18, 18, ${o2})), url('${siteConfig.heroBg}')`;
+  }
+
+  // Section backgrounds
+  const reservationSec = document.getElementById("reservation");
+  if (reservationSec && siteConfig.reservationBg) {
+    const ro = siteConfig.reservationOverlay || "0.8";
+    reservationSec.style.backgroundImage = `linear-gradient(rgba(18, 18, 18, ${ro}), rgba(18, 18, 18, ${ro})), url('${siteConfig.reservationBg}')`;
+  }
+
+  const contactSec = document.getElementById("contact");
+  if (contactSec && siteConfig.contactBg) {
+    const co = siteConfig.contactOverlay || "0.9";
+    contactSec.style.backgroundImage = `linear-gradient(rgba(18, 18, 18, ${co}), rgba(18, 18, 18, ${co})), url('${siteConfig.contactBg}')`;
+  }
+
+  // Gallery and editable images
+  document.querySelectorAll("[data-img-key]").forEach(img => {
+    const key = img.getAttribute("data-img-key");
+    if (siteConfig[key]) {
+      img.src = siteConfig[key];
+    }
+  });
+
+  // Contact Info
+  document.querySelectorAll("[data-key]").forEach(el => {
+    const key = el.getAttribute("data-key");
+    if (key === "contact-phone-val" && siteConfig.phoneVal) el.textContent = siteConfig.phoneVal;
+    if (key === "contact-email-val" && siteConfig.emailVal) el.textContent = siteConfig.emailVal;
+    if (key === "contact-address-val" && siteConfig.addressVal) el.textContent = siteConfig.addressVal;
+  });
+
+  // Map Iframe src
+  const mapIframe = document.getElementById("contact-map-iframe");
+  if (mapIframe && siteConfig.mapsEmbed) {
+    mapIframe.src = siteConfig.mapsEmbed;
+  }
+  
+  // Directions link
+  const directionsBtn = document.querySelector("[data-link-key='google-maps-link']");
+  if (directionsBtn && siteConfig.mapsLink) {
+    directionsBtn.href = siteConfig.mapsLink;
+  }
+
+  // Social Links
+  renderSocialLinks();
+};
+
+window.renderSocialLinks = function() {
+  const container = document.getElementById("site-social-links-container");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const links = siteConfig.socialLinks || [];
+  links.forEach(link => {
+    const a = document.createElement("a");
+    a.href = link.url;
+    a.target = "_blank";
+    a.setAttribute("aria-label", link.platform);
+    a.innerHTML = `<i class="${link.icon || 'fa-solid fa-globe'}"></i>`;
+    container.appendChild(a);
+  });
+};
+
+function persistSiteConfig() {
+  localStorage.setItem("pietro_site_config", JSON.stringify(siteConfig));
+  applySiteConfig();
+  initializeVisualEditor();
+}
+
+// 4.3 Visual Inline Editing Overlay Injections
+window.initializeVisualEditor = function() {
+  // Remove existing edit buttons
+  document.querySelectorAll(".edit-overlay-btn").forEach(btn => btn.remove());
+  document.querySelectorAll(".editable-parent").forEach(el => el.classList.remove("editable-parent"));
+
+  if (!adminMode) return;
+
+  // 1. Text elements with data-key (skip system elements)
+  document.querySelectorAll("[data-key]").forEach(el => {
+    if (el.tagName === "OPTION" || el.tagName === "SCRIPT" || el.tagName === "STYLE" || el.tagName === "BUTTON") return;
+    
+    // Skip if child has edit overlay
+    el.classList.add("editable-parent");
+    const key = el.getAttribute("data-key");
+    
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "edit-overlay-btn";
+    btn.innerHTML = `<i class="fa-solid fa-pen"></i>`;
+    btn.title = "Metni Düzenle / Edit Text";
+    btn.onclick = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openTextEditModal(key);
+    };
+    el.appendChild(btn);
+  });
+
+  // 2. Images with data-img-key
+  document.querySelectorAll("[data-img-key]").forEach(el => {
+    const parent = el.parentElement;
+    parent.classList.add("editable-parent");
+    const key = el.getAttribute("data-img-key");
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "edit-overlay-btn";
+    btn.innerHTML = `<i class="fa-solid fa-camera"></i>`;
+    btn.title = "Görseli Değiştir / Replace Image";
+    btn.onclick = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openImageEditModal(key);
+    };
+    parent.appendChild(btn);
+  });
+
+  // 3. Section Backgrounds
+  const sectionsWithBg = [
+    { id: "home", name: "Hero", key: "heroBg" },
+    { id: "reservation", name: "Reservation", key: "reservationBg" },
+    { id: "contact", name: "Contact", key: "contactBg" }
+  ];
+
+  sectionsWithBg.forEach(sec => {
+    const el = document.getElementById(sec.id);
+    if (el) {
+      el.classList.add("editable-parent");
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "edit-overlay-btn";
+      btn.style.top = "15px";
+      btn.style.right = "15px";
+      btn.innerHTML = `<i class="fa-solid fa-image"></i> Edit Bg`;
+      btn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openBgEditModal(sec.id, sec.key);
+      };
+      el.appendChild(btn);
+    }
+  });
+
+  // 4. Social Links Container
+  const socialContainer = document.getElementById("site-social-links-container");
+  if (socialContainer) {
+    socialContainer.classList.add("editable-parent");
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "edit-overlay-btn";
+    btn.innerHTML = `<i class="fa-solid fa-share-nodes"></i>`;
+    btn.onclick = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openSocialEditModal();
+    };
+    socialContainer.appendChild(btn);
+  }
+};
+
+// 4.4 Admin Modal Windows Action Triggers
+window.openTextEditModal = function(key) {
+  document.getElementById("edit-text-key").value = key;
+  document.getElementById("edit-text-tr").value = translations.tr[key] || "";
+  document.getElementById("edit-text-en").value = translations.en[key] || "";
+  document.getElementById("edit-text-ar").value = translations.ar[key] || "";
+  openModal("admin-text-modal");
+};
+
+window.saveAdminText = function() {
+  const key = document.getElementById("edit-text-key").value;
+  const trVal = document.getElementById("edit-text-tr").value;
+  const enVal = document.getElementById("edit-text-en").value;
+  const arVal = document.getElementById("edit-text-ar").value;
+
+  if (!translations.tr) translations.tr = {};
+  if (!translations.en) translations.en = {};
+  if (!translations.ar) translations.ar = {};
+
+  translations.tr[key] = trVal;
+  translations.en[key] = enVal;
+  translations.ar[key] = arVal;
+
+  localStorage.setItem("pietro_translations", JSON.stringify(translations));
+  closeAdminModal("admin-text-modal");
+  setLanguage(currentLanguage);
+  initializeVisualEditor();
+};
+
+window.openImageEditModal = function(key) {
+  document.getElementById("edit-image-key").value = key;
+  document.getElementById("edit-image-url").value = siteConfig[key] || "";
+  document.getElementById("edit-image-file").value = "";
+  openModal("admin-image-modal");
+};
+
+window.saveAdminImage = function() {
+  const key = document.getElementById("edit-image-key").value;
+  const urlVal = document.getElementById("edit-image-url").value;
+  const fileInput = document.getElementById("edit-image-file");
+
+  if (fileInput.files.length > 0) {
+    const reader = new FileReader();
+    reader.onloadend = function() {
+      siteConfig[key] = reader.result;
+      persistSiteConfig();
+      closeAdminModal("admin-image-modal");
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else {
+    siteConfig[key] = urlVal;
+    persistSiteConfig();
+    closeAdminModal("admin-image-modal");
+  }
+};
+
+window.openBgEditModal = function(sectionId, bgKey) {
+  document.getElementById("edit-bg-section-id").value = sectionId;
+  document.getElementById("edit-bg-url").value = siteConfig[bgKey] || "";
+  document.getElementById("edit-bg-file").value = "";
+  
+  let currentOpacity = "0.8";
+  if (sectionId === "home") {
+    currentOpacity = siteConfig.heroOverlay1 || "0.8";
+  } else if (sectionId === "reservation") {
+    currentOpacity = siteConfig.reservationOverlay || "0.8";
+  } else if (sectionId === "contact") {
+    currentOpacity = siteConfig.contactOverlay || "0.9";
+  }
+  
+  document.getElementById("edit-bg-opacity-range").value = currentOpacity;
+  document.getElementById("edit-bg-opacity-val").value = currentOpacity;
+  openModal("admin-bg-modal");
+};
+
+window.saveAdminBg = function() {
+  const sectionId = document.getElementById("edit-bg-section-id").value;
+  const urlVal = document.getElementById("edit-bg-url").value;
+  const opacityVal = document.getElementById("edit-bg-opacity-range").value;
+  const fileInput = document.getElementById("edit-bg-file");
+
+  const bgKey = sectionId === "home" ? "heroBg" : (sectionId === "reservation" ? "reservationBg" : "contactBg");
+  
+  if (sectionId === "home") {
+    siteConfig.heroOverlay1 = opacityVal;
+    siteConfig.heroOverlay2 = (parseFloat(opacityVal) + 0.1).toFixed(2);
+  } else if (sectionId === "reservation") {
+    siteConfig.reservationOverlay = opacityVal;
+  } else if (sectionId === "contact") {
+    siteConfig.contactOverlay = opacityVal;
+  }
+
+  if (fileInput.files.length > 0) {
+    const reader = new FileReader();
+    reader.onloadend = function() {
+      siteConfig[bgKey] = reader.result;
+      persistSiteConfig();
+      closeAdminModal("admin-bg-modal");
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else {
+    siteConfig[bgKey] = urlVal;
+    persistSiteConfig();
+    closeAdminModal("admin-bg-modal");
+  }
+};
+
+window.openSocialEditModal = function() {
+  renderSocialLinksEditorList();
+  document.getElementById("new-social-link").value = "";
+  openModal("admin-social-modal");
+};
+
+function renderSocialLinksEditorList() {
+  const list = document.getElementById("social-links-editor-list");
+  if (!list) return;
+  list.innerHTML = "";
+
+  const links = siteConfig.socialLinks || [];
+  if (links.length === 0) {
+    list.innerHTML = `<p style="font-size:0.85rem; font-style:italic; color:var(--color-text-secondary); text-align:center;">Henüz sosyal link eklenmemiş.</p>`;
+    return;
+  }
+
+  links.forEach((link, idx) => {
+    const item = document.createElement("div");
+    item.style = "display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.05);";
+    item.innerHTML = `
+      <div style="display:flex; align-items:center; gap:8px;">
+        <i class="${link.icon}" style="font-size:1.1rem; color:var(--color-gold);"></i>
+        <span style="font-size:0.8rem; color:#FFF; max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${link.url}</span>
+      </div>
+      <button class="btn btn-outline" style="padding:4px 8px; font-size:0.7rem; border-color:#ff4d4d; color:#ff4d4d; background:none;" onclick="deleteSocialLink(${idx})">Kaldır</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+window.deleteSocialLink = function(idx) {
+  siteConfig.socialLinks.splice(idx, 1);
+  renderSocialLinksEditorList();
+};
+
+window.addNewSocialLink = function() {
+  const platform = document.getElementById("new-social-platform").value;
+  const url = document.getElementById("new-social-link").value.trim();
+  
+  if (!url) {
+    alert("Lütfen geçerli bir URL girin!");
+    return;
+  }
+
+  const iconMap = {
+    instagram: "fab fa-instagram",
+    facebook: "fab fa-facebook-f",
+    tiktok: "fab fa-tiktok",
+    "x-twitter": "fab fa-x-twitter",
+    youtube: "fab fa-youtube",
+    whatsapp: "fab fa-whatsapp",
+    snapchat: "fab fa-snapchat",
+    tripadvisor: "fab fa-tripadvisor",
+    globe: "fa-solid fa-globe"
+  };
+
+  if (!siteConfig.socialLinks) siteConfig.socialLinks = [];
+  siteConfig.socialLinks.push({
+    platform: platform,
+    url: url,
+    icon: iconMap[platform] || "fa-solid fa-globe"
+  });
+
+  renderSocialLinksEditorList();
+  document.getElementById("new-social-link").value = "";
+};
+
+window.saveAdminSocialLinks = function() {
+  persistSiteConfig();
+  closeAdminModal("admin-social-modal");
+};
+
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) modal.classList.add("active");
+}
+
+window.closeAdminModal = function(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) modal.classList.remove("active");
+};
 
 // 3. Language Switcher Logic
 function setLanguage(lang) {
@@ -582,18 +1050,23 @@ window.addMoreFoodToCart = function() {
 
   const selectedPriceLabel = (dish.prices[currentLanguage] || dish.prices["tr"])[currentSelectedSize];
 
-  bookingCart.push({
-    dishId: dish.id,
-    name: dish.name,
-    size: currentSelectedSize,
-    sizeLabel: sizeLabels,
-    price: selectedPriceLabel
-  });
+  const existingIndex = bookingCart.findIndex(item => item.dishId === dish.id && item.size === currentSelectedSize);
+  if (existingIndex !== -1) {
+    bookingCart[existingIndex].qty += 1;
+  } else {
+    bookingCart.push({
+      dishId: dish.id,
+      name: dish.name,
+      size: currentSelectedSize,
+      sizeLabel: sizeLabels,
+      price: selectedPriceLabel,
+      image: dish.image,
+      qty: 1
+    });
+  }
 
   renderCart();
   closeSizeModal();
-
-  // Open the sliding cart drawer automatically to show addition
   openCartDrawer();
 };
 
@@ -609,22 +1082,59 @@ window.confirmBookingWithCart = function() {
 
   const selectedPriceLabel = (dish.prices[currentLanguage] || dish.prices["tr"])[currentSelectedSize];
 
-  bookingCart.push({
-    dishId: dish.id,
-    name: dish.name,
-    size: currentSelectedSize,
-    sizeLabel: sizeLabels,
-    price: selectedPriceLabel
-  });
+  const existingIndex = bookingCart.findIndex(item => item.dishId === dish.id && item.size === currentSelectedSize);
+  if (existingIndex !== -1) {
+    bookingCart[existingIndex].qty += 1;
+  } else {
+    bookingCart.push({
+      dishId: dish.id,
+      name: dish.name,
+      size: currentSelectedSize,
+      sizeLabel: sizeLabels,
+      price: selectedPriceLabel,
+      image: dish.image,
+      qty: 1
+    });
+  }
 
   renderCart();
   closeSizeModal();
 
-  // Scroll to reservation
   const bookingSection = document.getElementById("reservation");
   if (bookingSection) {
     bookingSection.scrollIntoView({ behavior: "smooth" });
   }
+};
+
+window.addDishDirectToCart = function(id) {
+  const dish = dishesData[id];
+  if (!dish) return;
+
+  const sizeLabels = {
+    tr: { small: "Küçük", medium: "Orta", large: "Büyük" },
+    en: { small: "Small", medium: "Medium", large: "Large" },
+    ar: { small: "صغيرة", medium: "متوسطة", large: "كبيرة" }
+  };
+
+  const selectedPriceLabel = (dish.prices[currentLanguage] || dish.prices["tr"])["medium"];
+
+  const existingIndex = bookingCart.findIndex(item => item.dishId === dish.id && item.size === "medium");
+  if (existingIndex !== -1) {
+    bookingCart[existingIndex].qty += 1;
+  } else {
+    bookingCart.push({
+      dishId: dish.id,
+      name: dish.name,
+      size: "medium",
+      sizeLabel: sizeLabels,
+      price: selectedPriceLabel,
+      image: dish.image,
+      qty: 1
+    });
+  }
+
+  renderCart();
+  openCartDrawer();
 };
 
 window.renderCart = function() {
@@ -644,7 +1154,7 @@ window.renderCart = function() {
         const name = item.name[currentLanguage] || item.name["tr"];
         const sizeLabel = item.sizeLabel[currentLanguage][item.size];
         tag.innerHTML = `
-          <span><strong>${name}</strong> (${sizeLabel} - ${item.price})</span>
+          <span><strong>${name}</strong> (${sizeLabel} - ${item.price} &times; ${item.qty})</span>
           <button type="button" class="cart-item-remove" onclick="removeCartItem(${index})" title="Kaldır">&times;</button>
         `;
         cartContainer.appendChild(tag);
@@ -665,25 +1175,44 @@ window.renderCart = function() {
       bookingCart.forEach((item, index) => {
         const div = document.createElement("div");
         div.className = "cart-drawer-item";
+        div.style.display = "flex";
+        div.style.alignItems = "center";
+        div.style.gap = "12px";
+        
         const name = item.name[currentLanguage] || item.name["tr"];
         const sizeLabel = item.sizeLabel[currentLanguage][item.size];
+        
         div.innerHTML = `
-          <div class="cart-drawer-item-info">
-            <h4>${name}</h4>
-            <p>${sizeLabel} - ${item.price}</p>
+          <img src="${item.image || 'images/pizza_margherita.jpg'}" alt="${name}" style="width:50px; height:50px; object-fit:cover; border-radius:6px;">
+          <div class="cart-drawer-item-info" style="flex-grow:1;">
+            <h4 style="margin:0; font-size:0.9rem; color:#FFF;">${name}</h4>
+            <p style="margin:2px 0 0 0; font-size:0.8rem; color:var(--color-gold);">${sizeLabel} - ${item.price}</p>
+            <div class="cart-qty-control" style="display:flex; align-items:center; gap:8px; margin-top:6px;">
+              <button class="btn-qty" onclick="changeQty(${index}, -1)" style="width:24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:4px; border:1px solid var(--color-border); background:rgba(255,255,255,0.05); color:#FFF; cursor:pointer;">-</button>
+              <span class="cart-qty-val" style="font-size:0.85rem; color:#FFF; min-width:15px; text-align:center;">${item.qty}</span>
+              <button class="btn-qty" onclick="changeQty(${index}, 1)" style="width:24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:4px; border:1px solid var(--color-border); background:rgba(255,255,255,0.05); color:#FFF; cursor:pointer;">+</button>
+            </div>
           </div>
-          <button class="cart-drawer-item-remove" onclick="removeCartItem(${index})">&times;</button>
+          <button class="cart-drawer-item-remove" onclick="removeCartItem(${index})" style="background:none; border:none; color:var(--color-status-cancelled); font-size:1.5rem; cursor:pointer;">&times;</button>
         `;
         drawerItemsContainer.appendChild(div);
       });
     }
   }
 
-  // 3. Update Cart Badge Count
+  // 3. Update Cart Badges Count
+  const totalQty = bookingCart.reduce((sum, item) => sum + item.qty, 0);
+  
   const badge = document.getElementById("cart-badge");
   if (badge) {
-    badge.textContent = bookingCart.length;
-    badge.style.display = bookingCart.length > 0 ? "flex" : "none";
+    badge.textContent = totalQty;
+    badge.style.display = totalQty > 0 ? "flex" : "none";
+  }
+
+  const headerBadge = document.getElementById("header-cart-badge");
+  if (headerBadge) {
+    headerBadge.textContent = totalQty;
+    headerBadge.style.display = totalQty > 0 ? "flex" : "none";
   }
 
   // 4. Update Total Price inside Cart Drawer
@@ -692,10 +1221,19 @@ window.renderCart = function() {
     let total = 0;
     bookingCart.forEach(item => {
       const numericPrice = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
-      total += numericPrice;
+      total += (numericPrice * item.qty);
     });
     totalValElement.textContent = total + " TL";
   }
+};
+
+window.changeQty = function(index, delta) {
+  if (!bookingCart[index]) return;
+  bookingCart[index].qty += delta;
+  if (bookingCart[index].qty <= 0) {
+    bookingCart.splice(index, 1);
+  }
+  renderCart();
 };
 
 window.removeCartItem = function(index) {
@@ -983,32 +1521,39 @@ function renderMenu() {
     const priceMedium = (dish.prices[currentLanguage] || dish.prices["tr"]).medium;
 
     const card = document.createElement("div");
-    card.className = "menu-card";
+    card.className = "menu-card editable-parent";
     card.setAttribute("data-category", dish.category);
 
+    const editBtnHtml = adminMode ? `
+      <button class="edit-overlay-btn" onclick="openEditDishModal('${dish.id}', event)" style="display: inline-flex !important;">
+        <i class="fa-solid fa-pen"></i>
+      </button>
+    ` : '';
+
     card.innerHTML = `
-      <div class="menu-card-img-wrapper">
-        <img src="${dish.image}" alt="${name}" class="menu-card-img">
+      <div class="menu-card-img-wrapper" style="position: relative;">
+        <img src="${dish.image}" alt="${name}" class="menu-card-img" ${adminMode ? `style="outline: 2px dashed var(--color-gold); cursor:pointer;" onclick="openEditDishModal('${dish.id}', event)"` : ''}>
         <span class="image-disclaimer" data-key="image-disclaimer">
           ${translations[currentLanguage]["image-disclaimer"]}
         </span>
+        ${editBtnHtml}
       </div>
       <div class="menu-card-content">
         <h4 class="menu-item-title">${name}</h4>
         <p class="menu-item-desc">${desc}</p>
         <div class="menu-item-footer">
-          <div class="price-area">
+          <div class="price-area" style="margin-bottom: 12px;">
             <span class="price">${priceMedium}</span>
             <span class="price-note" data-key="price-note">
               ${translations[currentLanguage]["price-note"]}
             </span>
           </div>
-          <div class="menu-card-actions">
-            <button class="btn-learn-more" onclick="openDetailModal('${dish.id}')" data-key="btn-learn-more">
-              ${translations[currentLanguage]["btn-learn-more"]}
+          <div class="menu-card-actions" style="display: flex; gap: 8px; width: 100%;">
+            <button class="btn btn-outline" onclick="openSizeModal('${dish.id}')" data-key="btn-reserve-table" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">
+              ${translations[currentLanguage]["btn-reserve-table"] || "Masa Rezerve Et"}
             </button>
-            <button class="btn-select-item" onclick="openSizeModal('${dish.id}')" data-key="btn-select">
-              ${translations[currentLanguage]["btn-select"]}
+            <button class="btn btn-gold" onclick="addDishDirectToCart('${dish.id}')" data-key="btn-add-to-cart" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">
+              ${translations[currentLanguage]["btn-add-to-cart"] || "Sepete Ekle"}
             </button>
           </div>
         </div>
@@ -1058,6 +1603,9 @@ function populateDrinksDropdown() {
 
 // 10. Initial Load Configuration
 document.addEventListener("DOMContentLoaded", () => {
+  // Apply persistent configurations & render social icons
+  applySiteConfig();
+
   // Set default date for reservation (tomorrow)
   const dateInput = document.getElementById("booking-date");
   if (dateInput) {
@@ -1083,10 +1631,189 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.key === "pietro_custom_drinks" || event.key === "pietro_custom_drinks_updated_event") {
       populateDrinksDropdown();
     }
+    if (event.key === "pietro_site_config") {
+      siteConfig = safeGetItem("pietro_site_config", defaultConfig);
+      applySiteConfig();
+    }
+    if (event.key === "pietro_translations") {
+      translations = safeGetItem("pietro_translations", defaultTranslations);
+      setLanguage(currentLanguage);
+    }
   });
 
   // Initialize page in Turkish language by default & render custom dishes
   setLanguage("tr");
   renderMenu();
   populateDrinksDropdown();
+
+  // Check and initialize admin mode state
+  checkAdminMode();
 });
+
+
+// 13. Admin Dish CRUD Visual Operations
+window.openNewDishModal = function() {
+  document.getElementById("admin-dish-modal-title").textContent = "Yeni Yemek Ekle | Add New Dish";
+  document.getElementById("edit-dish-modal-id").value = "";
+  document.getElementById("edit-dish-category").value = "pizza";
+  
+  document.getElementById("edit-dish-name-tr").value = "";
+  document.getElementById("edit-dish-name-en").value = "";
+  document.getElementById("edit-dish-name-ar").value = "";
+
+  document.getElementById("edit-dish-price-small").value = "";
+  document.getElementById("edit-dish-price-medium").value = "";
+  document.getElementById("edit-dish-price-large").value = "";
+
+  document.getElementById("edit-dish-desc-tr").value = "";
+  document.getElementById("edit-dish-desc-en").value = "";
+  document.getElementById("edit-dish-desc-ar").value = "";
+
+  document.getElementById("edit-dish-ing-tr").value = "";
+  document.getElementById("edit-dish-ing-en").value = "";
+  document.getElementById("edit-dish-ing-ar").value = "";
+
+  document.getElementById("edit-dish-image-url").value = "";
+  document.getElementById("edit-dish-images-file").value = "";
+  
+  // Hide delete button for new entries
+  const delBtn = document.getElementById("admin-dish-delete-btn");
+  if (delBtn) delBtn.style.display = "none";
+  
+  openModal("admin-dish-modal");
+};
+
+window.openEditDishModal = function(id, event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  const dish = dishesData[id];
+  if (!dish) return;
+
+  document.getElementById("admin-dish-modal-title").textContent = "Yemek Düzenle | Edit Dish";
+  document.getElementById("edit-dish-modal-id").value = id;
+  document.getElementById("edit-dish-category").value = dish.category || "pizza";
+  
+  document.getElementById("edit-dish-name-tr").value = dish.name.tr || "";
+  document.getElementById("edit-dish-name-en").value = dish.name.en || "";
+  document.getElementById("edit-dish-name-ar").value = dish.name.ar || "";
+
+  document.getElementById("edit-dish-price-small").value = dish.prices.tr.small || "";
+  document.getElementById("edit-dish-price-medium").value = dish.prices.tr.medium || "";
+  document.getElementById("edit-dish-price-large").value = dish.prices.tr.large || "";
+
+  document.getElementById("edit-dish-desc-tr").value = dish.desc.tr || "";
+  document.getElementById("edit-dish-desc-en").value = dish.desc.en || "";
+  document.getElementById("edit-dish-desc-ar").value = dish.desc.ar || "";
+
+  document.getElementById("edit-dish-ing-tr").value = (dish.ingredients.tr || []).join(", ");
+  document.getElementById("edit-dish-ing-en").value = (dish.ingredients.en || []).join(", ");
+  document.getElementById("edit-dish-ing-ar").value = (dish.ingredients.ar || []).join(", ");
+
+  document.getElementById("edit-dish-image-url").value = dish.image || "";
+  document.getElementById("edit-dish-images-file").value = "";
+  
+  // Show delete button for existing entries
+  const delBtn = document.getElementById("admin-dish-delete-btn");
+  if (delBtn) delBtn.style.display = "block";
+  
+  openModal("admin-dish-modal");
+};
+
+window.saveAdminDish = function() {
+  const id = document.getElementById("edit-dish-modal-id").value || ('D-' + Date.now());
+  const category = document.getElementById("edit-dish-category").value;
+  
+  const nameTr = document.getElementById("edit-dish-name-tr").value.trim();
+  const nameEn = document.getElementById("edit-dish-name-en").value.trim();
+  const nameAr = document.getElementById("edit-dish-name-ar").value.trim();
+
+  const priceSmall = document.getElementById("edit-dish-price-small").value.trim() || "0 TL";
+  const priceMedium = document.getElementById("edit-dish-price-medium").value.trim() || "0 TL";
+  const priceLarge = document.getElementById("edit-dish-price-large").value.trim() || "0 TL";
+
+  const descTr = document.getElementById("edit-dish-desc-tr").value.trim();
+  const descEn = document.getElementById("edit-dish-desc-en").value.trim();
+  const descAr = document.getElementById("edit-dish-desc-ar").value.trim();
+
+  const ingTr = document.getElementById("edit-dish-ing-tr").value.split(",").map(i => i.trim()).filter(Boolean);
+  const ingEn = document.getElementById("edit-dish-ing-en").value.split(",").map(i => i.trim()).filter(Boolean);
+  const ingAr = document.getElementById("edit-dish-ing-ar").value.split(",").map(i => i.trim()).filter(Boolean);
+
+  const imageUrl = document.getElementById("edit-dish-image-url").value.trim();
+  const fileInput = document.getElementById("edit-dish-images-file");
+
+  const saveToLocal = (imgDataArray) => {
+    let customDishes = safeGetItem("pietro_custom_dishes");
+    const existingIdx = customDishes.findIndex(d => d.id === id);
+
+    let imagesList = imgDataArray && imgDataArray.length > 0 ? imgDataArray : [imageUrl || "images/pizza_margherita.jpg"];
+
+    const dishObj = {
+      id,
+      category,
+      name: { tr: nameTr, en: nameEn || nameTr, ar: nameAr || nameTr },
+      desc: { tr: descTr, en: descEn || descTr, ar: descAr || descTr },
+      ingredients: { tr: ingTr, en: ingEn || ingTr, ar: ingAr || ingTr },
+      prices: {
+        tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
+        en: { small: priceSmall, medium: priceMedium, large: priceLarge },
+        ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
+      },
+      image: imagesList[0],
+      images: imagesList
+    };
+
+    if (existingIdx !== -1) {
+      customDishes[existingIdx] = dishObj;
+    } else {
+      customDishes.push(dishObj);
+    }
+
+    localStorage.setItem("pietro_custom_dishes", JSON.stringify(customDishes));
+    localStorage.setItem("pietro_custom_dishes_updated_event", Date.now().toString());
+    
+    renderMenu();
+    closeAdminModal("admin-dish-modal");
+  };
+
+  if (fileInput.files.length > 0) {
+    let loadedCount = 0;
+    const results = [];
+    for (let i = 0; i < fileInput.files.length; i++) {
+      const reader = new FileReader();
+      reader.onloadend = function() {
+        results.push(reader.result);
+        loadedCount++;
+        if (loadedCount === fileInput.files.length) {
+          saveToLocal(results);
+        }
+      };
+      reader.readAsDataURL(fileInput.files[i]);
+    }
+  } else {
+    saveToLocal();
+  }
+};
+
+window.deleteAdminDish = function() {
+  const id = document.getElementById("edit-dish-modal-id").value;
+  if (!id) return;
+
+  if (confirm("Bu yemeği silmek istediğinizden emin misiniz? / Are you sure you want to delete this dish?")) {
+    let customDishes = safeGetItem("pietro_custom_dishes");
+    customDishes = customDishes.filter(d => d.id !== id);
+    localStorage.setItem("pietro_custom_dishes", JSON.stringify(customDishes));
+    
+    let deletedDefaultIds = safeGetItem("pietro_deleted_default_dishes");
+    if (!deletedDefaultIds.includes(id)) {
+      deletedDefaultIds.push(id);
+      localStorage.setItem("pietro_deleted_default_dishes", JSON.stringify(deletedDefaultIds));
+    }
+
+    localStorage.setItem("pietro_custom_dishes_updated_event", Date.now().toString());
+    renderMenu();
+    closeAdminModal("admin-dish-modal");
+  }
+};
