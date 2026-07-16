@@ -2137,4 +2137,16 @@ body.admin-mode-active img[data-img-key] {
   text-align: center;
 }
 
+/* Menu card custom outline button style - high contrast black text on white background */
+.menu-card-actions .btn-outline {
+  border: 1px solid #000000 !important;
+  color: #000000 !important;
+  background: transparent !important;
+}
+.menu-card-actions .btn-outline:hover {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  border-color: #000000 !important;
+}
+
 

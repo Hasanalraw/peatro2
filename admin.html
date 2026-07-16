@@ -572,7 +572,7 @@
 
     .price-row {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
 
@@ -810,8 +810,9 @@
             <div class="form-group">
               <label id="lang-label-prices">Fiyatlar (Lira - TL)</label>
               <div class="price-row">
-                <input type="text" id="dish-price-medium" required placeholder="Orta (M) Örn. 380 TL">
-                <input type="text" id="dish-price-large" required placeholder="Büyük (L) Örn. 440 TL">
+                <input type="text" id="dish-price-small" placeholder="Küçük (S) Örn. 340 TL">
+                <input type="text" id="dish-price-medium" placeholder="Orta (M) Örn. 380 TL">
+                <input type="text" id="dish-price-large" placeholder="Büyük (L) Örn. 440 TL">
               </div>
             </div>
 
@@ -1892,8 +1893,9 @@
       document.getElementById("dish-name-ar").value = dish.name.ar || "";
       
       const currencyPrices = dish.prices.tr || dish.prices.en || dish.prices.ar;
-      document.getElementById("dish-price-medium").value = currencyPrices.medium;
-      document.getElementById("dish-price-large").value = currencyPrices.large;
+      document.getElementById("dish-price-small").value = currencyPrices.small || "";
+      document.getElementById("dish-price-medium").value = currencyPrices.medium || "";
+      document.getElementById("dish-price-large").value = currencyPrices.large || "";
       
       document.getElementById("dish-desc-tr").value = dish.desc.tr || "";
       document.getElementById("dish-desc-en").value = dish.desc.en || "";
@@ -1935,8 +1937,14 @@
       const nameEn = document.getElementById("dish-name-en").value;
       const nameAr = document.getElementById("dish-name-ar").value;
       
-      const priceMedium = document.getElementById("dish-price-medium").value;
-      const priceLarge = document.getElementById("dish-price-large").value;
+      const priceSmall = document.getElementById("dish-price-small").value.trim();
+      const priceMedium = document.getElementById("dish-price-medium").value.trim();
+      const priceLarge = document.getElementById("dish-price-large").value.trim();
+
+      if (!priceSmall && !priceMedium && !priceLarge) {
+        alert("Lütfen en az bir fiyat girin! / Please enter at least one price!");
+        return;
+      }
       
       const descTr = document.getElementById("dish-desc-tr").value;
       const descEn = document.getElementById("dish-desc-en").value;
@@ -1967,9 +1975,9 @@
                   desc: { tr: descTr, en: descEn, ar: descAr },
                   ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
                   prices: {
-                    tr: { medium: priceMedium, large: priceLarge },
-                    en: { medium: priceMedium, large: priceLarge },
-                    ar: { medium: priceMedium, large: priceLarge }
+                    tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
+                    en: { small: priceSmall, medium: priceMedium, large: priceLarge },
+                    ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
                   }
                 };
               }
@@ -1999,9 +2007,9 @@
               desc: { tr: descTr, en: descEn, ar: descAr },
               ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
               prices: {
-                tr: { medium: priceMedium, large: priceLarge },
-                en: { medium: priceMedium, large: priceLarge },
-                ar: { medium: priceMedium, large: priceLarge }
+                tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
+                en: { small: priceSmall, medium: priceMedium, large: priceLarge },
+                ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
               }
             };
             customDishes.push(clonedDish);
@@ -2025,9 +2033,9 @@
             desc: { tr: descTr, en: descEn, ar: descAr },
             ingredients: { tr: ingTr, en: ingEn, ar: ingAr },
             prices: {
-              tr: { medium: priceMedium, large: priceLarge },
-              en: { medium: priceMedium, large: priceLarge },
-              ar: { medium: priceMedium, large: priceLarge }
+              tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
+              en: { small: priceSmall, medium: priceMedium, large: priceLarge },
+              ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
             }
           };
           customDishes.push(newDish);

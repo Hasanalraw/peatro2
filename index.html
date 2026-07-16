@@ -412,6 +412,14 @@
       <h4 id="size-modal-dish-title" class="size-modal-dish-title">Dish Title</h4>
       
       <div class="size-options-container">
+        <!-- Small Size Option -->
+        <div class="size-option-card" onclick="selectSize('small')" id="size-card-small">
+          <div class="size-option-details">
+            <span class="size-name" data-key="size-small">Küçük</span>
+            <span class="size-price" id="price-small">0 TL</span>
+          </div>
+          <div class="size-selector-radio"></div>
+        </div>
         <!-- Medium Size Option -->
         <div class="size-option-card active" onclick="selectSize('medium')" id="size-card-medium">
           <div class="size-option-details">
@@ -431,8 +439,8 @@
       </div>
       
       <div class="modal-action-buttons" style="display: flex; gap: 10px; margin-top: 1.5rem;">
-        <button class="btn btn-outline" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="addMoreFoodToCart()" data-key="btn-add-to-cart">Sepete Ekle</button>
-        <button class="btn btn-gold" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="confirmBookingWithCart()" data-key="btn-confirm-booking">Hemen Rezerve Et</button>
+        <button class="btn btn-outline" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="closeSizeModal()" data-key="btn-close">Kapat</button>
+        <button id="size-modal-action-btn" class="btn btn-gold" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;">Ekle</button>
       </div>
     </div>
   </div>
@@ -615,7 +623,11 @@
 
         <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:10px;">
           <h4 style="color:var(--color-gold); font-size:0.9rem; margin-bottom:10px;">Fiyatlar | Prices</h4>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
+            <div>
+              <label style="display:block; font-size:0.75rem; color:var(--color-text-secondary); margin-bottom:4px;">Küçük | Small</label>
+              <input type="text" id="edit-dish-price-small" placeholder="340 TL" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF;">
+            </div>
             <div>
               <label style="display:block; font-size:0.75rem; color:var(--color-text-secondary); margin-bottom:4px;">Orta | Medium</label>
               <input type="text" id="edit-dish-price-medium" placeholder="380 TL" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF;">

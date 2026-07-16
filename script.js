@@ -1281,25 +1281,84 @@ window.closeDetailModalOnOutsideClick = function(event) {
   }
 };
 
-window.openSizeModal = function(id) {
+let sizeModalAction = "cart"; // "cart" or "reserve"
+
+window.openSizeModal = function(id, action = "cart") {
   const dish = dishesData[id];
   if (!dish) return;
 
   currentSelectedDishId = id;
-  currentSelectedSize = "medium"; // reset size selection to default
+  sizeModalAction = action;
 
   const modal = document.getElementById("size-modal");
   document.getElementById("size-modal-dish-title").textContent = dish.name[currentLanguage] || dish.name["tr"];
 
-  // Set prices dynamically (ALL IN TL NOW FOR ALL LANGUAGES)
+  // Set prices and visibility dynamically
   const currencyPrices = dish.prices[currentLanguage] || dish.prices["tr"];
-  document.getElementById("price-small").textContent = currencyPrices.small;
-  document.getElementById("price-medium").textContent = currencyPrices.medium;
-  document.getElementById("price-large").textContent = currencyPrices.large;
+  
+  const cardSmall = document.getElementById("size-card-small");
+  const cardMedium = document.getElementById("size-card-medium");
+  const cardLarge = document.getElementById("size-card-large");
 
-  // Reset active classes on size selection cards
+  let hasSmall = currencyPrices.small && currencyPrices.small.trim() !== "";
+  let hasMedium = currencyPrices.medium && currencyPrices.medium.trim() !== "";
+  let hasLarge = currencyPrices.large && currencyPrices.large.trim() !== "";
+
+  let defaultSize = "";
+
+  if (cardSmall) {
+    if (hasSmall) {
+      cardSmall.style.display = "flex";
+      document.getElementById("price-small").textContent = currencyPrices.small;
+      if (!defaultSize) defaultSize = "small";
+    } else {
+      cardSmall.style.display = "none";
+    }
+  }
+
+  if (cardMedium) {
+    if (hasMedium) {
+      cardMedium.style.display = "flex";
+      document.getElementById("price-medium").textContent = currencyPrices.medium;
+      if (!defaultSize) defaultSize = "medium";
+    } else {
+      cardMedium.style.display = "none";
+    }
+  }
+
+  if (cardLarge) {
+    if (hasLarge) {
+      cardLarge.style.display = "flex";
+      document.getElementById("price-large").textContent = currencyPrices.large;
+      if (!defaultSize) defaultSize = "large";
+    } else {
+      cardLarge.style.display = "none";
+    }
+  }
+
+  // Reset active classes on size selection cards and select default
   document.querySelectorAll(".size-option-card").forEach(card => card.classList.remove("active"));
-  document.getElementById("size-card-medium").classList.add("active");
+  if (defaultSize) {
+    currentSelectedSize = defaultSize;
+    const defaultCard = document.getElementById(`size-card-${defaultSize}`);
+    if (defaultCard) defaultCard.classList.add("active");
+  }
+
+  // Configure primary action button
+  const actionBtn = document.getElementById("size-modal-action-btn");
+  if (actionBtn) {
+    if (action === "reserve") {
+      actionBtn.textContent = translations[currentLanguage]["btn-confirm-booking"] || "Hemen Rezerve Et";
+      actionBtn.onclick = function() {
+        confirmBookingWithCart();
+      };
+    } else {
+      actionBtn.textContent = translations[currentLanguage]["btn-add-to-cart"] || "Sepete Ekle";
+      actionBtn.onclick = function() {
+        addMoreFoodToCart();
+      };
+    }
+  }
 
   modal.classList.add("active");
 };
@@ -1772,7 +1831,7 @@ function normalizeDish(dish) {
   // Normalize prices (handles old flat vs new nested tr/en/ar format)
   if (norm.prices) {
     if (norm.prices.tr || norm.prices.en || norm.prices.ar) {
-      const basePrices = norm.prices.tr || norm.prices.en || norm.prices.ar || { medium: '0 TL', large: '0 TL' };
+      const basePrices = norm.prices.tr || norm.prices.en || norm.prices.ar || { small: '', medium: '0 TL', large: '0 TL' };
       if (!norm.prices.tr) norm.prices.tr = { ...basePrices };
       if (!norm.prices.en) norm.prices.en = { ...basePrices };
       if (!norm.prices.ar) norm.prices.ar = { ...basePrices };
@@ -1786,9 +1845,9 @@ function normalizeDish(dish) {
     }
   } else {
     norm.prices = {
-      tr: { medium: '0 TL', large: '0 TL' },
-      en: { medium: '0 TL', large: '0 TL' },
-      ar: { medium: '0 TL', large: '0 TL' }
+      tr: { small: '', medium: '0 TL', large: '0 TL' },
+      en: { small: '', medium: '0 TL', large: '0 TL' },
+      ar: { small: '', medium: '0 TL', large: '0 TL' }
     };
   }
 
@@ -1851,11 +1910,28 @@ function renderMenu() {
     return;
   }
 
+  function getLowestPrice(dish, lang) {
+    const prices = dish.prices[lang] || dish.prices["tr"];
+    if (prices.small && prices.small.trim() !== "" && prices.small.trim() !== "0 TL") {
+      return { label: "S", price: prices.small };
+    }
+    if (prices.medium && prices.medium.trim() !== "" && prices.medium.trim() !== "0 TL") {
+      return { label: "M", price: prices.medium };
+    }
+    if (prices.large && prices.large.trim() !== "" && prices.large.trim() !== "0 TL") {
+      return { label: "L", price: prices.large };
+    }
+    return { label: "M", price: "0 TL" };
+  }
+
   // Draw HTML Cards dynamically in order
   activeDishes.forEach(dish => {
     const name = dish.name[currentLanguage] || dish.name["tr"];
     const desc = dish.desc[currentLanguage] || dish.desc["tr"];
-    const priceMedium = (dish.prices[currentLanguage] || dish.prices["tr"]).medium;
+    
+    // Get lowest available price to display in the card
+    const lowestPriceObj = getLowestPrice(dish, currentLanguage);
+    const priceDisplay = lowestPriceObj.price;
 
     const card = document.createElement("div");
     card.className = "menu-card editable-parent";
@@ -1880,16 +1956,16 @@ function renderMenu() {
         <p class="menu-item-desc">${desc}</p>
         <div class="menu-item-footer">
           <div class="price-area" style="margin-bottom: 12px;">
-            <span class="price">${priceMedium}</span>
+            <span class="price">${priceDisplay}</span>
             <span class="price-note" data-key="price-note">
               ${translations[currentLanguage]["price-note"]}
             </span>
           </div>
           <div class="menu-card-actions" style="display: flex; gap: 8px; width: 100%;">
-            <button class="btn btn-outline" onclick="openSizeModal('${dish.id}')" data-key="btn-reserve-table" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">
+            <button class="btn btn-outline" onclick="openSizeModal('${dish.id}', 'reserve')" data-key="btn-reserve-table" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">
               ${translations[currentLanguage]["btn-reserve-table"] || "Masa Rezerve Et"}
             </button>
-            <button class="btn btn-gold" onclick="addDishDirectToCart('${dish.id}')" data-key="btn-add-to-cart" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">
+            <button class="btn btn-gold" onclick="openSizeModal('${dish.id}', 'cart')" data-key="btn-add-to-cart" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">
               ${translations[currentLanguage]["btn-add-to-cart"] || "Sepete Ekle"}
             </button>
           </div>
@@ -2003,6 +2079,7 @@ window.openNewDishModal = function() {
   document.getElementById("edit-dish-name-en").value = "";
   document.getElementById("edit-dish-name-ar").value = "";
 
+  document.getElementById("edit-dish-price-small").value = "";
   document.getElementById("edit-dish-price-medium").value = "";
   document.getElementById("edit-dish-price-large").value = "";
 
@@ -2040,6 +2117,7 @@ window.openEditDishModal = function(id, event) {
   document.getElementById("edit-dish-name-en").value = dish.name.en || "";
   document.getElementById("edit-dish-name-ar").value = dish.name.ar || "";
 
+  document.getElementById("edit-dish-price-small").value = dish.prices.tr.small || "";
   document.getElementById("edit-dish-price-medium").value = dish.prices.tr.medium || "";
   document.getElementById("edit-dish-price-large").value = dish.prices.tr.large || "";
 
@@ -2069,8 +2147,14 @@ window.saveAdminDish = function() {
   const nameEn = document.getElementById("edit-dish-name-en").value.trim();
   const nameAr = document.getElementById("edit-dish-name-ar").value.trim();
 
-  const priceMedium = document.getElementById("edit-dish-price-medium").value.trim() || "0 TL";
-  const priceLarge = document.getElementById("edit-dish-price-large").value.trim() || "0 TL";
+  const priceSmall = document.getElementById("edit-dish-price-small").value.trim();
+  const priceMedium = document.getElementById("edit-dish-price-medium").value.trim();
+  const priceLarge = document.getElementById("edit-dish-price-large").value.trim();
+
+  if (!priceSmall && !priceMedium && !priceLarge) {
+    alert("Lütfen en az bir fiyat girin! / Please enter at least one price!");
+    return;
+  }
 
   const descTr = document.getElementById("edit-dish-desc-tr").value.trim();
   const descEn = document.getElementById("edit-dish-desc-en").value.trim();
@@ -2096,9 +2180,9 @@ window.saveAdminDish = function() {
       desc: { tr: descTr, en: descEn || descTr, ar: descAr || descTr },
       ingredients: { tr: ingTr, en: ingEn || ingTr, ar: ingAr || ingTr },
       prices: {
-        tr: { medium: priceMedium, large: priceLarge },
-        en: { medium: priceMedium, large: priceLarge },
-        ar: { medium: priceMedium, large: priceLarge }
+        tr: { small: priceSmall, medium: priceMedium, large: priceLarge },
+        en: { small: priceSmall, medium: priceMedium, large: priceLarge },
+        ar: { small: priceSmall, medium: priceMedium, large: priceLarge }
       },
       image: imagesList[0],
       images: imagesList
