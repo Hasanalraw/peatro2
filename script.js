@@ -1669,46 +1669,6 @@ window.handleBookingSubmit = function(event) {
   // Dispatch storage update trigger event for local tab-to-tab sync
   localStorage.setItem("pietro_new_booking_event", Date.now().toString());
 
-  // Trigger WhatsApp API message checkout
-  let messageText = "";
-  if (currentLanguage === "tr") {
-    messageText = `Merhaba, Pietro Coffee Pizzeria'dan masa rezervasyonu yapmak istiyorum:\n\n` +
-                  `👤 İsim: ${name}\n` +
-                  `📞 Telefon: ${phone}\n` +
-                  `📅 Tarih: ${date}\n` +
-                  `⏰ Saat: ${time}\n` +
-                  `👥 Kişi Sayısı: ${guests}\n` +
-                  `📍 Masa Tercihi: ${translateTableLocal(table, "tr")}\n` +
-                  (dish ? `🍕 Seçilen Yemekler: ${dish}\n` : "") +
-                  (drink ? `🍹 Seçilen İçecek: ${drink}\n` : "") +
-                  (notes ? `📝 Notlar: ${notes}\n` : "");
-  } else if (currentLanguage === "en") {
-    messageText = `Hello, I would like to book a table at Pietro Coffee Pizzeria:\n\n` +
-                  `👤 Name: ${name}\n` +
-                  `📞 Phone: ${phone}\n` +
-                  `📅 Date: ${date}\n` +
-                  `⏰ Time: ${time}\n` +
-                  `👥 Guests: ${guests}\n` +
-                  `📍 Table Preference: ${translateTableLocal(table, "en")}\n` +
-                  (dish ? `🍕 Selected Dishes: ${dish}\n` : "") +
-                  (drink ? `🍹 Selected Drink: ${drink}\n` : "") +
-                  (notes ? `📝 Notes: ${notes}\n` : "");
-  } else {
-    messageText = `مرحباً، أود حجز طاولة في مطعم Pietro Coffee Pizzeria:\n\n` +
-                  `👤 الاسم: ${name}\n` +
-                  `📞 الهاتف: ${phone}\n` +
-                  `📅 التاريخ: ${date}\n` +
-                  `⏰ الوقت: ${time}\n` +
-                  `👥 عدد الأفراد: ${guests}\n` +
-                  `📍 تفضيل الطاولة: ${translateTableLocal(table, "ar")}\n` +
-                  (dish ? `🍕 الوجبات المختارة: ${dish}\n` : "") +
-                  (drink ? `🍹 المشروب المختار: ${drink}\n` : "") +
-                  (notes ? `📝 ملاحظات: ${notes}\n` : "");
-  }
-
-  const encodedMessage = encodeURIComponent(messageText);
-  window.open(`https://wa.me/905300000000?text=${encodedMessage}`, "_blank");
-
   // Show Success Popup Modal card
   const popup = document.getElementById("form-success-popup");
   if (popup) {
