@@ -665,6 +665,7 @@
         <ul class="admin-nav" style="display: flex; gap: 16px; list-style: none;">
           <li><a onclick="showTab('reservations')" id="nav-btn-reservations" class="admin-nav-link active" style="cursor: pointer;">Rezervasyonlar</a></li>
           <li><a onclick="showTab('menu-mgmt')" id="nav-btn-menu-mgmt" class="admin-nav-link" style="cursor: pointer;">Menü Yönetimi</a></li>
+          <li><a onclick="showTab('category-mgmt')" id="nav-btn-category-mgmt" class="admin-nav-link" style="cursor: pointer;">Kategori Yönetimi</a></li>
         </ul>
       </nav>
 
@@ -786,10 +787,7 @@
             <div class="form-group">
               <label id="lang-label-category">Kategori</label>
               <select id="dish-category" required>
-                <option value="pizza">Pizzalar (Pizza)</option>
-                <option value="pasta">Makarnalar (Pasta)</option>
-                <option value="coffee">Kahve (Coffee)</option>
-                <option value="dessert">Tatlı (Dessert)</option>
+                <!-- Dynamically populated via javascript -->
               </select>
             </div>
 
@@ -922,6 +920,60 @@
       </div>
     </section>
 
+    <!-- TAB 4: CATEGORY MANAGEMENT SECTION -->
+    <section id="section-category-mgmt" class="admin-section">
+      <div class="menu-mgmt-grid">
+        
+        <!-- Left: Active Categories List -->
+        <div class="dashboard-card">
+          <div class="card-title">
+            <span id="lang-category-list-title">Aktif Kategoriler</span>
+            <span id="category-list-count" style="font-size: 0.8rem; font-weight: normal; color: var(--color-text-secondary);"></span>
+          </div>
+          
+          <div class="menu-mgmt-list" id="category-items-list">
+            <!-- Dynamically populated categories list -->
+          </div>
+        </div>
+
+        <!-- Right: Add / Edit Category Form -->
+        <div class="dashboard-card" id="category-form-container">
+          <h3 id="form-category-title" style="font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: var(--color-gold); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+            <i class="fa-solid fa-folder-plus"></i> Kategori Ekle/Düzenle
+          </h3>
+          
+          <form id="add-category-form" onsubmit="handleCategoryFormSubmit(event)">
+            <input type="hidden" id="edit-category-id" value="">
+
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label id="lang-label-cat-name-tr">Kategori Adı (Türkçe)</label>
+              <input type="text" id="cat-name-tr" required placeholder="Örn. Salatalar">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label id="lang-label-cat-name-en">Kategori Adı (EN)</label>
+              <input type="text" id="cat-name-en" required placeholder="e.g. Salads">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label id="lang-label-cat-name-ar">Kategori Adı (AR)</label>
+              <input type="text" id="cat-name-ar" required placeholder="مثال: سلطات" style="text-align: right;">
+            </div>
+
+            <div class="form-actions-row">
+              <button type="submit" class="btn btn-gold" style="flex-grow: 1; justify-content: center;" id="btn-submit-category">
+                <i class="fa-solid fa-save"></i> Kategoriyi Kaydet
+              </button>
+              <button type="button" class="btn btn-outline" id="btn-cancel-category-edit" style="display: none;" onclick="cancelCategoryEditMode()">
+                İptal Et
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
     <!-- TAB 3: CUSTOMER PAGE EDITOR SECTION -->
     <section id="section-customer-editor" class="admin-section" style="width: 100%; padding: 0;">
       <div class="dashboard-card" style="padding: 10px; margin-top: 0; background: none; border: none;">
@@ -954,8 +1006,65 @@
       }
     }
 
-    // 1. Static Initial Database (Empty baseline menu as requested by user)
-    const defaultDishes = [];
+    // 1. Static Initial Database (Populated with default authentic Italian menu)
+    const defaultDishes = [
+      {
+        id: "pizza-pietro",
+        category: "pizza",
+        image: "images/pizza_pietro.jpg",
+        images: ["images/pizza_pietro.jpg"],
+        name: { tr: "Pizza Pietro", en: "Pizza Pietro", ar: "بيتزا بيترو" },
+        desc: { tr: "Şefin özel sosu, dilimlenmiş mantar, dana jambon ve fesleğen.", en: "Chef's signature sauce, sliced mushrooms, beef ham, and fresh basil.", ar: "صلصة الشيف المميزة، شرائح الفطر، مرتديلا لحم البقر، وريحان طازج." },
+        ingredients: { tr: ["Özel Sos", "Mantarlar", "Dana Jambon", "Fesleğen"], en: ["Signature Sauce", "Mushrooms", "Beef Ham", "Basil"], ar: ["صلصة مميزة", "فطر", "مرتديلا لحم بقر", "ريحان"] },
+        prices: {
+          tr: { medium: "380 TL", large: "440 TL" },
+          en: { medium: "380 TL", large: "440 TL" },
+          ar: { medium: "380 TL", large: "440 TL" }
+        }
+      },
+      {
+        id: "penne-burrata",
+        category: "pasta",
+        image: "images/penne_burrata.jpg",
+        images: ["images/penne_burrata.jpg"],
+        name: { tr: "Penne Burrata", en: "Penne Burrata", ar: "بيني بوراتا" },
+        desc: { tr: "Taze burrata peyniri, fesleğenli domates sosu ve zeytinyağı.", en: "Fresh burrata cheese, tomato sauce with basil, and virgin olive oil.", ar: "جبنة بوراتا طازجة، صلصة الطماطم بالريحان، وزيت زيتون بكر." },
+        ingredients: { tr: ["Penne", "Burrata Peyniri", "Domates Sosu", "Zeytinyağı"], en: ["Penne", "Burrata Cheese", "Tomato Sauce", "Olive Oil"], ar: ["باستا بيني", "جبنة بوراتا", "صلصة طماطم", "زيت زيتون"] },
+        prices: {
+          tr: { medium: "320 TL", large: "360 TL" },
+          en: { medium: "320 TL", large: "360 TL" },
+          ar: { medium: "320 TL", large: "360 TL" }
+        }
+      },
+      {
+        id: "pizza-margherita",
+        category: "pizza",
+        image: "images/pizza_margherita.jpg",
+        images: ["images/pizza_margherita.jpg"],
+        name: { tr: "Pizza Margherita", en: "Pizza Margherita", ar: "بيتزا مارغريتا" },
+        desc: { tr: "Klasik İtalyan pizzası: Mozzarella, domates sosu ve fesleğen.", en: "Classic Italian pizza with mozzarella, tomato sauce, and basil.", ar: "بيتزا إيطالية كلاسيكية: موزاريلا، صلصة طماطم، وريحان." },
+        ingredients: { tr: ["Mozzarella", "Domates Sosu", "Fesleğen"], en: ["Mozzarella", "Tomato Sauce", "Basil"], ar: ["موزاريلا", "صلصة طماطم", "ريحان"] },
+        prices: {
+          tr: { medium: "340 TL", large: "380 TL" },
+          en: { medium: "340 TL", large: "380 TL" },
+          ar: { medium: "340 TL", large: "380 TL" }
+        }
+      },
+      {
+        id: "tagliatelli-scampi",
+        category: "pasta",
+        image: "images/tagliatelli_scampi.jpg",
+        images: ["images/tagliatelli_scampi.jpg"],
+        name: { tr: "Tagliatelli Scampi", en: "Tagliatelli Scampi", ar: "تاغلياتيلي سكامبي" },
+        desc: { tr: "Karides, sarımsak, zeytinyağı ve krema soslu makarna.", en: "Tagliatelli pasta with shrimp, garlic, olive oil, and cream sauce.", ar: "باستا تاغلياتيلي مع الروبيان، الثوم، زيت الزيتون، وصلصة الكريمة." },
+        ingredients: { tr: ["Tagliatelli", "Karides", "Sarımsak", "Krema"], en: ["Tagliatelli", "Shrimp", "Garlic", "Cream"], ar: ["تاغلياتيلي", "روبيان", "ثوم", "كريمة"] },
+        prices: {
+          tr: { medium: "410 TL", large: "460 TL" },
+          en: { medium: "410 TL", large: "460 TL" },
+          ar: { medium: "410 TL", large: "460 TL" }
+        }
+      }
+    ];
 
     // Admin Localization Texts
     const adminLangDict = {
@@ -1014,7 +1123,15 @@
         "label-drink-name-ar": "İçecek Adı (AR)",
         "label-drink-price": "Fiyat (Lira - TL - İsteğe Bağlı)",
         "btn-add-drink": "İçeceği Menüye Ekle",
-        "btn-save-drink": "Değişiklikleri Kaydet"
+        "btn-save-drink": "Değişiklikleri Kaydet",
+        "btn-category-mgmt": "Kategori Yönetimi",
+        "category-list-title": "Aktif Kategoriler",
+        "form-category-add": "Kategori Ekle/Düzenle",
+        "form-category-edit": "Kategoriyi Düzenle",
+        "label-cat-name-tr": "Kategori Adı (Türkçe)",
+        "label-cat-name-en": "Kategori Adı (EN)",
+        "label-cat-name-ar": "Kategori Adı (AR)",
+        "btn-save-category": "Kategoriyi Kaydet"
       },
       en: {
         "panel-tag": "Admin Panel",
@@ -1071,7 +1188,15 @@
         "label-drink-name-ar": "Drink Name (AR)",
         "label-drink-price": "Price (Lira - TL - Optional)",
         "btn-add-drink": "Add Drink to Menu",
-        "btn-save-drink": "Save Changes"
+        "btn-save-drink": "Save Changes",
+        "btn-category-mgmt": "Category Management",
+        "category-list-title": "Active Categories",
+        "form-category-add": "Add/Edit Category",
+        "form-category-edit": "Edit Category",
+        "label-cat-name-tr": "Category Name (TR)",
+        "label-cat-name-en": "Category Name (EN)",
+        "label-cat-name-ar": "Category Name (AR)",
+        "btn-save-category": "Save Category"
       },
       ar: {
         "panel-tag": "لوحة التحكم",
@@ -1128,7 +1253,15 @@
         "label-drink-name-ar": "اسم المشروب (العربية)",
         "label-drink-price": "السعر بالليرة التركية (TL - اختياري)",
         "btn-add-drink": "إضافة المشروب للقائمة",
-        "btn-save-drink": "حفظ التغييرات"
+        "btn-save-drink": "حفظ التغييرات",
+        "btn-category-mgmt": "إدارة الأقسام",
+        "category-list-title": "الأقسام النشطة",
+        "form-category-add": "إضافة/تعديل قسم",
+        "form-category-edit": "تعديل قسم",
+        "label-cat-name-tr": "اسم القسم (التركية)",
+        "label-cat-name-en": "اسم القسم (الإنجليزية)",
+        "label-cat-name-ar": "اسم القسم (العربية)",
+        "btn-save-category": "حفظ القسم"
       }
     };
 
@@ -1239,6 +1372,159 @@
       loadBookings();
       loadMenuList();
       loadDrinkList();
+    }
+
+    // Category Management Logic
+    function safeGetCategories() {
+      const defaults = [
+        { id: "pizza", name: { tr: "Pizza", en: "Pizza", ar: "البيتزا" } },
+        { id: "pasta", name: { tr: "Makarna", en: "Pasta", ar: "الباستا" } },
+        { id: "coffee", name: { tr: "İçecekler", en: "Drinks", ar: "المشروبات" } },
+        { id: "dessert", name: { tr: "Tatlı", en: "Dessert", ar: "الحلويات" } }
+      ];
+      return safeGetItem("pietro_categories", defaults);
+    }
+
+    function loadCategoryList() {
+      const categories = safeGetCategories();
+      const listContainer = document.getElementById("category-items-list");
+      if (!listContainer) return;
+      listContainer.innerHTML = "";
+
+      document.getElementById("category-list-count").textContent = `(${categories.length} Kategori Aktif)`;
+
+      if (categories.length === 0) {
+        listContainer.innerHTML = `<p class="empty-state" style="padding:40px 0;">Aktif kategori bulunmuyor.</p>`;
+        return;
+      }
+
+      categories.forEach(cat => {
+        const item = document.createElement("div");
+        item.className = "menu-mgmt-item";
+        
+        const name = cat.name[adminActiveLang] || cat.name["tr"];
+
+        item.innerHTML = `
+          <div class="item-details">
+            <h4 class="item-name"><i class="fa-solid fa-tags" style="color:var(--color-gold); margin-right:8px;"></i> ${escapeHTML(name)}</h4>
+            <div class="item-prices" style="font-size:0.75rem; color:var(--color-text-secondary);">ID: ${cat.id}</div>
+          </div>
+          <div class="action-buttons">
+            <button class="btn-action btn-confirm" onclick="editCategoryItem('${cat.id}')" title="Düzenle" style="background-color: var(--color-gold);">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button class="btn-action btn-cancel" onclick="deleteCategoryItem('${cat.id}')" title="Sil">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        `;
+        listContainer.appendChild(item);
+      });
+    }
+
+    window.deleteCategoryItem = function(id) {
+      // Check if there are dishes using this category
+      const customDishes = safeGetItem("pietro_custom_dishes");
+      const dishesInCat = customDishes.filter(d => d.category === id);
+      if (dishesInCat.length > 0) {
+        alert(adminActiveLang === "tr" ? `Bu kategori silinemez, çünkü bu kategoriye ait ${dishesInCat.length} adet yemek bulunuyor. Lütfen önce o yemeklerin kategorisini değiştirin.` :
+              (adminActiveLang === "en" ? `This category cannot be deleted because there are ${dishesInCat.length} dishes in it. Please change their category first.` :
+              `لا يمكن حذف هذا القسم لأنه يحتوي على ${dishesInCat.length} وجبات. يرجى تغيير قسم الوجبات أولاً.`));
+        return;
+      }
+
+      if (!confirm(adminActiveLang === "tr" ? "Bu kategoriyi tamamen kaldırmak istediğinize emin misiniz?" :
+                   (adminActiveLang === "en" ? "Are you sure you want to delete this category?" :
+                   "هل أنت متأكد من حذف هذا القسم؟"))) return;
+
+      let categories = safeGetCategories();
+      categories = categories.filter(c => c.id !== id);
+      localStorage.setItem("pietro_categories", JSON.stringify(categories));
+      localStorage.setItem("pietro_categories_updated_event", Date.now().toString());
+      loadCategoryList();
+      populateAdminCategoryDropdown();
+    };
+
+    window.editCategoryItem = function(id) {
+      const categories = safeGetCategories();
+      const cat = categories.find(c => c.id === id);
+      if (!cat) return;
+
+      document.getElementById("edit-category-id").value = cat.id;
+      document.getElementById("cat-name-tr").value = cat.name.tr || "";
+      document.getElementById("cat-name-en").value = cat.name.en || "";
+      document.getElementById("cat-name-ar").value = cat.name.ar || "";
+
+      const dict = adminLangDict[adminActiveLang];
+      document.getElementById("btn-submit-category").textContent = dict["btn-save"] || "Kategoriyi Kaydet";
+      document.getElementById("btn-cancel-category-edit").style.display = "inline-flex";
+
+      document.getElementById("category-form-container").scrollIntoView({ behavior: "smooth" });
+    };
+
+    window.cancelCategoryEditMode = function() {
+      document.getElementById("add-category-form").reset();
+      document.getElementById("edit-category-id").value = "";
+      document.getElementById("btn-cancel-category-edit").style.display = "none";
+      document.getElementById("btn-submit-category").textContent = adminLangDict[adminActiveLang]["btn-save-category"];
+    };
+
+    window.handleCategoryFormSubmit = function(event) {
+      event.preventDefault();
+
+      const editingId = document.getElementById("edit-category-id").value;
+      const nameTr = document.getElementById("cat-name-tr").value.trim();
+      const nameEn = document.getElementById("cat-name-en").value.trim();
+      const nameAr = document.getElementById("cat-name-ar").value.trim();
+
+      let categories = safeGetCategories();
+
+      if (editingId) {
+        categories = categories.map(c => {
+          if (c.id === editingId) {
+            return {
+              id: editingId,
+              name: { tr: nameTr, en: nameEn, ar: nameAr }
+            };
+          }
+          return c;
+        });
+        alert(adminActiveLang === "tr" ? "Kategori başarıyla güncellendi." : "Category updated successfully.");
+        cancelCategoryEditMode();
+      } else {
+        const newCat = {
+          id: "cat-" + Date.now(),
+          name: { tr: nameTr, en: nameEn, ar: nameAr }
+        };
+        categories.push(newCat);
+        alert(adminActiveLang === "tr" ? "Kategori başarıyla eklendi." : "Category added successfully.");
+        document.getElementById("add-category-form").reset();
+      }
+
+      localStorage.setItem("pietro_categories", JSON.stringify(categories));
+      localStorage.setItem("pietro_categories_updated_event", Date.now().toString());
+      loadCategoryList();
+      populateAdminCategoryDropdown();
+    };
+
+    function populateAdminCategoryDropdown() {
+      const select = document.getElementById("dish-category");
+      if (!select) return;
+      
+      const currentVal = select.value;
+      
+      select.innerHTML = "";
+      const categories = safeGetCategories();
+      categories.forEach(cat => {
+        const opt = document.createElement("option");
+        opt.value = cat.id;
+        opt.textContent = cat.name[adminActiveLang] || cat.name["tr"];
+        select.appendChild(opt);
+      });
+      
+      if (currentVal && categories.some(c => c.id === currentVal)) {
+        select.value = currentVal;
+      }
     }
 
     // 4. Load Bookings List
@@ -1965,6 +2251,10 @@
       if (event.key === "pietro_custom_dishes" || event.key === "pietro_deleted_default_dishes" || event.key === "pietro_custom_dishes_updated_event") {
         loadMenuList();
       }
+      if (event.key === "pietro_categories" || event.key === "pietro_categories_updated_event") {
+        loadCategoryList();
+        populateAdminCategoryDropdown();
+      }
       if (event.key === "pietro_custom_drinks" || event.key === "pietro_custom_drinks_updated_event") {
         loadDrinkList();
       }
@@ -1985,8 +2275,12 @@
 
       localStorage.removeItem("pietro_custom_dishes");
       localStorage.removeItem("pietro_deleted_default_dishes");
+      localStorage.removeItem("pietro_categories");
       localStorage.setItem("pietro_custom_dishes_updated_event", Date.now().toString());
+      localStorage.setItem("pietro_categories_updated_event", Date.now().toString());
       loadMenuList();
+      populateAdminCategoryDropdown();
+      loadCategoryList();
 
       const successMsg = adminActiveLang === "tr" ? "Menü varsayılana sıfırlandı." :
                          (adminActiveLang === "en" ? "Menu has been reset to defaults." :

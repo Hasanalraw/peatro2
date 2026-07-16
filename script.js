@@ -179,7 +179,7 @@ const defaultTranslations = {
     "size-large": "Large",
     "btn-confirm": "Confirm & Reserve",
     "btn-add-more": "Add to Cart",
-    "btn-confirm-booking": "Reserve Table",
+    "btn-confirm-booking": "Book Table Now",
     "label-selected-dishes": "Selected Dishes",
     "cart-empty": "No food selected yet. You can add food from our menu.",
     "added-to-cart-toast": "Food added to cart!",
@@ -287,7 +287,7 @@ const defaultTranslations = {
     "size-large": "كبيرة",
     "btn-confirm": "تأكيد الحجز",
     "btn-add-more": "إضافة إلى السلة",
-    "btn-confirm-booking": "احجز طاولة",
+    "btn-confirm-booking": "احجز الطاولة الآن",
     "label-selected-dishes": "الوجبات المختارة",
     "cart-empty": "لم يتم اختيار أي وجبة بعد. يمكنك إضافة الطعام من القائمة في الأعلى.",
     "added-to-cart-toast": "تمت إضافة الوجبة للسلة!",
@@ -378,8 +378,127 @@ if (!siteConfig) {
   siteConfig = defaultConfig;
 }
 
-// 2. Baseline Database (Empty baseline menu as requested by user)
-const defaultDishes = [];
+// 2. Baseline Database (Populated with default authentic Italian menu)
+const defaultDishes = [
+  {
+    id: "pizza-pietro",
+    category: "pizza",
+    image: "images/pizza_pietro.jpg",
+    images: ["images/pizza_pietro.jpg"],
+    name: { tr: "Pizza Pietro", en: "Pizza Pietro", ar: "بيتزا بيترو" },
+    desc: { tr: "Şefin özel sosu, dilimlenmiş mantar, dana jambon ve fesleğen.", en: "Chef's signature sauce, sliced mushrooms, beef ham, and fresh basil.", ar: "صلصة الشيف المميزة، شرائح الفطر، مرتديلا لحم البقر، وريحان طازج." },
+    ingredients: { tr: ["Özel Sos", "Mantarlar", "Dana Jambon", "Fesleğen"], en: ["Signature Sauce", "Mushrooms", "Beef Ham", "Basil"], ar: ["صلصة مميزة", "فطر", "مرتديلا لحم بقر", "ريحان"] },
+    prices: {
+      tr: { medium: "380 TL", large: "440 TL" },
+      en: { medium: "380 TL", large: "440 TL" },
+      ar: { medium: "380 TL", large: "440 TL" }
+    }
+  },
+  {
+    id: "penne-burrata",
+    category: "pasta",
+    image: "images/penne_burrata.jpg",
+    images: ["images/penne_burrata.jpg"],
+    name: { tr: "Penne Burrata", en: "Penne Burrata", ar: "بيني بوراتا" },
+    desc: { tr: "Taze burrata peyniri, fesleğenli domates sosu ve zeytinyağı.", en: "Fresh burrata cheese, tomato sauce with basil, and virgin olive oil.", ar: "جبنة بوراتا طازجة، صلصة الطماطم بالريحان، وزيت زيتون بكر." },
+    ingredients: { tr: ["Penne", "Burrata Peyniri", "Domates Sosu", "Zeytinyağı"], en: ["Penne", "Burrata Cheese", "Tomato Sauce", "Olive Oil"], ar: ["باستا بيني", "جبنة بوراتا", "صلصة طماطم", "زيت زيتون"] },
+    prices: {
+      tr: { medium: "320 TL", large: "360 TL" },
+      en: { medium: "320 TL", large: "360 TL" },
+      ar: { medium: "320 TL", large: "360 TL" }
+    }
+  },
+  {
+    id: "pizza-margherita",
+    category: "pizza",
+    image: "images/pizza_margherita.jpg",
+    images: ["images/pizza_margherita.jpg"],
+    name: { tr: "Pizza Margherita", en: "Pizza Margherita", ar: "بيتزا مارغريتا" },
+    desc: { tr: "Klasik İtalyan pizzası: Mozzarella, domates sosu ve fesleğen.", en: "Classic Italian pizza with mozzarella, tomato sauce, and basil.", ar: "بيتزا إيطالية كلاسيكية: موزاريلا، صلصة طماطم، وريحان." },
+    ingredients: { tr: ["Mozzarella", "Domates Sosu", "Fesleğen"], en: ["Mozzarella", "Tomato Sauce", "Basil"], ar: ["موزاريلا", "صلصة طماطم", "ريحان"] },
+    prices: {
+      tr: { medium: "340 TL", large: "380 TL" },
+      en: { medium: "340 TL", large: "380 TL" },
+      ar: { medium: "340 TL", large: "380 TL" }
+    }
+  },
+  {
+    id: "tagliatelli-scampi",
+    category: "pasta",
+    image: "images/tagliatelli_scampi.jpg",
+    images: ["images/tagliatelli_scampi.jpg"],
+    name: { tr: "Tagliatelli Scampi", en: "Tagliatelli Scampi", ar: "تاغلياتيلي سكامبي" },
+    desc: { tr: "Karides, sarımsak, zeytinyağı ve krema soslu makarna.", en: "Tagliatelli pasta with shrimp, garlic, olive oil, and cream sauce.", ar: "باستا تاغلياتيلي مع الروبيان، الثوم، زيت الزيتون، وصلصة الكريمة." },
+    ingredients: { tr: ["Tagliatelli", "Karides", "Sarımsak", "Krema"], en: ["Tagliatelli", "Shrimp", "Garlic", "Cream"], ar: ["تاغلياتيلي", "روبيان", "ثوم", "كريمة"] },
+    prices: {
+      tr: { medium: "410 TL", large: "460 TL" },
+      en: { medium: "410 TL", large: "460 TL" },
+      ar: { medium: "410 TL", large: "460 TL" }
+    }
+  }
+];
+
+function safeGetCategories() {
+  const defaults = [
+    { id: "pizza", name: { tr: "Pizza", en: "Pizza", ar: "البيتزا" } },
+    { id: "pasta", name: { tr: "Makarna", en: "Pasta", ar: "الباستا" } },
+    { id: "coffee", name: { tr: "İçecekler", en: "Drinks", ar: "المشروبات" } },
+    { id: "dessert", name: { tr: "Tatlı", en: "Dessert", ar: "الحلويات" } }
+  ];
+  return safeGetItem("pietro_categories", defaults);
+}
+
+window.renderCategoryFilters = function() {
+  const container = document.querySelector(".menu-filters");
+  if (!container) return;
+  
+  const currentActiveBtn = container.querySelector(".filter-btn.active");
+  const previousFilter = currentActiveBtn ? currentActiveBtn.getAttribute("data-filter") : "all";
+  
+  container.innerHTML = "";
+  const categories = safeGetCategories();
+
+  // 1. Render Tümü
+  const allBtn = document.createElement("button");
+  allBtn.className = previousFilter === "all" ? "filter-btn active" : "filter-btn";
+  allBtn.setAttribute("data-filter", "all");
+  allBtn.setAttribute("data-key", "filter-all");
+  allBtn.textContent = translations[currentLanguage]["filter-all"] || "Tümü";
+  allBtn.addEventListener("click", () => {
+    container.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    allBtn.classList.add("active");
+    applyActiveFilter();
+  });
+  container.appendChild(allBtn);
+
+  // 2. Render categories
+  categories.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.className = previousFilter === cat.id ? "filter-btn active" : "filter-btn";
+    btn.setAttribute("data-filter", cat.id);
+    btn.textContent = cat.name[currentLanguage] || cat.name["tr"];
+    btn.addEventListener("click", () => {
+      container.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      applyActiveFilter();
+    });
+    container.appendChild(btn);
+  });
+};
+
+window.populateCategoryDropdowns = function() {
+  const categories = safeGetCategories();
+  const editSelect = document.getElementById("edit-dish-category");
+  if (editSelect) {
+    editSelect.innerHTML = "";
+    categories.forEach(cat => {
+      const opt = document.createElement("option");
+      opt.value = cat.id;
+      opt.textContent = cat.name[currentLanguage] || cat.name["tr"];
+      editSelect.appendChild(opt);
+    });
+  }
+};
 
 
 // Global state variables
@@ -994,6 +1113,9 @@ function setLanguage(lang) {
   // Re-render dynamic cart items to apply active language translations
   renderCart();
   
+  renderCategoryFilters();
+  populateCategoryDropdowns();
+
   // Re-render menu using new active language translations
   renderMenu();
 
@@ -1841,6 +1963,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Listen to remote changes to reload custom dishes / bookings list in real-time
   window.addEventListener("storage", (event) => {
     if (event.key === "pietro_custom_dishes" || event.key === "pietro_deleted_default_dishes" || event.key === "pietro_custom_dishes_updated_event") {
+      renderMenu();
+    }
+    if (event.key === "pietro_categories" || event.key === "pietro_categories_updated_event") {
+      renderCategoryFilters();
+      populateCategoryDropdowns();
       renderMenu();
     }
     if (event.key === "pietro_custom_drinks" || event.key === "pietro_custom_drinks_updated_event") {

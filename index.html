@@ -155,11 +155,7 @@
       
       <!-- Menu Filters -->
       <div class="menu-filters">
-        <button class="filter-btn active" data-filter="all" data-key="filter-all">Tümü</button>
-        <button class="filter-btn" data-filter="pizza" data-key="filter-pizza">Pizza</button>
-        <button class="filter-btn" data-filter="pasta" data-key="filter-pasta">Makarna</button>
-        <button class="filter-btn" data-filter="coffee" data-key="filter-coffee">Kahve</button>
-        <button class="filter-btn" data-filter="dessert" data-key="filter-dessert">Tatlı</button>
+        <!-- Dynamically populated via script.js -->
       </div>
     </div>
 
@@ -435,8 +431,8 @@
       </div>
       
       <div class="modal-action-buttons" style="display: flex; gap: 10px; margin-top: 1.5rem;">
-        <button class="btn btn-outline" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="closeSizeModal()" data-key="btn-close">Kapat</button>
-        <button class="btn btn-gold" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="addMoreFoodToCart()" data-key="btn-add-to-cart">Sepete Ekle</button>
+        <button class="btn btn-outline" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="addMoreFoodToCart()" data-key="btn-add-to-cart">Sepete Ekle</button>
+        <button class="btn btn-gold" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="confirmBookingWithCart()" data-key="btn-confirm-booking">Hemen Rezerve Et</button>
       </div>
     </div>
   </div>
@@ -594,10 +590,7 @@
           <div style="flex:1;">
             <label style="display:block; font-size:0.8rem; color:var(--color-text-secondary); margin-bottom:4px;">Kategori | Category</label>
             <select id="edit-dish-category" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--color-border); background:#0F0F0F; color:#FFF;">
-              <option value="pizza" data-key="filter-pizza">Pizza</option>
-              <option value="pasta" data-key="filter-pasta">Makarna</option>
-              <option value="coffee" data-key="filter-coffee">Kahve</option>
-              <option value="dessert" data-key="filter-dessert">Tatlı</option>
+              <!-- Dynamically populated via script.js -->
             </select>
           </div>
         </div>
