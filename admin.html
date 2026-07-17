@@ -665,6 +665,7 @@
         <ul class="admin-nav" style="display: flex; gap: 16px; list-style: none;">
           <li><a onclick="showTab('reservations')" id="nav-btn-reservations" class="admin-nav-link active" style="cursor: pointer;">Bugünün Rezervasyonları</a></li>
           <li><a onclick="showTab('upcoming-reservations')" id="nav-btn-upcoming-reservations" class="admin-nav-link" style="cursor: pointer;">Gelecek Rezervasyonlar</a></li>
+          <li><a onclick="showTab('all-reservations')" id="nav-btn-all-reservations" class="admin-nav-link" style="cursor: pointer;">Tüm Rezervasyonlar</a></li>
           <li><a onclick="showTab('menu-mgmt')" id="nav-btn-menu-mgmt" class="admin-nav-link" style="cursor: pointer;">Menü Yönetimi</a></li>
           <li><a onclick="showTab('category-mgmt')" id="nav-btn-category-mgmt" class="admin-nav-link" style="cursor: pointer;">Kategori Yönetimi</a></li>
           <li><a onclick="showTab('reviews-mgmt')" id="nav-btn-reviews-mgmt" class="admin-nav-link" style="cursor: pointer;">Yorum Yönetimi</a></li>
@@ -1032,6 +1033,57 @@
       </div>
     </section>
 
+    <!-- TAB 2.5: ALL RESERVATIONS SECTION -->
+    <section id="section-all-reservations" class="admin-section">
+      <!-- Stats counter -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3 id="stat-all-total">0</h3>
+          <p id="lang-stat-all-total">Toplam Rezervasyon</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="stat-all-pending" style="color: var(--color-gold);">0</h3>
+          <p id="lang-stat-all-pending">Bekleyen</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="stat-all-confirmed" style="color: var(--color-green);">0</h3>
+          <p id="lang-stat-all-confirmed">Onaylanan</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="stat-all-cancelled" style="color: #ff4d4d;">0</h3>
+          <p id="lang-stat-all-cancelled">İptal Edilen</p>
+        </div>
+      </div>
+
+      <div class="dashboard-card">
+        <div class="card-title">
+          <span id="lang-all-reservations-title">Tüm Rezervasyonlar</span>
+        </div>
+
+        <div class="bookings-table-wrapper">
+          <table id="all-table">
+            <thead>
+              <tr>
+                <th id="lang-all-th-customer">Müşteri</th>
+                <th id="lang-all-th-details">Rezervasyon Detayları</th>
+                <th id="lang-all-th-payment">Ödeme Durumu</th>
+                <th id="lang-all-th-status">Durum</th>
+                <th id="lang-all-th-actions">İşlemler</th>
+              </tr>
+            </thead>
+            <tbody id="all-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+          
+          <div id="bookings-all-empty" class="empty-state">
+            <i class="fa-regular fa-calendar-times empty-icon"></i>
+            <p id="lang-empty-all-bookings">Herhangi bir rezervasyon bulunmuyor.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- TAB 3.5: REVIEW MANAGEMENT SECTION -->
     <section id="section-reviews-mgmt" class="admin-section">
       <div class="dashboard-card">
@@ -1229,7 +1281,10 @@
         "th-author": "Müşteri Adı",
         "th-rating": "Puan",
         "th-text": "Yorum",
-        "empty-reviews": "Henüz eklenmiş bir yorum bulunmuyor."
+        "empty-reviews": "Henüz eklenmiş bir yorum bulunmuyor.",
+        "btn-all-res": "Tüm Rezervasyonlar",
+        "all-title": "Tüm Rezervasyon Talepleri",
+        "empty-all": "Henüz herhangi bir masa rezervasyon talebi bulunmuyor."
       },
       en: {
         "panel-tag": "Admin Panel",
@@ -1303,7 +1358,10 @@
         "th-author": "Customer Name",
         "th-rating": "Rating",
         "th-text": "Review",
-        "empty-reviews": "No reviews submitted yet."
+        "empty-reviews": "No reviews submitted yet.",
+        "btn-all-res": "All Reservations",
+        "all-title": "All Reservation Requests",
+        "empty-all": "No table reservations received yet."
       },
       ar: {
         "panel-tag": "لوحة التحكم",
@@ -1377,7 +1435,10 @@
         "th-author": "اسم العميل",
         "th-rating": "التقييم",
         "th-text": "التعليق",
-        "empty-reviews": "لم يتم إضافة أي تقييمات بعد."
+        "empty-reviews": "لم يتم إضافة أي تقييمات بعد.",
+        "btn-all-res": "جميع الحجوزات",
+        "all-title": "جميع طلبات الحجز",
+        "empty-all": "لا توجد أي طلبات حجز بعد."
       }
     };
 
@@ -1475,6 +1536,31 @@
       const elRevEmpty = document.getElementById("lang-empty-reviews");
       if (elRevEmpty) elRevEmpty.textContent = dict["empty-reviews"];
       
+      document.getElementById("nav-btn-all-reservations").textContent = dict["btn-all-res"];
+      const elAllTitle = document.getElementById("lang-all-reservations-title");
+      if (elAllTitle) elAllTitle.textContent = dict["all-title"];
+      const elAllThCust = document.getElementById("lang-all-th-customer");
+      if (elAllThCust) elAllThCust.textContent = dict["th-customer"];
+      const elAllThDet = document.getElementById("lang-all-th-details");
+      if (elAllThDet) elAllThDet.textContent = dict["th-details"];
+      const elAllThPay = document.getElementById("lang-all-th-payment");
+      if (elAllThPay) elAllThPay.textContent = dict["th-payment"];
+      const elAllThStat = document.getElementById("lang-all-th-status");
+      if (elAllThStat) elAllThStat.textContent = dict["th-status"];
+      const elAllThAct = document.getElementById("lang-all-th-actions");
+      if (elAllThAct) elAllThAct.textContent = dict["th-actions"];
+      const elAllEmpty = document.getElementById("lang-empty-all-bookings");
+      if (elAllEmpty) elAllEmpty.textContent = dict["empty-all"];
+      
+      const elStatAllTotal = document.getElementById("lang-stat-all-total");
+      if (elStatAllTotal) elStatAllTotal.textContent = dict["stat-total"];
+      const elStatAllPend = document.getElementById("lang-stat-all-pending");
+      if (elStatAllPend) elStatAllPend.textContent = dict["stat-pending"];
+      const elStatAllConf = document.getElementById("lang-stat-all-confirmed");
+      if (elStatAllConf) elStatAllConf.textContent = dict["stat-confirmed"];
+      const elStatAllCanc = document.getElementById("lang-stat-all-cancelled");
+      if (elStatAllCanc) elStatAllCanc.textContent = dict["stat-cancelled"];
+
       document.getElementById("lang-menu-list-title").textContent = dict["menu-list-title"];
       document.getElementById("lang-btn-reset-menu").textContent = dict["btn-reset-menu"];
       document.getElementById("lang-th-payment").textContent = dict["th-payment"];
@@ -1792,8 +1878,9 @@
 
       updateStats(bookings.length, pending, confirmed, cancelled);
       
-      // Also load upcoming bookings to keep both lists dynamically updated
+      // Also load upcoming and all bookings to keep both lists dynamically updated
       loadUpcomingBookings();
+      loadAllBookings();
     }
 
     function loadUpcomingBookings() {
@@ -1913,6 +2000,113 @@
       const elPending = document.getElementById("stat-upcoming-pending");
       const elConfirmed = document.getElementById("stat-upcoming-confirmed");
       const elCancelled = document.getElementById("stat-upcoming-cancelled");
+      if (elTotal) elTotal.textContent = total;
+      if (elPending) elPending.textContent = pending;
+      if (elConfirmed) elConfirmed.textContent = confirmed;
+      if (elCancelled) elCancelled.textContent = cancelled;
+    }
+
+    function loadAllBookings() {
+      const bookings = safeGetItem("pietro_bookings");
+      const tbody = document.getElementById("all-tbody");
+      const emptyState = document.getElementById("bookings-all-empty");
+      const table = document.getElementById("all-table");
+
+      if (!tbody || !emptyState || !table) return;
+
+      tbody.innerHTML = "";
+
+      if (bookings.length === 0) {
+        emptyState.style.display = "block";
+        table.style.display = "none";
+        updateAllStats(0, 0, 0, 0);
+        return;
+      }
+
+      emptyState.style.display = "none";
+      table.style.display = "table";
+
+      let pending = 0;
+      let confirmed = 0;
+      let cancelled = 0;
+
+      bookings.forEach(booking => {
+        if (booking.status === "pending") pending++;
+        else if (booking.status === "confirmed") confirmed++;
+        else if (booking.status === "cancelled") cancelled++;
+
+        const tr = document.createElement("tr");
+        tr.id = 'all-' + booking.id;
+
+        const dateObj = new Date(booking.date);
+        const dateStr = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
+        
+        const payStatus = booking.paymentStatus || "unpaid";
+        const dict = adminLangDict[adminActiveLang];
+        const paySelectHtml = `
+          <select class="pay-select ${payStatus}" onchange="changePaymentStatus('${booking.id}', this.value)">
+            <option value="unpaid" ${payStatus === 'unpaid' ? 'selected' : ''}>${dict["pay-unpaid"]}</option>
+            <option value="arrival" ${payStatus === 'arrival' ? 'selected' : ''}>${dict["pay-arrival"]}</option>
+            <option value="paid" ${payStatus === 'paid' ? 'selected' : ''}>${dict["pay-paid"]}</option>
+          </select>
+        `;
+
+        tr.innerHTML = `
+          <td>
+            <div class="customer-info">
+              <h5>${escapeHTML(booking.name)}</h5>
+              <p><i class="fa-solid fa-phone"></i> ${escapeHTML(booking.phone)}</p>
+            </div>
+          </td>
+          <td>
+            <div class="booking-details">
+              <strong>${escapeHTML(booking.time)}</strong> | ${dateStr}
+              <div style="font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 2px;">
+                <i class="fa-solid fa-users"></i> ${booking.guests} Kişi ${booking.table ? `| <span style="color:var(--color-gold); font-weight:600;">${translateTable(booking.table)}</span>` : ''}
+              </div>
+              ${booking.notes ? `<div style="font-size:0.75rem; color:#d4af37; margin-top:4px; font-style:italic; max-width:200px; white-space:normal; word-break:break-word;">📝 ${escapeHTML(booking.notes)}</div>` : ''}
+            </div>
+          </td>
+          <td>
+            ${booking.dish ? booking.dish.split(" + ").map(d => `<span class="dish-tag" style="display:block; margin-bottom:4px;" title="${escapeHTML(d)}">${escapeHTML(d)}</span>`).join('') : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
+          </td>
+          <td>
+            ${booking.drink ? `<span class="drink-tag" title="${escapeHTML(booking.drink)}">${escapeHTML(booking.drink)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
+          </td>
+          <td>
+            ${paySelectHtml}
+          </td>
+          <td>
+            <span class="status-badge ${booking.status}">${translateStatus(booking.status)}</span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-action btn-confirm" onclick="setStatus('${booking.id}', 'confirmed')" title="Onayla">
+                <i class="fa-solid fa-check"></i>
+              </button>
+              <button class="btn-action btn-cancel" onclick="setStatus('${booking.id}', 'cancelled')" title="İptal Et">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+              <button class="btn-action btn-whatsapp" onclick="contactCustomer('${booking.id}')" title="İletişim & İBAN Gönder">
+                <i class="fa-brands fa-whatsapp"></i>
+              </button>
+              <button class="btn-action btn-delete" onclick="deleteBooking('${booking.id}')" title="Sil">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      updateAllStats(bookings.length, pending, confirmed, cancelled);
+    }
+
+    function updateAllStats(total, pending, confirmed, cancelled) {
+      const elTotal = document.getElementById("stat-all-total");
+      const elPending = document.getElementById("stat-all-pending");
+      const elConfirmed = document.getElementById("stat-all-confirmed");
+      const elCancelled = document.getElementById("stat-all-cancelled");
       if (elTotal) elTotal.textContent = total;
       if (elPending) elPending.textContent = pending;
       if (elConfirmed) elConfirmed.textContent = confirmed;

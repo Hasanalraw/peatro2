@@ -2224,11 +2224,22 @@ body.admin-mode-active img[data-img-key] {
   color: #ff4d4d !important;
 }
 
-/* White browser-native calendar and clock picker indicators */
+/* Hide browser-native calendar and clock picker indicators so custom FontAwesome icons can show */
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
-  filter: invert(1) !important;
-  cursor: pointer;
+  opacity: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  cursor: pointer !important;
+  z-index: 2 !important;
+}
+
+/* Position FontAwesome icons behind the transparent overlay but above input background */
+.input-icon-wrapper i {
+  z-index: 1 !important;
 }
 
 /* Add Review button always black style */
