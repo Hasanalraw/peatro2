@@ -3028,16 +3028,31 @@
         return;
       }
       
+      let parsed = null;
       try {
-        const parsed = JSON.parse(value);
-        if (!parsed.projectId || !parsed.apiKey) {
-          throw new Error("Missing projectId or apiKey");
+        parsed = JSON.parse(value);
+      } catch (e) {
+        const match = value.match(/\{[\s\S]*?apiKey[\s\S]*?\}/);
+        if (match) {
+          try {
+            let rawObjStr = match[0];
+            rawObjStr = rawObjStr
+              .replace(/'/g, '"')
+              .replace(/([a-zA-Z0-9_]+)\s*:/g, '"$1":')
+              .replace(/,\s*\}/g, '}');
+            parsed = JSON.parse(rawObjStr);
+          } catch (err) {
+            console.error("Regex parsing failed:", err);
+          }
         }
+      }
+
+      if (parsed && parsed.projectId && parsed.apiKey) {
         localStorage.setItem("pietro_firebase_config", JSON.stringify(parsed));
         alert(adminActiveLang === "tr" ? "Bulut veritabanı ayarları başarıyla kaydedildi! Sayfa yenileniyor..." : "Cloud database settings saved successfully! Reloading page...");
         window.location.reload();
-      } catch (e) {
-        alert(adminActiveLang === "tr" ? "Geçersiz JSON formatı! Lütfen tüm alanları doğru girdiğinizden emin olun." : "Invalid JSON format! Please make sure the config object is valid.");
+      } else {
+        alert(adminActiveLang === "tr" ? "Hata: Geçersiz format! Lütfen Firebase Web Config kodunu eksiksiz kopyalayıp yapıştırdığınızdan emin olun." : "Error: Invalid format! Please make sure you copy and paste the complete Firebase Web Config object.");
       }
     };
 
