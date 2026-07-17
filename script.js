@@ -60,8 +60,7 @@ const defaultTranslations = {
     "price-note": "Yaklaşık fiyat - lütfen güncel fiyatı güncelleyin",
     "btn-select": "Seç",
     "btn-learn-more": "Daha Fazla",
-    "btn-reserve-table": "Masa Rezerve Et",
-    "btn-add-to-cart": "Sepete Ekle",
+    "btn-view-more": "Daha Fazla Gör",
 
     // Modals Translations
     "modal-ingredients": "İçindekiler",
@@ -174,8 +173,7 @@ const defaultTranslations = {
     "price-note": "Approximate price - please update real price",
     "btn-select": "Select",
     "btn-learn-more": "Learn More",
-    "btn-reserve-table": "Reserve Table",
-    "btn-add-to-cart": "Add to Cart",
+    "btn-view-more": "View More",
 
     // Modals Translations
     "modal-ingredients": "Ingredients",
@@ -288,8 +286,7 @@ const defaultTranslations = {
     "price-note": "سعر تقريبي مبدئي - يرجى تحديث السعر الفعلي",
     "btn-select": "اختر",
     "btn-learn-more": "تعرّف عليها أكثر",
-    "btn-reserve-table": "احجز طاولة",
-    "btn-add-to-cart": "إضافة إلى السلة",
+    "btn-view-more": "شاهد المزيد",
 
     // Modals Translations
     "modal-ingredients": "المكونات",
@@ -1295,6 +1292,41 @@ window.openDetailModal = function(id) {
     if (nextBtn) nextBtn.style.display = "flex";
   }
   
+  // Populate Sizes and Prices
+  const sizesContainer = document.getElementById("modal-dish-sizes-prices");
+  if (sizesContainer) {
+    sizesContainer.innerHTML = "";
+    const currencyPrices = dish.prices[currentLanguage] || dish.prices["tr"] || {};
+    
+    const sizeKeys = {
+      small: { tr: "Küçük", en: "Small", ar: "صغيرة" },
+      medium: { tr: "Orta", en: "Medium", ar: "متوسطة" },
+      large: { tr: "Büyük", en: "Large", ar: "كبيرة" }
+    };
+    
+    // Check which sizes are available and render them
+    Object.keys(sizeKeys).forEach(sizeKey => {
+      const price = currencyPrices[sizeKey];
+      if (price && price.trim() !== "") {
+        const sizeRow = document.createElement("div");
+        sizeRow.style.display = "flex";
+        sizeRow.style.justifyContent = "space-between";
+        sizeRow.style.alignItems = "center";
+        sizeRow.style.padding = "8px 12px";
+        sizeRow.style.background = "rgba(255, 255, 255, 0.03)";
+        sizeRow.style.border = "1px solid rgba(255, 255, 255, 0.05)";
+        sizeRow.style.borderRadius = "6px";
+        
+        const labelStr = sizeKeys[sizeKey][currentLanguage] || sizeKeys[sizeKey]["tr"];
+        sizeRow.innerHTML = `
+          <span style="font-weight: 500; font-size: 0.9rem; color: var(--color-text-primary);">${labelStr}</span>
+          <span style="font-weight: 600; font-size: 0.95rem; color: var(--color-gold);">${price}</span>
+        `;
+        sizesContainer.appendChild(sizeRow);
+      }
+    });
+  }
+
   updateCarouselTranslate();
   modal.classList.add("active");
 };
@@ -1328,496 +1360,9 @@ window.closeDetailModalOnOutsideClick = function(event) {
   }
 };
 
-let sizeModalAction = "cart"; // "cart" or "reserve"
 
-window.openSizeModal = function(id, action = "cart") {
-  const dish = dishesData[id];
-  if (!dish) return;
 
-  currentSelectedDishId = id;
-  sizeModalAction = action;
 
-  const modal = document.getElementById("size-modal");
-  document.getElementById("size-modal-dish-title").textContent = dish.name[currentLanguage] || dish.name["tr"];
-
-  // Set prices and visibility dynamically
-  const currencyPrices = dish.prices[currentLanguage] || dish.prices["tr"];
-  
-  const cardSmall = document.getElementById("size-card-small");
-  const cardMedium = document.getElementById("size-card-medium");
-  const cardLarge = document.getElementById("size-card-large");
-
-  let hasSmall = currencyPrices.small && currencyPrices.small.trim() !== "";
-  let hasMedium = currencyPrices.medium && currencyPrices.medium.trim() !== "";
-  let hasLarge = currencyPrices.large && currencyPrices.large.trim() !== "";
-
-  let defaultSize = "";
-
-  if (cardSmall) {
-    if (hasSmall) {
-      cardSmall.style.display = "flex";
-      document.getElementById("price-small").textContent = currencyPrices.small;
-      if (!defaultSize) defaultSize = "small";
-    } else {
-      cardSmall.style.display = "none";
-    }
-  }
-
-  if (cardMedium) {
-    if (hasMedium) {
-      cardMedium.style.display = "flex";
-      document.getElementById("price-medium").textContent = currencyPrices.medium;
-      if (!defaultSize) defaultSize = "medium";
-    } else {
-      cardMedium.style.display = "none";
-    }
-  }
-
-  if (cardLarge) {
-    if (hasLarge) {
-      cardLarge.style.display = "flex";
-      document.getElementById("price-large").textContent = currencyPrices.large;
-      if (!defaultSize) defaultSize = "large";
-    } else {
-      cardLarge.style.display = "none";
-    }
-  }
-
-  // Reset active classes on size selection cards and select default
-  document.querySelectorAll(".size-option-card").forEach(card => card.classList.remove("active"));
-  if (defaultSize) {
-    currentSelectedSize = defaultSize;
-    const defaultCard = document.getElementById(`size-card-${defaultSize}`);
-    if (defaultCard) defaultCard.classList.add("active");
-  }
-
-  // Configure primary action button
-  const actionBtn = document.getElementById("size-modal-action-btn");
-  if (actionBtn) {
-    if (action === "reserve") {
-      actionBtn.textContent = translations[currentLanguage]["btn-confirm-booking"] || "Hemen Rezerve Et";
-      actionBtn.onclick = function() {
-        confirmBookingWithCart();
-      };
-    } else {
-      actionBtn.textContent = translations[currentLanguage]["btn-add-to-cart"] || "Sepete Ekle";
-      actionBtn.onclick = function() {
-        addMoreFoodToCart();
-      };
-    }
-  }
-
-  modal.classList.add("active");
-};
-
-window.selectSize = function(size) {
-  currentSelectedSize = size;
-  document.querySelectorAll(".size-option-card").forEach(card => card.classList.remove("active"));
-  document.getElementById(`size-card-${size}`).classList.add("active");
-};
-
-window.closeSizeModal = function() {
-  document.getElementById("size-modal").classList.remove("active");
-};
-
-window.closeSizeModalOnOutsideClick = function(event) {
-  if (event.target === document.getElementById("size-modal")) {
-    closeSizeModal();
-  }
-};
-
-window.addMoreFoodToCart = function() {
-  const dish = dishesData[currentSelectedDishId];
-  if (!dish) return;
-
-  const sizeLabels = {
-    tr: { small: "Küçük", medium: "Orta", large: "Büyük" },
-    en: { small: "Small", medium: "Medium", large: "Large" },
-    ar: { small: "صغيرة", medium: "متوسطة", large: "كبيرة" }
-  };
-
-  const selectedPriceLabel = (dish.prices[currentLanguage] || dish.prices["tr"])[currentSelectedSize];
-
-  const existingIndex = bookingCart.findIndex(item => item.dishId === dish.id && item.size === currentSelectedSize);
-  if (existingIndex !== -1) {
-    bookingCart[existingIndex].qty += 1;
-  } else {
-    bookingCart.push({
-      dishId: dish.id,
-      name: dish.name,
-      size: currentSelectedSize,
-      sizeLabel: sizeLabels,
-      price: selectedPriceLabel,
-      image: dish.image,
-      qty: 1
-    });
-  }
-
-  renderCart();
-  closeSizeModal();
-  openCartDrawer();
-};
-
-window.confirmBookingWithCart = function() {
-  const dish = dishesData[currentSelectedDishId];
-  if (!dish) return;
-
-  const sizeLabels = {
-    tr: { small: "Küçük", medium: "Orta", large: "Büyük" },
-    en: { small: "Small", medium: "Medium", large: "Large" },
-    ar: { small: "صغيرة", medium: "متوسطة", large: "كبيرة" }
-  };
-
-  const selectedPriceLabel = (dish.prices[currentLanguage] || dish.prices["tr"])[currentSelectedSize];
-
-  const existingIndex = bookingCart.findIndex(item => item.dishId === dish.id && item.size === currentSelectedSize);
-  if (existingIndex !== -1) {
-    bookingCart[existingIndex].qty += 1;
-  } else {
-    bookingCart.push({
-      dishId: dish.id,
-      name: dish.name,
-      size: currentSelectedSize,
-      sizeLabel: sizeLabels,
-      price: selectedPriceLabel,
-      image: dish.image,
-      qty: 1
-    });
-  }
-
-  renderCart();
-  closeSizeModal();
-
-  const bookingSection = document.getElementById("reservation");
-  if (bookingSection) {
-    bookingSection.scrollIntoView({ behavior: "smooth" });
-  }
-};
-
-window.bookTableDirectly = function(id) {
-  const dish = dishesData[id];
-  if (!dish) return;
-
-  const sizeLabels = {
-    tr: { small: "Küçük", medium: "Orta", large: "Büyük" },
-    en: { small: "Small", medium: "Medium", large: "Large" },
-    ar: { small: "صغيرة", medium: "متوسطة", large: "كبيرة" }
-  };
-
-  const currencyPrices = dish.prices[currentLanguage] || dish.prices["tr"] || { small: '', medium: '0 TL', large: '0 TL' };
-  let selectedSize = "medium";
-  if (!currencyPrices.medium || currencyPrices.medium.trim() === "") {
-    if (currencyPrices.small && currencyPrices.small.trim() !== "") {
-      selectedSize = "small";
-    } else if (currencyPrices.large && currencyPrices.large.trim() !== "") {
-      selectedSize = "large";
-    }
-  }
-
-  const selectedPriceLabel = currencyPrices[selectedSize] || "0 TL";
-
-  const existingIndex = bookingCart.findIndex(item => item.dishId === dish.id && item.size === selectedSize);
-  if (existingIndex !== -1) {
-    bookingCart[existingIndex].qty += 1;
-  } else {
-    bookingCart.push({
-      dishId: dish.id,
-      name: dish.name,
-      size: selectedSize,
-      sizeLabel: sizeLabels,
-      price: selectedPriceLabel,
-      image: dish.image,
-      qty: 1
-    });
-  }
-
-  renderCart();
-
-  const bookingSection = document.getElementById("reservation");
-  if (bookingSection) {
-    bookingSection.scrollIntoView({ behavior: "smooth" });
-  }
-};
-
-window.addDishDirectToCart = function(id) {
-  const dish = dishesData[id];
-  if (!dish) return;
-
-  const sizeLabels = {
-    tr: { small: "Küçük", medium: "Orta", large: "Büyük" },
-    en: { small: "Small", medium: "Medium", large: "Large" },
-    ar: { small: "صغيرة", medium: "متوسطة", large: "كبيرة" }
-  };
-
-  const selectedPriceLabel = (dish.prices[currentLanguage] || dish.prices["tr"])["medium"];
-
-  const existingIndex = bookingCart.findIndex(item => item.dishId === dish.id && item.size === "medium");
-  if (existingIndex !== -1) {
-    bookingCart[existingIndex].qty += 1;
-  } else {
-    bookingCart.push({
-      dishId: dish.id,
-      name: dish.name,
-      size: "medium",
-      sizeLabel: sizeLabels,
-      price: selectedPriceLabel,
-      image: dish.image,
-      qty: 1
-    });
-  }
-
-  renderCart();
-  openCartDrawer();
-};
-
-window.renderCart = function() {
-  // 1. Update Booking Form Cart container
-  const cartContainer = document.getElementById("booking-cart-container");
-  if (cartContainer) {
-    cartContainer.innerHTML = "";
-    if (bookingCart.length === 0) {
-      const emptyText = document.createElement("div");
-      emptyText.className = "cart-empty-text";
-      emptyText.textContent = translations[currentLanguage]["cart-empty"];
-      cartContainer.appendChild(emptyText);
-    } else {
-      bookingCart.forEach((item, index) => {
-        const tag = document.createElement("div");
-        tag.className = "cart-item-tag";
-        const name = item.name[currentLanguage] || item.name["tr"];
-        const sizeLabel = item.sizeLabel[currentLanguage][item.size];
-        tag.innerHTML = `
-          <span><strong>${name}</strong> (${sizeLabel} - ${item.price} &times; ${item.qty})</span>
-          <button type="button" class="cart-item-remove" onclick="removeCartItem(${index})" title="Kaldır">&times;</button>
-        `;
-        cartContainer.appendChild(tag);
-      });
-    }
-  }
-
-  // 2. Update Cart Drawer Body
-  const drawerItemsContainer = document.getElementById("cart-drawer-items");
-  if (drawerItemsContainer) {
-    drawerItemsContainer.innerHTML = "";
-    if (bookingCart.length === 0) {
-      const emptyMsg = document.createElement("div");
-      emptyMsg.className = "cart-drawer-empty";
-      emptyMsg.textContent = translations[currentLanguage]["cart-empty"];
-      drawerItemsContainer.appendChild(emptyMsg);
-    } else {
-      bookingCart.forEach((item, index) => {
-        const div = document.createElement("div");
-        div.className = "cart-drawer-item";
-        div.style.display = "flex";
-        div.style.alignItems = "center";
-        div.style.gap = "12px";
-        
-        const name = item.name[currentLanguage] || item.name["tr"];
-        const sizeLabel = item.sizeLabel[currentLanguage][item.size];
-        
-        div.innerHTML = `
-          <img src="${item.image || 'images/pizza_margherita.jpg'}" alt="${name}" style="width:50px; height:50px; object-fit:cover; border-radius:6px;">
-          <div class="cart-drawer-item-info" style="flex-grow:1;">
-            <h4 style="margin:0; font-size:0.9rem; color:#FFF;">${name}</h4>
-            <p style="margin:2px 0 0 0; font-size:0.8rem; color:var(--color-gold);">${sizeLabel} - ${item.price}</p>
-            <div class="cart-qty-control" style="display:flex; align-items:center; gap:8px; margin-top:6px;">
-              <button class="btn-qty" onclick="changeQty(${index}, -1)" style="width:24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:4px; border:1px solid var(--color-border); background:rgba(255,255,255,0.05); color:#FFF; cursor:pointer;">-</button>
-              <span class="cart-qty-val" style="font-size:0.85rem; color:#FFF; min-width:15px; text-align:center;">${item.qty}</span>
-              <button class="btn-qty" onclick="changeQty(${index}, 1)" style="width:24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:4px; border:1px solid var(--color-border); background:rgba(255,255,255,0.05); color:#FFF; cursor:pointer;">+</button>
-            </div>
-          </div>
-          <button class="cart-drawer-item-remove" onclick="removeCartItem(${index})" style="background:none; border:none; color:var(--color-status-cancelled); font-size:1.5rem; cursor:pointer;">&times;</button>
-        `;
-        drawerItemsContainer.appendChild(div);
-      });
-    }
-  }
-
-  // 3. Update Cart Badges Count
-  const totalQty = bookingCart.reduce((sum, item) => sum + item.qty, 0);
-  
-  const badge = document.getElementById("cart-badge");
-  if (badge) {
-    badge.textContent = totalQty;
-    badge.style.display = totalQty > 0 ? "flex" : "none";
-  }
-
-  const headerBadge = document.getElementById("header-cart-badge");
-  if (headerBadge) {
-    headerBadge.textContent = totalQty;
-    headerBadge.style.display = totalQty > 0 ? "flex" : "none";
-  }
-
-  // 4. Update Total Price inside Cart Drawer
-  const totalValElement = document.getElementById("cart-total-price");
-  if (totalValElement) {
-    let total = 0;
-    bookingCart.forEach(item => {
-      const numericPrice = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
-      total += (numericPrice * item.qty);
-    });
-    totalValElement.textContent = total + " TL";
-  }
-};
-
-window.changeQty = function(index, delta) {
-  if (!bookingCart[index]) return;
-  bookingCart[index].qty += delta;
-  if (bookingCart[index].qty <= 0) {
-    bookingCart.splice(index, 1);
-  }
-  renderCart();
-};
-
-window.removeCartItem = function(index) {
-  bookingCart.splice(index, 1);
-  renderCart();
-};
-
-window.toggleCartDrawer = function() {
-  const drawer = document.getElementById("cart-drawer");
-  const overlay = document.getElementById("cart-drawer-overlay");
-  if (drawer && overlay) {
-    drawer.classList.toggle("active");
-    overlay.classList.toggle("active");
-  }
-};
-
-window.openCartDrawer = function() {
-  const drawer = document.getElementById("cart-drawer");
-  const overlay = document.getElementById("cart-drawer-overlay");
-  if (drawer && overlay) {
-    drawer.classList.add("active");
-    overlay.classList.add("active");
-  }
-};
-
-window.closeCartDrawer = function() {
-  const drawer = document.getElementById("cart-drawer");
-  const overlay = document.getElementById("cart-drawer-overlay");
-  if (drawer && overlay) {
-    drawer.classList.remove("active");
-    overlay.classList.remove("active");
-  }
-};
-
-window.goToReservationFromCart = function() {
-  closeCartDrawer();
-  const bookingSection = document.getElementById("reservation");
-  if (bookingSection) {
-    bookingSection.scrollIntoView({ behavior: "smooth" });
-  }
-};
-
-// 7. Reservation Form Handler (Accumulates multiple reservations in localStorage)
-window.handleBookingSubmit = function(event) {
-  event.preventDefault();
-
-  // Prevent reservations without selecting menu items
-  if (bookingCart.length === 0) {
-    const warnMsg = translations[currentLanguage]["warning-empty-cart"] || 
-                    (currentLanguage === "tr" ? "Lütfen rezervasyonunuzu tamamlamadan önce en az bir menü öğesi seçin." :
-                     (currentLanguage === "ar" ? "يرجى تحديد عنصر واحد على الأقل من القائمة قبل إتمام الحجز." : 
-                      "Please select at least one menu item before completing your reservation."));
-    alert(warnMsg);
-    return;
-  }
-
-  const name = document.getElementById("booking-name").value;
-  const phone = document.getElementById("booking-phone").value;
-  const date = document.getElementById("booking-date").value;
-  const time = document.getElementById("booking-time").value;
-  const guests = document.getElementById("booking-guests").value;
-  const table = document.getElementById("booking-table").value;
-  const notes = document.getElementById("booking-notes").value;
-  const drinkSelect = document.getElementById("booking-drink");
-  
-  // Format dish name based on accumulated cart items
-  const dish = bookingCart.map(item => {
-    const name = item.name[currentLanguage] || item.name["tr"];
-    const sizeLabel = item.sizeLabel[currentLanguage][item.size];
-    return `${name} (${sizeLabel} - ${item.price})`;
-  }).join(" + ") || "";
-
-  // Format drink option name nicely
-  let drink = "";
-  if (drinkSelect && drinkSelect.value) {
-    drink = drinkSelect.options[drinkSelect.selectedIndex].text;
-  }
-
-  // Simple validation helper
-  if (!name || !phone || !date || !time) return;
-
-  // Create new booking object
-  const newBooking = {
-    id: 'B-' + Date.now(),
-    name,
-    phone,
-    date,
-    time,
-    guests,
-    table,
-    notes,
-    dish: dish || "",
-    drink: drink || "",
-    status: "pending",
-    paymentStatus: "unpaid",
-    timestamp: new Date().toISOString()
-  };
-
-  // Save to cloud database (with automatic localStorage fallback built-in)
-  if (typeof window.addBookingToCloud === "function") {
-    window.addBookingToCloud(newBooking);
-  } else {
-    let bookings = safeGetItem("pietro_bookings");
-    bookings.unshift(newBooking);
-    localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
-    localStorage.setItem("pietro_new_booking_event", Date.now().toString());
-  }
-
-  // Show Success Popup Modal card
-  const popup = document.getElementById("form-success-popup");
-  if (popup) {
-    popup.classList.add("active");
-  }
-
-  // Notify parent window if loaded inside an iframe (visual editor)
-  if (window.parent && window.parent !== window) {
-    if (typeof window.parent.loadBookings === "function") {
-      window.parent.loadBookings();
-    }
-    if (typeof window.parent.playNotificationSound === "function") {
-      window.parent.playNotificationSound();
-    }
-    if (typeof window.parent.showToast === "function") {
-      window.parent.showToast(name);
-    }
-  }
-};
-
-function translateTableLocal(table, lang) {
-  if (!table) return "";
-  const tableNames = {
-    tr: { indoor: "İç Mekan", garden: "Bahçe", window: "Cam Kenarı" },
-    en: { indoor: "Indoor", garden: "Garden", window: "Window Side" },
-    ar: { indoor: "صالة داخلية", garden: "الحديقة", window: "بجانب النافذة" }
-  };
-  return (tableNames[lang] || tableNames["tr"])[table] || table;
-}
-
-window.closePopup = function() {
-  const popup = document.getElementById("form-success-popup");
-  if (popup) {
-    popup.classList.remove("active");
-  }
-  // Clear cart
-  bookingCart = [];
-  renderCart();
-  
-  // Reset the form
-  const form = document.getElementById("booking-form");
-  if (form) form.reset();
-};
 
 // 8. Mobile Menu Burger Animation & Toggle
 const mobileNavToggle = document.querySelector(".mobile-nav-toggle");
@@ -2040,12 +1585,9 @@ function renderMenu() {
               ${translations[currentLanguage]["price-note"]}
             </span>
           </div>
-          <div class="menu-card-actions" style="display: flex; gap: 8px; width: 100%;">
-            <button class="btn btn-outline" onclick="bookTableDirectly('${dish.id}')" data-key="btn-reserve-table" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">
-              ${translations[currentLanguage]["btn-reserve-table"] || "Masa Rezerve Et"}
-            </button>
-            <button class="btn btn-gold" onclick="openSizeModal('${dish.id}', 'cart')" data-key="btn-add-to-cart" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">
-              ${translations[currentLanguage]["btn-add-to-cart"] || "Sepete Ekle"}
+          <div class="menu-card-actions" style="width: 100%;">
+            <button class="btn btn-gold btn-block" onclick="openDetailModal('${dish.id}')" data-key="btn-view-more" style="width: 100%; justify-content: center; align-items: center; min-height: 38px;">
+              ${translations[currentLanguage]["btn-view-more"] || (currentLanguage === "tr" ? "Daha Fazla Gör" : (currentLanguage === "ar" ? "شاهد المزيد" : "View More"))}
             </button>
           </div>
         </div>

@@ -84,7 +84,7 @@
           <button class="lang-btn" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="ar">AR</button>
         </div>
-        <a href="#reservation" class="btn btn-gold btn-header-cta" data-key="btn-book-nav">Masa Rezervasyonu</a>
+        <a href="#contact" class="btn btn-gold btn-header-cta" data-key="btn-book-nav">İletişime Geç</a>
       </div>
     </div>
   </header>
@@ -97,7 +97,7 @@
         <h1 class="hero-title" data-key="hero-title">Yalova'da Gerçek İtalyan Lezzeti</h1>
         <p class="hero-subtitle" data-key="hero-subtitle">Odun ateşinde pişen çıtır pizzalar, taze el yapımı makarnalar ve İtalyan kahvesinin eşsiz aroması sıcak bir atmosferde buluşuyor.</p>
         <div class="hero-actions">
-          <a href="#reservation" class="btn btn-gold" data-key="btn-book-hero">Masa Rezervasyonu</a>
+          <a href="#contact" class="btn btn-gold" data-key="btn-book-hero">İletişime Geç</a>
           <a href="#menu" class="btn btn-outline" data-key="btn-menu-hero">Menüyü İncele</a>
         </div>
       </div>
@@ -165,112 +165,6 @@
   </section>
 
   <!-- Reservation Section -->
-  <section id="reservation" class="reservation-section">
-    <div class="reservation-container">
-      <div class="reservation-info">
-        <h2 class="section-title text-light" data-key="reserve-title">Masa Rezervasyonu</h2>
-        <h3 class="section-subtitle text-gold" data-key="reserve-subtitle">İtalyan Gecenizi Şimdiden Planlayın</h3>
-        <p class="reservation-info-text" data-key="reserve-text">Pietro Coffee Pizzeria'da kendiniz ve sevdikleriniz için bir masa ayırtın. Sıcak atmosferimiz ve benzersiz İtalyan tatlarımızla sizleri ağırlamaktan mutluluk duyacağız.</p>
-        <div class="contact-details-list">
-          <div class="contact-detail-item" data-contact-group="phone">
-            <i class="fa-solid fa-phone text-gold"></i>
-            <div>
-              <h5 data-key="contact-phone">Telefon</h5>
-              <p data-key="contact-phone-val">+90 530 000 00 00</p>
-            </div>
-          </div>
-          <div class="contact-detail-item" data-contact-group="hours">
-            <i class="fa-solid fa-clock text-gold"></i>
-            <div>
-              <h5 data-key="contact-hours">Çalışma Saatleri</h5>
-              <p data-key="contact-hours-desc">Her Gün: 10:00 - 20:00</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="reservation-form-card">
-        <form id="booking-form" onsubmit="handleBookingSubmit(event)">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="booking-name" data-key="label-name">Adınız Soyadınız</label>
-              <input type="text" id="booking-name" required placeholder="Örn. Ahmet Yılmaz">
-            </div>
-            <div class="form-group">
-              <label for="booking-phone" data-key="label-phone">Telefon Numaranız</label>
-              <input type="tel" id="booking-phone" required placeholder="Örn. +90 530 123 4567">
-            </div>
-            <div class="form-group">
-              <label for="booking-date" data-key="label-date">Tarih</label>
-              <div class="input-icon-wrapper" style="position: relative; width: 100%;">
-                <input type="date" id="booking-date" required style="width: 100%; padding-right: 40px;">
-                <i class="fa-regular fa-calendar-days" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #FFFFFF; pointer-events: none; font-size: 1.1rem;"></i>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="booking-time" data-key="label-time">Saat</label>
-              <div class="input-icon-wrapper" style="position: relative; width: 100%;">
-                <input type="time" id="booking-time" required min="10:00" max="20:00" style="width: 100%; padding-right: 40px;">
-                <i class="fa-regular fa-clock" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #FFFFFF; pointer-events: none; font-size: 1.1rem;"></i>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="booking-guests" data-key="label-guests">Kişi Sayısı</label>
-              <select id="booking-guests" required>
-                <option value="1">1 Kişi</option>
-                <option value="2" selected>2 Kişi</option>
-                <option value="3">3 Kişi</option>
-                <option value="4">4 Kişi</option>
-                <option value="5">5 Kişi</option>
-                <option value="6">6 Kişi</option>
-                <option value="7">7 Kişi</option>
-                <option value="8">8 Kişi veya Üzeri</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="booking-table" data-key="label-table">Masa Tercihi</label>
-              <select id="booking-table" required>
-                <option value="indoor" data-key="option-table-indoor" selected>İç Mekan</option>
-                <option value="garden" data-key="option-table-garden">Bahçe</option>
-                <option value="window" data-key="option-table-window">Cam Kenarı</option>
-              </select>
-            </div>
-            <div class="form-group" style="grid-column: 1 / -1;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                <label id="lang-label-selected-dishes" data-key="label-selected-dishes" style="margin-bottom: 0;">Seçilen Yemekler</label>
-                <button type="button" class="btn-edit-cart-link" onclick="openCartDrawer()" data-key="btn-edit-cart-link" style="color: var(--color-gold); font-size: 0.85rem; font-weight: 500; cursor: pointer; text-decoration: underline; background: none; border: none; padding: 0;">Sepeti Düzenle</button>
-              </div>
-              <div id="booking-cart-container" class="booking-cart-container">
-                <!-- Dynamically populated cart items -->
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="booking-drink" data-key="label-drink">Tercih Ettiğiniz İçecek (İsteğe Bağlı)</label>
-              <select id="booking-drink">
-                <!-- Dynamically populated via script.js -->
-              </select>
-            </div>
-            <div class="form-group" style="grid-column: 1 / -1;">
-              <label for="booking-notes" data-key="label-notes">Rezervasyon Notları</label>
-              <textarea id="booking-notes" rows="3" placeholder="Özel talepleriniz veya notlarınız..."></textarea>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-gold btn-block" data-key="btn-book-now" style="margin-top: 1.5rem;">Şimdi Rezervasyon Yap</button>
-        </form>
-
-        <!-- Form Success Modal/Popup -->
-        <div id="form-success-popup" class="popup-wrapper">
-          <div class="popup-content">
-            <i class="fa-regular fa-circle-check popup-icon text-gold"></i>
-            <h4 data-key="popup-title">Rezervasyon Talebi Gönderildi</h4>
-            <p id="popup-message" data-key="popup-message">Rezervasyon talebiniz alınmıştır. Onaylamak için en kısa sürede sizinle iletişime geçeceğiz. Teşekkürler!</p>
-            <button class="btn btn-gold" onclick="closePopup()" data-key="btn-close">Kapat</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Testimonials Section -->
   <section id="reviews" class="reviews-section">
     <div class="reviews-header">
@@ -368,76 +262,16 @@
               <!-- Dynamically populated ingredients -->
             </ul>
           </div>
+          <div class="modal-prices-section" style="margin-top: 20px;">
+            <h4 data-key="modal-prices" style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--color-gold); margin-bottom: 10px;">Fiyatlar</h4>
+            <div id="modal-dish-sizes-prices" style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- Dynamically populated sizes and prices -->
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Size Selection Modal -->
-  <div id="size-modal" class="modal-overlay" onclick="closeSizeModalOnOutsideClick(event)">
-    <div class="modal-card size-modal-card">
-      <button class="modal-close-btn" onclick="closeSizeModal()">&times;</button>
-      <h3 class="modal-title" data-key="modal-select-size">Boyut Seçin</h3>
-      <h4 id="size-modal-dish-title" class="size-modal-dish-title">Dish Title</h4>
-      
-      <div class="size-options-container">
-        <!-- Small Size Option -->
-        <div class="size-option-card" onclick="selectSize('small')" id="size-card-small">
-          <div class="size-option-details">
-            <span class="size-name" data-key="size-small">Küçük</span>
-            <span class="size-price" id="price-small">0 TL</span>
-          </div>
-          <div class="size-selector-radio"></div>
-        </div>
-        <!-- Medium Size Option -->
-        <div class="size-option-card active" onclick="selectSize('medium')" id="size-card-medium">
-          <div class="size-option-details">
-            <span class="size-name" data-key="size-medium">Orta</span>
-            <span class="size-price" id="price-medium">0 TL</span>
-          </div>
-          <div class="size-selector-radio"></div>
-        </div>
-        <!-- Large Size Option -->
-        <div class="size-option-card" onclick="selectSize('large')" id="size-card-large">
-          <div class="size-option-details">
-            <span class="size-name" data-key="size-large">Büyük</span>
-            <span class="size-price" id="price-large">0 TL</span>
-          </div>
-          <div class="size-selector-radio"></div>
-        </div>
-      </div>
-      
-      <div class="modal-action-buttons" style="display: flex; gap: 10px; margin-top: 1.5rem;">
-        <button class="btn btn-outline" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;" onclick="closeSizeModal()" data-key="btn-close">Kapat</button>
-        <button id="size-modal-action-btn" class="btn btn-gold" style="flex: 1; font-size: 0.85rem; padding: 12px 6px;">Ekle</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Floating Cart Button -->
-  <button id="floating-cart-btn" class="floating-cart-btn" onclick="toggleCartDrawer()">
-    <i class="fa-solid fa-cart-shopping"></i>
-    <span id="cart-badge" class="cart-badge">0</span>
-  </button>
-
-  <!-- Cart Drawer -->
-  <div id="cart-drawer" class="cart-drawer">
-    <div class="cart-drawer-header">
-      <h3 id="lang-cart-drawer-title" data-key="cart-drawer-title">Sepetiniz</h3>
-      <button class="cart-drawer-close" onclick="toggleCartDrawer()">&times;</button>
-    </div>
-    <div class="cart-drawer-body" id="cart-drawer-items">
-      <!-- Dynamic cart items list -->
-    </div>
-    <div class="cart-drawer-footer">
-      <div class="cart-drawer-total">
-        <span id="lang-cart-total-label" data-key="cart-total-label">Toplam:</span>
-        <span id="cart-total-price">0 TL</span>
-      </div>
-      <button class="btn btn-gold btn-block" onclick="goToReservationFromCart()" id="lang-btn-go-to-booking" data-key="btn-go-to-booking">Rezervasyonu Tamamla</button>
-    </div>
-  </div>
-  <div id="cart-drawer-overlay" class="cart-drawer-overlay" onclick="toggleCartDrawer()"></div>
 
   <!-- Admin Text Edit Modal -->
   <div id="admin-text-modal" class="modal-overlay">

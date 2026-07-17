@@ -660,13 +660,9 @@
         </div>
       </div>
       
-      <!-- Middle Nav Menu Links -->
       <nav>
         <ul class="admin-nav" style="display: flex; gap: 16px; list-style: none;">
-          <li><a onclick="showTab('reservations')" id="nav-btn-reservations" class="admin-nav-link active" style="cursor: pointer;">Bugünün Rezervasyonları</a></li>
-          <li><a onclick="showTab('upcoming-reservations')" id="nav-btn-upcoming-reservations" class="admin-nav-link" style="cursor: pointer;">Gelecek Rezervasyonlar</a></li>
-          <li><a onclick="showTab('all-reservations')" id="nav-btn-all-reservations" class="admin-nav-link" style="cursor: pointer;">Tüm Rezervasyonlar</a></li>
-          <li><a onclick="showTab('menu-mgmt')" id="nav-btn-menu-mgmt" class="admin-nav-link" style="cursor: pointer;">Menü Yönetimi</a></li>
+          <li><a onclick="showTab('menu-mgmt')" id="nav-btn-menu-mgmt" class="admin-nav-link active" style="cursor: pointer;">Menü Yönetimi</a></li>
           <li><a onclick="showTab('category-mgmt')" id="nav-btn-category-mgmt" class="admin-nav-link" style="cursor: pointer;">Kategori Yönetimi</a></li>
           <li><a onclick="showTab('reviews-mgmt')" id="nav-btn-reviews-mgmt" class="admin-nav-link" style="cursor: pointer;">Yorum Yönetimi</a></li>
         </ul>
@@ -689,133 +685,8 @@
 
   <div class="admin-container">
     
-    <!-- Security Warning Banner (shown if opened via file://) -->
-    <div id="security-warning" class="security-banner">
-      <i class="fa-solid fa-triangle-exclamation"></i>
-      <div>
-        <strong id="lang-warning-title">Tarayıcı Güvenlik Uyarısı:</strong> 
-        <span id="lang-warning-desc">Sayfayı doğrudan bilgisayarınızdan yerel dosya olarak açtınız. Tarayıcınızın yerel dosya politikaları nedeniyle sekmeler arası rezervasyon senkronizasyonu engellenebilir. Müşteri arayüzünden gönderilen rezervasyonları burada canlı görmek için projeyi Vercel'e yükleyebilir veya yerel bir sunucu (localhost) kullanabilirsiniz.</span>
-      </div>
-    </div>
-
-    <!-- TAB 1: RESERVATIONS SECTION -->
-    <section id="section-reservations" class="admin-section active">
-      <!-- Stats summary -->
-      <div class="stats-grid">
-        <div class="stat-card total">
-          <div class="stat-value" id="stat-total">0</div>
-          <div class="stat-label" id="lang-stat-total">Toplam Rezervasyon</div>
-        </div>
-        <div class="stat-card pending">
-          <div class="stat-value" id="stat-pending">0</div>
-          <div class="stat-label" id="lang-stat-pending">Bekleyen</div>
-        </div>
-        <div class="stat-card confirmed">
-          <div class="stat-value" id="stat-confirmed">0</div>
-          <div class="stat-label" id="lang-stat-confirmed">Onaylanan</div>
-        </div>
-        <div class="stat-card cancelled">
-          <div class="stat-value" id="stat-cancelled">0</div>
-          <div class="stat-label" id="lang-stat-cancelled">İptal Edilen</div>
-        </div>
-      </div>
-
-      <div class="dashboard-card">
-        <div class="card-title">
-          <span id="lang-reservations-title">Gelen Rezervasyon Talepleri</span>
-          <div class="header-actions" style="gap: 12px;">
-            <button class="btn btn-outline" onclick="simulateNewOrder()">
-              <i class="fa-solid fa-plus"></i> <span id="lang-btn-test-booking">Test Rezervasyonu Ekle</span>
-            </button>
-            <button class="btn btn-gold" onclick="clearAllBookings()">
-              <i class="fa-solid fa-trash-can"></i> <span id="lang-btn-clear-all">Tümünü Temizle</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="bookings-table-wrapper">
-          <table id="bookings-table">
-            <thead>
-              <tr>
-                <th id="lang-th-customer">Müşteri</th>
-                <th id="lang-th-details">Rezervasyon Detayı</th>
-                <th id="lang-th-food">Seçilen Yemek</th>
-                <th id="lang-th-drink">Seçilen İçecek</th>
-                <th id="lang-th-payment">Ödeme Durumu</th>
-                <th id="lang-th-status">Durum</th>
-                <th id="lang-th-actions">İşlemler</th>
-              </tr>
-            </thead>
-            <tbody id="bookings-tbody">
-              <!-- Dynamically populated -->
-            </tbody>
-          </table>
-          
-          <div id="bookings-empty" class="empty-state">
-            <i class="fa-regular fa-clipboard empty-icon"></i>
-            <p id="lang-empty-reservations">Henüz alınmış bir masa rezervasyon talebi bulunmuyor.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 1.5: UPCOMING RESERVATIONS SECTION -->
-    <section id="section-upcoming-reservations" class="admin-section">
-      <!-- Stats summary for upcoming -->
-      <div class="stats-grid">
-        <div class="stat-card total">
-          <div class="stat-value" id="stat-upcoming-total">0</div>
-          <div class="stat-label" id="lang-stat-upcoming-total">Toplam Gelecek Rezervasyon</div>
-        </div>
-        <div class="stat-card pending">
-          <div class="stat-value" id="stat-upcoming-pending">0</div>
-          <div class="stat-label">Bekleyen</div>
-        </div>
-        <div class="stat-card confirmed">
-          <div class="stat-value" id="stat-upcoming-confirmed">0</div>
-          <div class="stat-label">Onaylanan</div>
-        </div>
-        <div class="stat-card cancelled">
-          <div class="stat-value" id="stat-upcoming-cancelled">0</div>
-          <div class="stat-label">İptal Edilen</div>
-        </div>
-      </div>
-
-      <div class="dashboard-card">
-        <div class="card-title">
-          <span id="lang-upcoming-title">Gelecek Rezervasyon Talepleri</span>
-          <div class="header-actions" style="gap: 12px;">
-          </div>
-        </div>
-
-        <div class="bookings-table-wrapper">
-          <table id="upcoming-table">
-            <thead>
-              <tr>
-                <th id="lang-upcoming-th-customer">Müşteri</th>
-                <th id="lang-upcoming-th-details">Rezervasyon Detayı</th>
-                <th id="lang-upcoming-th-food">Seçilen Yemek</th>
-                <th id="lang-upcoming-th-drink">Seçilen İçecek</th>
-                <th id="lang-upcoming-th-payment">Ödeme Durumu</th>
-                <th id="lang-upcoming-th-status">Durum</th>
-                <th id="lang-upcoming-th-actions">İşlemler</th>
-              </tr>
-            </thead>
-            <tbody id="upcoming-tbody">
-              <!-- Dynamically populated -->
-            </tbody>
-          </table>
-          
-          <div id="bookings-upcoming-empty" class="empty-state">
-            <i class="fa-regular fa-clipboard empty-icon"></i>
-            <p id="lang-empty-upcoming">Henüz gelecek tarihli bir masa rezervasyon talebi bulunmuyor.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- TAB 2: MENU MANAGEMENT SECTION -->
-    <section id="section-menu-mgmt" class="admin-section">
+    <section id="section-menu-mgmt" class="admin-section active">
       <div class="menu-mgmt-grid">
         
         <!-- Left: Active Dishes List -->
@@ -1031,85 +902,9 @@
         </div>
 
       </div>
-
-      <!-- Cloud Database Settings (Firebase) -->
-      <div class="dashboard-card" style="margin-top: 30px;">
-        <div class="card-title">
-          <i class="fa-solid fa-database text-gold"></i> <span id="lang-db-settings-title">Bulut Veritabanı Ayarları (Firebase)</span>
-        </div>
-        <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 20px;" id="lang-db-settings-desc">
-          Müşterilerin kendi telefonlarından gönderdikleri rezervasyonların yönetici paneline anlık (Real-time) olarak düşmesi için Firebase veritabanı bilgilerinizi buraya yapıştırın. Boş bırakılırsa yerel depolama (Local Demo) modu etkin kalır.
-        </p>
-        
-        <div class="form-group" style="margin-bottom: 20px;">
-          <label for="db-firebase-config" id="lang-db-config-label">Firebase Config JSON nesnesi</label>
-          <textarea id="db-firebase-config" placeholder='{
-  "apiKey": "AIzaSy...",
-  "authDomain": "...",
-  "projectId": "...",
-  "storageBucket": "...",
-  "messagingSenderId": "...",
-  "appId": "..."
-}' style="width: 100%; height: 150px; font-family: monospace; font-size: 0.85rem; background: rgba(255,255,255,0.02); color: #FFF; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 12px; resize: vertical;"></textarea>
-        </div>
-        
-        <div style="display: flex; gap: 15px; justify-content: flex-end;">
-          <button class="btn btn-outline" onclick="loadDefaultDbConfig()" id="lang-btn-db-load">Mevcut Bilgileri Yükle</button>
-          <button class="btn btn-gold" onclick="saveDbConfig()" id="lang-btn-db-save">Ayarları Kaydet</button>
-        </div>
-      </div>
     </section>
 
-    <!-- TAB 2.5: ALL RESERVATIONS SECTION -->
-    <section id="section-all-reservations" class="admin-section">
-      <!-- Stats counter -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <h3 id="stat-all-total">0</h3>
-          <p id="lang-stat-all-total">Toplam Rezervasyon</p>
-        </div>
-        <div class="stat-card">
-          <h3 id="stat-all-pending" style="color: var(--color-gold);">0</h3>
-          <p id="lang-stat-all-pending">Bekleyen</p>
-        </div>
-        <div class="stat-card">
-          <h3 id="stat-all-confirmed" style="color: var(--color-green);">0</h3>
-          <p id="lang-stat-all-confirmed">Onaylanan</p>
-        </div>
-        <div class="stat-card">
-          <h3 id="stat-all-cancelled" style="color: #ff4d4d;">0</h3>
-          <p id="lang-stat-all-cancelled">İptal Edilen</p>
-        </div>
-      </div>
 
-      <div class="dashboard-card">
-        <div class="card-title">
-          <span id="lang-all-reservations-title">Tüm Rezervasyonlar</span>
-        </div>
-
-        <div class="bookings-table-wrapper">
-          <table id="all-table">
-            <thead>
-              <tr>
-                <th id="lang-all-th-customer">Müşteri</th>
-                <th id="lang-all-th-details">Rezervasyon Detayları</th>
-                <th id="lang-all-th-payment">Ödeme Durumu</th>
-                <th id="lang-all-th-status">Durum</th>
-                <th id="lang-all-th-actions">İşlemler</th>
-              </tr>
-            </thead>
-            <tbody id="all-tbody">
-              <!-- Dynamically populated -->
-            </tbody>
-          </table>
-          
-          <div id="bookings-all-empty" class="empty-state">
-            <i class="fa-regular fa-calendar-times empty-icon"></i>
-            <p id="lang-empty-all-bookings">Herhangi bir rezervasyon bulunmuyor.</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- TAB 3.5: REVIEW MANAGEMENT SECTION -->
     <section id="section-reviews-mgmt" class="admin-section">
@@ -1152,20 +947,7 @@
   </div>
 
   <!-- Realtime Toast Notification -->
-  <div id="booking-toast" class="toast">
-    <i class="fa-solid fa-bell toast-icon"></i>
-    <div class="toast-content">
-      <h4 id="toast-title">Yeni Rezervasyon Talebi!</h4>
-      <p id="toast-booking-info">Bir müşteri yeni rezervasyon gönderdi.</p>
-    </div>
-  </div>
 
-  <!-- Firebase Compat SDK (v10) -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  
-  <!-- Firebase Cloud Database -->
-  <script src="db.js?v=2.1.0"></script>
 
   <script>
     // Global Safe LocalStorage Parser
@@ -1513,63 +1295,22 @@
 
       // Update text values
       const dict = adminLangDict[lang];
-      document.getElementById("lang-panel-tag").textContent = dict["panel-tag"];
-      document.getElementById("nav-btn-reservations").textContent = dict["btn-reservations"];
-      document.getElementById("nav-btn-upcoming-reservations").textContent = dict["btn-upcoming"];
-      document.getElementById("nav-btn-menu-mgmt").textContent = dict["btn-menu-mgmt"];
+      
+      const safeSetText = (id, text) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+      };
+
+      safeSetText("lang-panel-tag", dict["panel-tag"]);
+      safeSetText("nav-btn-menu-mgmt", dict["btn-menu-mgmt"]);
+      safeSetText("nav-btn-category-mgmt", dict["btn-category-mgmt"] || "Kategori Yönetimi");
+      safeSetText("nav-btn-reviews-mgmt", dict["btn-reviews-mgmt"]);
       
       const editorBtn = document.getElementById("nav-btn-customer-editor");
       if (editorBtn) {
         editorBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${lang === "ar" ? "تعديل الموقع" : (lang === "en" ? "Edit Page" : "Sayfayı Düzenle")}`;
       }
-      
-      document.getElementById("lang-stat-total").textContent = dict["stat-total"];
-      document.getElementById("lang-stat-pending").textContent = dict["stat-pending"];
-      document.getElementById("lang-stat-confirmed").textContent = dict["stat-confirmed"];
-      document.getElementById("lang-stat-cancelled").textContent = dict["stat-cancelled"];
 
-      const elUpTotal = document.getElementById("lang-stat-upcoming-total");
-      if (elUpTotal) elUpTotal.textContent = dict["stat-total"];
-      const pendingLabels = document.querySelectorAll("#section-upcoming-reservations .stat-card.pending .stat-label");
-      pendingLabels.forEach(el => el.textContent = dict["stat-pending"]);
-      const confirmedLabels = document.querySelectorAll("#section-upcoming-reservations .stat-card.confirmed .stat-label");
-      confirmedLabels.forEach(el => el.textContent = dict["stat-confirmed"]);
-      const cancelledLabels = document.querySelectorAll("#section-upcoming-reservations .stat-card.cancelled .stat-label");
-      cancelledLabels.forEach(el => el.textContent = dict["stat-cancelled"]);
-      
-      document.getElementById("lang-reservations-title").textContent = dict["reservations-title"];
-      const elUpTitle = document.getElementById("lang-upcoming-title");
-      if (elUpTitle) elUpTitle.textContent = dict["upcoming-title"];
-      const elUpEmpty = document.getElementById("lang-empty-upcoming");
-      if (elUpEmpty) elUpEmpty.textContent = dict["empty-upcoming"];
-      
-      document.getElementById("lang-btn-test-booking").textContent = dict["btn-test-booking"];
-      document.getElementById("lang-btn-clear-all").textContent = dict["btn-clear-all"];
-      
-      document.getElementById("lang-th-customer").textContent = dict["th-customer"];
-      document.getElementById("lang-th-details").textContent = dict["th-details"];
-      document.getElementById("lang-th-food").textContent = dict["th-food"];
-      document.getElementById("lang-th-drink").textContent = dict["th-drink"];
-      document.getElementById("lang-th-status").textContent = dict["th-status"];
-      document.getElementById("lang-th-actions").textContent = dict["th-actions"];
-      document.getElementById("lang-empty-reservations").textContent = dict["empty-reservations"];
-
-      const elUpThCust = document.getElementById("lang-upcoming-th-customer");
-      if (elUpThCust) elUpThCust.textContent = dict["th-customer"];
-      const elUpThDet = document.getElementById("lang-upcoming-th-details");
-      if (elUpThDet) elUpThDet.textContent = dict["th-details"];
-      const elUpThFood = document.getElementById("lang-upcoming-th-food");
-      if (elUpThFood) elUpThFood.textContent = dict["th-food"];
-      const elUpThDrink = document.getElementById("lang-upcoming-th-drink");
-      if (elUpThDrink) elUpThDrink.textContent = dict["th-drink"];
-      const elUpThPay = document.getElementById("lang-upcoming-th-payment");
-      if (elUpThPay) elUpThPay.textContent = dict["th-payment"];
-      const elUpThStat = document.getElementById("lang-upcoming-th-status");
-      if (elUpThStat) elUpThStat.textContent = dict["th-status"];
-      const elUpThAct = document.getElementById("lang-upcoming-th-actions");
-      if (elUpThAct) elUpThAct.textContent = dict["th-actions"];
-
-      document.getElementById("nav-btn-reviews-mgmt").textContent = dict["btn-reviews-mgmt"];
       const elRevTitle = document.getElementById("lang-reviews-mgmt-title");
       if (elRevTitle) elRevTitle.textContent = dict["reviews-mgmt-title"];
       const elRevThAuth = document.getElementById("lang-reviews-th-author");
@@ -1584,59 +1325,24 @@
       if (elRevThAct) elRevThAct.textContent = dict["th-actions"];
       const elRevEmpty = document.getElementById("lang-empty-reviews");
       if (elRevEmpty) elRevEmpty.textContent = dict["empty-reviews"];
-      
-      document.getElementById("nav-btn-all-reservations").textContent = dict["btn-all-res"];
-      const elAllTitle = document.getElementById("lang-all-reservations-title");
-      if (elAllTitle) elAllTitle.textContent = dict["all-title"];
-      const elAllThCust = document.getElementById("lang-all-th-customer");
-      if (elAllThCust) elAllThCust.textContent = dict["th-customer"];
-      const elAllThDet = document.getElementById("lang-all-th-details");
-      if (elAllThDet) elAllThDet.textContent = dict["th-details"];
-      const elAllThPay = document.getElementById("lang-all-th-payment");
-      if (elAllThPay) elAllThPay.textContent = dict["th-payment"];
-      const elAllThStat = document.getElementById("lang-all-th-status");
-      if (elAllThStat) elAllThStat.textContent = dict["th-status"];
-      const elAllThAct = document.getElementById("lang-all-th-actions");
-      if (elAllThAct) elAllThAct.textContent = dict["th-actions"];
-      const elAllEmpty = document.getElementById("lang-empty-all-bookings");
-      if (elAllEmpty) elAllEmpty.textContent = dict["empty-all"];
-      
-      const elStatAllTotal = document.getElementById("lang-stat-all-total");
-      if (elStatAllTotal) elStatAllTotal.textContent = dict["stat-total"];
-      const elStatAllPend = document.getElementById("lang-stat-all-pending");
-      if (elStatAllPend) elStatAllPend.textContent = dict["stat-pending"];
-      const elStatAllConf = document.getElementById("lang-stat-all-confirmed");
-      if (elStatAllConf) elStatAllConf.textContent = dict["stat-confirmed"];
-      const elStatAllCanc = document.getElementById("lang-stat-all-cancelled");
-      if (elStatAllCanc) elStatAllCanc.textContent = dict["stat-cancelled"];
-      const elDbTitle = document.getElementById("lang-db-settings-title");
-      if (elDbTitle) elDbTitle.textContent = dict["db-settings-title"];
-      const elDbDesc = document.getElementById("lang-db-settings-desc");
-      if (elDbDesc) elDbDesc.textContent = dict["db-settings-desc"];
-      const elDbConfigLabel = document.getElementById("lang-db-config-label");
-      if (elDbConfigLabel) elDbConfigLabel.textContent = dict["db-config-label"];
-      const elBtnDbLoad = document.getElementById("lang-btn-db-load");
-      if (elBtnDbLoad) elBtnDbLoad.textContent = dict["btn-db-load"];
-      const elBtnDbSave = document.getElementById("lang-btn-db-save");
-      if (elBtnDbSave) elBtnDbSave.textContent = dict["btn-db-save"];
 
-      document.getElementById("lang-menu-list-title").textContent = dict["menu-list-title"];
-      document.getElementById("lang-btn-reset-menu").textContent = dict["btn-reset-menu"];
-      document.getElementById("lang-th-payment").textContent = dict["th-payment"];
+      safeSetText("lang-menu-list-title", dict["menu-list-title"]);
+      safeSetText("lang-btn-reset-menu", dict["btn-reset-menu"]);
+      safeSetText("lang-th-payment", dict["th-payment"]);
       
-      document.getElementById("lang-label-category").textContent = dict["label-category"];
-      document.getElementById("lang-label-name-tr").textContent = dict["label-name-tr"];
-      document.getElementById("lang-label-name-en").textContent = dict["label-name-en"];
-      document.getElementById("lang-label-name-ar").textContent = dict["label-name-ar"];
-      document.getElementById("lang-label-prices").textContent = dict["label-prices"];
-      document.getElementById("lang-label-desc-tr").textContent = dict["label-desc-tr"];
-      document.getElementById("lang-label-desc-en").textContent = dict["label-desc-en"];
-      document.getElementById("lang-label-desc-ar").textContent = dict["label-desc-ar"];
-      document.getElementById("lang-label-ing-tr").textContent = dict["label-ing-tr"];
-      document.getElementById("lang-label-ing-en").textContent = dict["label-ing-en"];
-      document.getElementById("lang-label-ing-ar").textContent = dict["label-ing-ar"];
-      document.getElementById("lang-label-images").textContent = dict["label-images"];
-      document.getElementById("lang-image-tip").textContent = dict["image-tip"];
+      safeSetText("lang-label-category", dict["label-category"]);
+      safeSetText("lang-label-name-tr", dict["label-name-tr"]);
+      safeSetText("lang-label-name-en", dict["label-name-en"]);
+      safeSetText("lang-label-name-ar", dict["label-name-ar"]);
+      safeSetText("lang-label-prices", dict["label-prices"]);
+      safeSetText("lang-label-desc-tr", dict["label-desc-tr"]);
+      safeSetText("lang-label-desc-en", dict["label-desc-en"]);
+      safeSetText("lang-label-desc-ar", dict["label-desc-ar"]);
+      safeSetText("lang-label-ing-tr", dict["label-ing-tr"]);
+      safeSetText("lang-label-ing-en", dict["label-ing-en"]);
+      safeSetText("lang-label-ing-ar", dict["label-ing-ar"]);
+      safeSetText("lang-label-images", dict["label-images"]);
+      safeSetText("lang-image-tip", dict["image-tip"]);
       
       const editingId = document.getElementById("edit-dish-id").value;
       if (editingId) {
@@ -1859,340 +1565,6 @@
       return dateString;
     }
 
-    function loadBookings() {
-      const allBookings = safeGetItem("pietro_bookings");
-      
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      const todayStr = `${yyyy}-${mm}-${dd}`;
-
-      const bookings = allBookings.filter(b => b.date === todayStr);
-
-      const tbody = document.getElementById("bookings-tbody");
-      const emptyState = document.getElementById("bookings-empty");
-      const table = document.getElementById("bookings-table");
-
-      tbody.innerHTML = "";
-
-      if (bookings.length === 0) {
-        emptyState.style.display = "block";
-        table.style.display = "none";
-        updateStats(0, 0, 0, 0);
-        return;
-      }
-
-      emptyState.style.display = "none";
-      table.style.display = "table";
-
-      let pending = 0;
-      let confirmed = 0;
-      let cancelled = 0;
-
-      bookings.forEach(booking => {
-        if (booking.status === "pending") pending++;
-        else if (booking.status === "confirmed") confirmed++;
-        else if (booking.status === "cancelled") cancelled++;
-
-        const tr = document.createElement("tr");
-        tr.id = booking.id;
-
-        const dateStr = formatDateStr(booking.date);
-        
-        const payStatus = booking.paymentStatus || "unpaid";
-        const dict = adminLangDict[adminActiveLang];
-        const paySelectHtml = `
-          <select class="pay-select ${payStatus}" onchange="changePaymentStatus('${booking.id}', this.value)">
-            <option value="unpaid" ${payStatus === 'unpaid' ? 'selected' : ''}>${dict["pay-unpaid"]}</option>
-            <option value="arrival" ${payStatus === 'arrival' ? 'selected' : ''}>${dict["pay-arrival"]}</option>
-            <option value="paid" ${payStatus === 'paid' ? 'selected' : ''}>${dict["pay-paid"]}</option>
-          </select>
-        `;
-
-        tr.innerHTML = `
-          <td>
-            <div class="customer-info">
-              <h5>${escapeHTML(booking.name)}</h5>
-              <p><i class="fa-solid fa-phone"></i> ${escapeHTML(booking.phone)}</p>
-            </div>
-          </td>
-          <td>
-            <div class="booking-details">
-              <strong>${escapeHTML(booking.time)}</strong> | ${dateStr}
-              <div style="font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 2px;">
-                <i class="fa-solid fa-users"></i> ${booking.guests} Kişi ${booking.table ? `| <span style="color:var(--color-gold); font-weight:600;">${translateTable(booking.table)}</span>` : ''}
-              </div>
-              ${booking.notes ? `<div style="font-size:0.75rem; color:#d4af37; margin-top:4px; font-style:italic; max-width:200px; white-space:normal; word-break:break-word;">📝 ${escapeHTML(booking.notes)}</div>` : ''}
-            </div>
-          </td>
-          <td>
-            ${booking.dish ? booking.dish.split(" + ").map(d => `<span class="dish-tag" style="display:block; margin-bottom:4px;" title="${escapeHTML(d)}">${escapeHTML(d)}</span>`).join('') : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
-          </td>
-          <td>
-            ${booking.drink ? `<span class="drink-tag" title="${escapeHTML(booking.drink)}">${escapeHTML(booking.drink)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
-          </td>
-          <td>
-            ${paySelectHtml}
-          </td>
-          <td>
-            <span class="status-badge ${booking.status}">${translateStatus(booking.status)}</span>
-          </td>
-          <td>
-            <div class="action-buttons">
-              <button class="btn-action btn-confirm" onclick="setStatus('${booking.id}', 'confirmed')" title="Onayla">
-                <i class="fa-solid fa-check"></i>
-              </button>
-              <button class="btn-action btn-cancel" onclick="setStatus('${booking.id}', 'cancelled')" title="İptal Et">
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-              <button class="btn-action btn-whatsapp" onclick="contactCustomer('${booking.id}')" title="İletişim & İBAN Gönder">
-                <i class="fa-brands fa-whatsapp"></i>
-              </button>
-              <button class="btn-action btn-delete" onclick="deleteBooking('${booking.id}')" title="Sil">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      updateStats(bookings.length, pending, confirmed, cancelled);
-      
-      // Also load upcoming and all bookings to keep both lists dynamically updated
-      loadUpcomingBookings();
-      loadAllBookings();
-    }
-
-    function loadUpcomingBookings() {
-      const allBookings = safeGetItem("pietro_bookings");
-      
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      const todayStr = `${yyyy}-${mm}-${dd}`;
-
-      const bookings = allBookings.filter(b => b.date > todayStr);
-
-      const tbody = document.getElementById("upcoming-tbody");
-      const emptyState = document.getElementById("bookings-upcoming-empty");
-      const table = document.getElementById("upcoming-table");
-
-      if (!tbody || !emptyState || !table) return;
-
-      tbody.innerHTML = "";
-
-      if (bookings.length === 0) {
-        emptyState.style.display = "block";
-        table.style.display = "none";
-        updateUpcomingStats(0, 0, 0, 0);
-        return;
-      }
-
-      emptyState.style.display = "none";
-      table.style.display = "table";
-
-      let pending = 0;
-      let confirmed = 0;
-      let cancelled = 0;
-
-      bookings.forEach(booking => {
-        if (booking.status === "pending") pending++;
-        else if (booking.status === "confirmed") confirmed++;
-        else if (booking.status === "cancelled") cancelled++;
-
-        const tr = document.createElement("tr");
-        tr.id = 'upcoming-' + booking.id;
-
-        const dateStr = formatDateStr(booking.date);
-        
-        const payStatus = booking.paymentStatus || "unpaid";
-        const dict = adminLangDict[adminActiveLang];
-        const paySelectHtml = `
-          <select class="pay-select ${payStatus}" onchange="changePaymentStatus('${booking.id}', this.value)">
-            <option value="unpaid" ${payStatus === 'unpaid' ? 'selected' : ''}>${dict["pay-unpaid"]}</option>
-            <option value="arrival" ${payStatus === 'arrival' ? 'selected' : ''}>${dict["pay-arrival"]}</option>
-            <option value="paid" ${payStatus === 'paid' ? 'selected' : ''}>${dict["pay-paid"]}</option>
-          </select>
-        `;
-
-        tr.innerHTML = `
-          <td>
-            <div class="customer-info">
-              <h5>${escapeHTML(booking.name)}</h5>
-              <p><i class="fa-solid fa-phone"></i> ${escapeHTML(booking.phone)}</p>
-            </div>
-          </td>
-          <td>
-            <div class="booking-details">
-              <strong>${escapeHTML(booking.time)}</strong> | ${dateStr}
-              <div style="font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 2px;">
-                <i class="fa-solid fa-users"></i> ${booking.guests} Kişi ${booking.table ? `| <span style="color:var(--color-gold); font-weight:600;">${translateTable(booking.table)}</span>` : ''}
-              </div>
-              ${booking.notes ? `<div style="font-size:0.75rem; color:#d4af37; margin-top:4px; font-style:italic; max-width:200px; white-space:normal; word-break:break-word;">📝 ${escapeHTML(booking.notes)}</div>` : ''}
-            </div>
-          </td>
-          <td>
-            ${booking.dish ? booking.dish.split(" + ").map(d => `<span class="dish-tag" style="display:block; margin-bottom:4px;" title="${escapeHTML(d)}">${escapeHTML(d)}</span>`).join('') : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
-          </td>
-          <td>
-            ${booking.drink ? `<span class="drink-tag" title="${escapeHTML(booking.drink)}">${escapeHTML(booking.drink)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
-          </td>
-          <td>
-            ${paySelectHtml}
-          </td>
-          <td>
-            <span class="status-badge ${booking.status}">${translateStatus(booking.status)}</span>
-          </td>
-          <td>
-            <div class="action-buttons">
-              <button class="btn-action btn-confirm" onclick="setStatus('${booking.id}', 'confirmed')" title="Onayla">
-                <i class="fa-solid fa-check"></i>
-              </button>
-              <button class="btn-action btn-cancel" onclick="setStatus('${booking.id}', 'cancelled')" title="İptal Et">
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-              <button class="btn-action btn-whatsapp" onclick="contactCustomer('${booking.id}')" title="İletişim & İBAN Gönder">
-                <i class="fa-brands fa-whatsapp"></i>
-              </button>
-              <button class="btn-action btn-delete" onclick="deleteBooking('${booking.id}')" title="Sil">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      updateUpcomingStats(bookings.length, pending, confirmed, cancelled);
-    }
-
-    function updateStats(total, pending, confirmed, cancelled) {
-      document.getElementById("stat-total").textContent = total;
-      document.getElementById("stat-pending").textContent = pending;
-      document.getElementById("stat-confirmed").textContent = confirmed;
-      document.getElementById("stat-cancelled").textContent = cancelled;
-    }
-
-    function updateUpcomingStats(total, pending, confirmed, cancelled) {
-      const elTotal = document.getElementById("stat-upcoming-total");
-      const elPending = document.getElementById("stat-upcoming-pending");
-      const elConfirmed = document.getElementById("stat-upcoming-confirmed");
-      const elCancelled = document.getElementById("stat-upcoming-cancelled");
-      if (elTotal) elTotal.textContent = total;
-      if (elPending) elPending.textContent = pending;
-      if (elConfirmed) elConfirmed.textContent = confirmed;
-      if (elCancelled) elCancelled.textContent = cancelled;
-    }
-
-    function loadAllBookings() {
-      const bookings = safeGetItem("pietro_bookings");
-      const tbody = document.getElementById("all-tbody");
-      const emptyState = document.getElementById("bookings-all-empty");
-      const table = document.getElementById("all-table");
-
-      if (!tbody || !emptyState || !table) return;
-
-      tbody.innerHTML = "";
-
-      if (bookings.length === 0) {
-        emptyState.style.display = "block";
-        table.style.display = "none";
-        updateAllStats(0, 0, 0, 0);
-        return;
-      }
-
-      emptyState.style.display = "none";
-      table.style.display = "table";
-
-      let pending = 0;
-      let confirmed = 0;
-      let cancelled = 0;
-
-      bookings.forEach(booking => {
-        if (booking.status === "pending") pending++;
-        else if (booking.status === "confirmed") confirmed++;
-        else if (booking.status === "cancelled") cancelled++;
-
-        const tr = document.createElement("tr");
-        tr.id = 'all-' + booking.id;
-
-        const dateStr = formatDateStr(booking.date);
-        
-        const payStatus = booking.paymentStatus || "unpaid";
-        const dict = adminLangDict[adminActiveLang];
-        const paySelectHtml = `
-          <select class="pay-select ${payStatus}" onchange="changePaymentStatus('${booking.id}', this.value)">
-            <option value="unpaid" ${payStatus === 'unpaid' ? 'selected' : ''}>${dict["pay-unpaid"]}</option>
-            <option value="arrival" ${payStatus === 'arrival' ? 'selected' : ''}>${dict["pay-arrival"]}</option>
-            <option value="paid" ${payStatus === 'paid' ? 'selected' : ''}>${dict["pay-paid"]}</option>
-          </select>
-        `;
-
-        tr.innerHTML = `
-          <td>
-            <div class="customer-info">
-              <h5>${escapeHTML(booking.name)}</h5>
-              <p><i class="fa-solid fa-phone"></i> ${escapeHTML(booking.phone)}</p>
-            </div>
-          </td>
-          <td>
-            <div class="booking-details">
-              <strong>${escapeHTML(booking.time)}</strong> | ${dateStr}
-              <div style="font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 2px;">
-                <i class="fa-solid fa-users"></i> ${booking.guests} Kişi ${booking.table ? `| <span style="color:var(--color-gold); font-weight:600;">${translateTable(booking.table)}</span>` : ''}
-              </div>
-              ${booking.notes ? `<div style="font-size:0.75rem; color:#d4af37; margin-top:4px; font-style:italic; max-width:200px; white-space:normal; word-break:break-word;">📝 ${escapeHTML(booking.notes)}</div>` : ''}
-            </div>
-          </td>
-          <td>
-            ${booking.dish ? booking.dish.split(" + ").map(d => `<span class="dish-tag" style="display:block; margin-bottom:4px;" title="${escapeHTML(d)}">${escapeHTML(d)}</span>`).join('') : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
-          </td>
-          <td>
-            ${booking.drink ? `<span class="drink-tag" title="${escapeHTML(booking.drink)}">${escapeHTML(booking.drink)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
-          </td>
-          <td>
-            ${paySelectHtml}
-          </td>
-          <td>
-            <span class="status-badge ${booking.status}">${translateStatus(booking.status)}</span>
-          </td>
-          <td>
-            <div class="action-buttons">
-              <button class="btn-action btn-confirm" onclick="setStatus('${booking.id}', 'confirmed')" title="Onayla">
-                <i class="fa-solid fa-check"></i>
-              </button>
-              <button class="btn-action btn-cancel" onclick="setStatus('${booking.id}', 'cancelled')" title="İptal Et">
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-              <button class="btn-action btn-whatsapp" onclick="contactCustomer('${booking.id}')" title="İletişim & İBAN Gönder">
-                <i class="fa-brands fa-whatsapp"></i>
-              </button>
-              <button class="btn-action btn-delete" onclick="deleteBooking('${booking.id}')" title="Sil">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      updateAllStats(bookings.length, pending, confirmed, cancelled);
-    }
-
-    function updateAllStats(total, pending, confirmed, cancelled) {
-      const elTotal = document.getElementById("stat-all-total");
-      const elPending = document.getElementById("stat-all-pending");
-      const elConfirmed = document.getElementById("stat-all-confirmed");
-      const elCancelled = document.getElementById("stat-all-cancelled");
-      if (elTotal) elTotal.textContent = total;
-      if (elPending) elPending.textContent = pending;
-      if (elConfirmed) elConfirmed.textContent = confirmed;
-      if (elCancelled) elCancelled.textContent = cancelled;
-    }
-
     function loadReviewsList() {
       const defaultReviews = [
         {
@@ -2349,78 +1721,6 @@
     function escapeHTML(str) {
       return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
     }
-
-    // 5. Booking Action functions
-    window.setStatus = function(id, status) {
-      if (typeof window.updateBookingInCloud === "function") {
-        window.updateBookingInCloud(id, { status: status });
-      } else {
-        let bookings = safeGetItem("pietro_bookings");
-        bookings = bookings.map(b => {
-          if (b.id === id) b.status = status;
-          return b;
-        });
-        localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
-        loadBookings();
-      }
-    };
-
-    window.changePaymentStatus = function(id, newStatus) {
-      if (typeof window.updateBookingInCloud === "function") {
-        window.updateBookingInCloud(id, { paymentStatus: newStatus });
-      } else {
-        let bookings = safeGetItem("pietro_bookings");
-        bookings = bookings.map(b => {
-          if (b.id === id) {
-            b.paymentStatus = newStatus;
-          }
-          return b;
-        });
-        localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
-        loadBookings();
-      }
-    };
-
-    window.deleteBooking = function(id) {
-      if (!confirm("Bu rezervasyon kaydını silmek istediğinize emin misiniz?")) return;
-      if (typeof window.deleteBookingFromCloud === "function") {
-        window.deleteBookingFromCloud(id);
-      } else {
-        let bookings = safeGetItem("pietro_bookings");
-        bookings = bookings.filter(b => b.id !== id);
-        localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
-        loadBookings();
-      }
-    };
-
-    window.clearAllBookings = function() {
-      if (!confirm("Tüm kayıtları silmek istediğinize emin misiniz?")) return;
-      if (typeof window.deleteBookingFromCloud === "function") {
-        const bookings = safeGetItem("pietro_bookings");
-        bookings.forEach(b => window.deleteBookingFromCloud(b.id));
-      } else {
-        localStorage.removeItem("pietro_bookings");
-        loadBookings();
-      }
-    };
-
-    window.contactCustomer = function(id) {
-      const bookings = safeGetItem("pietro_bookings");
-      const booking = bookings.find(b => b.id === id);
-      if (!booking) return;
-
-      let cleanedPhone = booking.phone.replace(/[^0-9+]/g, "");
-      if (cleanedPhone.startsWith("05")) cleanedPhone = "+90" + cleanedPhone.substring(1);
-      else if (cleanedPhone.startsWith("5")) cleanedPhone = "+90" + cleanedPhone;
-
-      let items = [];
-      if (booking.dish) items.push(booking.dish);
-      if (booking.drink) items.push(booking.drink);
-      const details = items.join(" + ") || "Masa Rezervasyonu";
-
-      const message = `Merhaba ${booking.name},\n\nPietro Coffee Pizzeria'dan yapmış olduğunuz rezervasyon talebiniz (${details}) alınmıştır. Rezervasyonunuzu onaylamak ve ödemenizi tamamlamak için İBAN adresimiz:\n\n🏦 ALICI: Pietro Coffee Pizzeria\n💳 IBAN: TR00 0000 0000 0000 0000 0000 00\n\nÖdemeyi tamamladıktan sonra lütfen buradan bilgi veriniz. Teşekkürler, görüşmek üzere!`;
-      window.open(`https://wa.me/${cleanedPhone}?text=${encodeURIComponent(message)}`, "_blank");
-    };
 
     // 6. Menu Management CRUD Engine
     function normalizeDish(dish) {
@@ -3060,28 +2360,9 @@
     document.addEventListener("DOMContentLoaded", () => {
       checkFileProtocol();
       changeAdminLang("tr"); // Default in Turkish
+      loadMenuList();
+      loadCategoryList();
       loadReviewsList();
-      loadDefaultDbConfig();
-
-      // Initialize real-time Firebase bookings sync
-      if (typeof window.onBookingsChange === "function") {
-        let isInitialLoad = true;
-        window.onBookingsChange((updatedBookings) => {
-          // Play sound and show toast only for NEW bookings added in real-time
-          if (!isInitialLoad && updatedBookings.length > 0) {
-            const oldBookings = safeGetItem("pietro_bookings");
-            // If the first booking is new (not in our old list), trigger notification
-            if (oldBookings.length === 0 || updatedBookings[0].id !== oldBookings[0].id) {
-              playNotificationSound();
-              showToast(updatedBookings[0].name);
-            }
-          }
-          isInitialLoad = false;
-          
-          // Re-render dashboard lists
-          loadBookings();
-        });
-      }
     });
   </script>
 </body>
