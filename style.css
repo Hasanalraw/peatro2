@@ -42,8 +42,7 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 body {
@@ -1025,7 +1024,7 @@ h1, h2, h3, h4, h5, h6 {
 /* 12. Floating WhatsApp Button & Tooltip */
 .whatsapp-float {
   position: fixed;
-  bottom: 30px;
+  bottom: 105px;
   right: 30px;
   background-color: #25D366;
   color: #FFFFFF;
@@ -1255,13 +1254,81 @@ h1, h2, h3, h4, h5, h6 {
   .whatsapp-float {
     width: 50px;
     height: 50px;
-    bottom: 20px;
+    bottom: 85px;
     right: 20px;
     font-size: 1.8rem;
   }
   
+  .floating-cart-btn {
+    width: 50px;
+    height: 50px;
+    bottom: 20px;
+    right: 20px;
+    font-size: 1.25rem;
+  }
+
+  html[dir="rtl"] .whatsapp-float {
+    right: auto;
+    left: 20px;
+  }
+
+  html[dir="rtl"] .floating-cart-btn {
+    right: auto;
+    left: 20px;
+  }
+  
   .whatsapp-tooltip {
     display: none; /* Hide tooltips on mobile */
+  }
+
+  /* Center headers and balance mobile spacing/alignments */
+  .menu-header, .reviews-header, .reservation-container, .contact-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    text-align: center !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .menu-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .menu-filters {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    border-radius: 12px !important;
+    padding: 8px !important;
+    gap: 8px !important;
+    max-width: 100% !important;
+  }
+
+  .filter-btn {
+    padding: 8px 16px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .reviews-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .reservation-form-card {
+    padding: 24px 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-container {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 }
 

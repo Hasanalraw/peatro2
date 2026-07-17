@@ -270,51 +270,14 @@
     <div class="reviews-header">
       <h2 class="section-title text-center" data-key="reviews-title">Müşteri Yorumları</h2>
       <h3 class="section-subtitle text-center" data-key="reviews-subtitle">Misafirlerimizin Pietro Deneyimi</h3>
+      <button class="btn btn-outline" onclick="openAddReviewModal()" data-key="btn-add-review" style="margin-top: 15px; display: inline-flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-plus"></i> <span data-key="btn-add-review-text">Değerlendirme Ekle</span>
+      </button>
     </div>
 
     <!-- Review Grid -->
-    <div class="reviews-grid">
-      <!-- Review 1 -->
-      <div class="review-card">
-        <div class="rating-stars">
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-        </div>
-        <p class="review-text" data-key="review-1-text">"Yalova'da gerçek İtalyan pizzası bulabileceğiniz tek yer. Pizza Pietro'daki prosciutto ve mantar uyumu harikaydı. Mekanın atmosferi ve botanik duvar resmi çok estetik."</p>
-        <h5 class="review-author">Ayşe K.</h5>
-        <span class="review-warning" data-key="review-warning">Taslak yorum - lütfen gerçek yorumlarla değiştirin</span>
-      </div>
-
-      <!-- Review 2 -->
-      <div class="review-card">
-        <div class="rating-stars">
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-        </div>
-        <p class="review-text" data-key="review-2-text">"Penne Burrata enfes! Kremalı sosun kıvamı ve burrata peynirinin tazeliği mükemmeldi. Ayrıca yemekten sonra içtiğimiz espresso tam kıvamındaydı."</p>
-        <h5 class="review-author">Mehmet T.</h5>
-        <span class="review-warning" data-key="review-warning">Taslak yorum - lütfen gerçek yorumlarla değiştirin</span>
-      </div>
-
-      <!-- Review 3 -->
-      <div class="review-card">
-        <div class="rating-stars">
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-          <i class="fa-solid fa-star"></i>
-        </div>
-        <p class="review-text" data-key="review-3-text">"İç mekan tasarımı çok sıcak ve davetkar. Tavanlardaki ahşap geometrik detaylar ve duvar resmi muazzam. Yalova'da böylesi bir şık İtalyan restoranı açılması harika olmuş."</p>
-        <h5 class="review-author">Selim G.</h5>
-        <span class="review-warning" data-key="review-warning">Taslak yorum - lütfen gerçek yorumlarla değiştirin</span>
-      </div>
+    <div class="reviews-grid" id="reviews-container">
+      <!-- Dynamically populated via script.js -->
     </div>
   </section>
 
@@ -694,6 +657,45 @@
         <button id="admin-dish-delete-btn" class="btn btn-outline" style="flex:1; border-color:#ff4d4d; color:#ff4d4d; background:none; display:none;" onclick="deleteAdminDish()">Sil | Delete</button>
         <button class="btn btn-outline" style="flex:1;" onclick="closeAdminModal('admin-dish-modal')">İptal | Cancel</button>
         <button class="btn btn-gold" style="flex:1;" onclick="saveAdminDish()">Kaydet | Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer Add Review Modal -->
+  <div id="review-add-modal" class="modal-overlay" onclick="closeAdminModalOnOutsideClick('review-add-modal', event)">
+    <div class="modal-card" style="max-width: 480px; max-height: 90vh; overflow-y: auto; background-color: var(--color-bg-card); padding: 25px; border-radius: 8px; border: 1px solid var(--color-gold); position: relative; margin: 30px auto;">
+      <button class="modal-close-btn" onclick="closeAdminModal('review-add-modal')" style="color:#FFF;">&times;</button>
+      <h3 id="lang-review-modal-title" data-key="review-modal-title" style="font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: var(--color-gold); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; text-align: center;">
+        Değerlendirme Ekle
+      </h3>
+      
+      <div style="display: flex; flex-direction: column; gap: 15px;">
+        <div>
+          <label id="lang-label-review-author" data-key="label-review-author" style="display:block; font-size:0.8rem; color:var(--color-text-secondary); margin-bottom:6px;">Adınız Soyadınız</label>
+          <input type="text" id="review-author-input" required style="width:100%; padding:12px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF;">
+        </div>
+        
+        <div>
+          <label id="lang-label-review-rating" data-key="label-review-rating" style="display:block; font-size:0.8rem; color:var(--color-text-secondary); margin-bottom:6px;">Puanınız</label>
+          <div class="interactive-stars" id="interactive-review-stars" style="display: flex; gap: 8px; font-size: 1.6rem; color: #555; cursor: pointer;">
+            <i class="fa-solid fa-star star-btn active" data-star="1" onclick="setReviewRating(1)" style="color:#FFD700 !important;"></i>
+            <i class="fa-solid fa-star star-btn active" data-star="2" onclick="setReviewRating(2)" style="color:#FFD700 !important;"></i>
+            <i class="fa-solid fa-star star-btn active" data-star="3" onclick="setReviewRating(3)" style="color:#FFD700 !important;"></i>
+            <i class="fa-solid fa-star star-btn active" data-star="4" onclick="setReviewRating(4)" style="color:#FFD700 !important;"></i>
+            <i class="fa-solid fa-star star-btn active" data-star="5" onclick="setReviewRating(5)" style="color:#FFD700 !important;"></i>
+          </div>
+          <input type="hidden" id="review-rating-value" value="5">
+        </div>
+        
+        <div>
+          <label id="lang-label-review-text" data-key="label-review-text" style="display:block; font-size:0.8rem; color:var(--color-text-secondary); margin-bottom:6px;">Yorumunuz</label>
+          <textarea id="review-text-input" rows="4" required style="width:100%; padding:12px; border-radius:6px; border:1px solid var(--color-border); background:rgba(255,255,255,0.02); color:#FFF; font-family:var(--font-sans);"></textarea>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 10px; margin-top:25px;">
+        <button class="btn btn-outline" style="flex:1;" onclick="closeAdminModal('review-add-modal')" data-key="btn-cancel">İptal</button>
+        <button class="btn btn-gold" style="flex:1;" onclick="submitCustomerReview()" id="lang-btn-submit-review" data-key="btn-submit-review">Gönder</button>
       </div>
     </div>
   </div>

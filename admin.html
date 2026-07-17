@@ -663,9 +663,11 @@
       <!-- Middle Nav Menu Links -->
       <nav>
         <ul class="admin-nav" style="display: flex; gap: 16px; list-style: none;">
-          <li><a onclick="showTab('reservations')" id="nav-btn-reservations" class="admin-nav-link active" style="cursor: pointer;">Rezervasyonlar</a></li>
+          <li><a onclick="showTab('reservations')" id="nav-btn-reservations" class="admin-nav-link active" style="cursor: pointer;">Bugünün Rezervasyonları</a></li>
+          <li><a onclick="showTab('upcoming-reservations')" id="nav-btn-upcoming-reservations" class="admin-nav-link" style="cursor: pointer;">Gelecek Rezervasyonlar</a></li>
           <li><a onclick="showTab('menu-mgmt')" id="nav-btn-menu-mgmt" class="admin-nav-link" style="cursor: pointer;">Menü Yönetimi</a></li>
           <li><a onclick="showTab('category-mgmt')" id="nav-btn-category-mgmt" class="admin-nav-link" style="cursor: pointer;">Kategori Yönetimi</a></li>
+          <li><a onclick="showTab('reviews-mgmt')" id="nav-btn-reviews-mgmt" class="admin-nav-link" style="cursor: pointer;">Yorum Yönetimi</a></li>
         </ul>
       </nav>
 
@@ -751,6 +753,61 @@
           <div id="bookings-empty" class="empty-state">
             <i class="fa-regular fa-clipboard empty-icon"></i>
             <p id="lang-empty-reservations">Henüz alınmış bir masa rezervasyon talebi bulunmuyor.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 1.5: UPCOMING RESERVATIONS SECTION -->
+    <section id="section-upcoming-reservations" class="admin-section">
+      <!-- Stats summary for upcoming -->
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <div class="stat-value" id="stat-upcoming-total">0</div>
+          <div class="stat-label" id="lang-stat-upcoming-total">Toplam Gelecek Rezervasyon</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="stat-value" id="stat-upcoming-pending">0</div>
+          <div class="stat-label">Bekleyen</div>
+        </div>
+        <div class="stat-card confirmed">
+          <div class="stat-value" id="stat-upcoming-confirmed">0</div>
+          <div class="stat-label">Onaylanan</div>
+        </div>
+        <div class="stat-card cancelled">
+          <div class="stat-value" id="stat-upcoming-cancelled">0</div>
+          <div class="stat-label">İptal Edilen</div>
+        </div>
+      </div>
+
+      <div class="dashboard-card">
+        <div class="card-title">
+          <span id="lang-upcoming-title">Gelecek Rezervasyon Talepleri</span>
+          <div class="header-actions" style="gap: 12px;">
+          </div>
+        </div>
+
+        <div class="bookings-table-wrapper">
+          <table id="upcoming-table">
+            <thead>
+              <tr>
+                <th id="lang-upcoming-th-customer">Müşteri</th>
+                <th id="lang-upcoming-th-details">Rezervasyon Detayı</th>
+                <th id="lang-upcoming-th-food">Seçilen Yemek</th>
+                <th id="lang-upcoming-th-drink">Seçilen İçecek</th>
+                <th id="lang-upcoming-th-payment">Ödeme Durumu</th>
+                <th id="lang-upcoming-th-status">Durum</th>
+                <th id="lang-upcoming-th-actions">İşlemler</th>
+              </tr>
+            </thead>
+            <tbody id="upcoming-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+          
+          <div id="bookings-upcoming-empty" class="empty-state">
+            <i class="fa-regular fa-clipboard empty-icon"></i>
+            <p id="lang-empty-upcoming">Henüz gelecek tarihli bir masa rezervasyon talebi bulunmuyor.</p>
           </div>
         </div>
       </div>
@@ -975,7 +1032,38 @@
       </div>
     </section>
 
-    <!-- TAB 3: CUSTOMER PAGE EDITOR SECTION -->
+    <!-- TAB 3.5: REVIEW MANAGEMENT SECTION -->
+    <section id="section-reviews-mgmt" class="admin-section">
+      <div class="dashboard-card">
+        <div class="card-title">
+          <span id="lang-reviews-mgmt-title">Müşteri Yorumları Yönetimi</span>
+        </div>
+
+        <div class="bookings-table-wrapper">
+          <table id="reviews-mgmt-table">
+            <thead>
+              <tr>
+                <th id="lang-reviews-th-author" style="width: 20%;">Müşteri Adı</th>
+                <th id="lang-reviews-th-rating" style="width: 15%;">Puan</th>
+                <th id="lang-reviews-th-text" style="width: 45%;">Yorum</th>
+                <th id="lang-reviews-th-status" style="width: 10%;">Durum</th>
+                <th id="lang-reviews-th-actions" style="width: 10%;">İşlemler</th>
+              </tr>
+            </thead>
+            <tbody id="reviews-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+          
+          <div id="reviews-empty" class="empty-state">
+            <i class="fa-regular fa-comments empty-icon"></i>
+            <p id="lang-empty-reviews">Henüz eklenmiş bir yorum bulunmuyor.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: VISUAL CLIENT EDITOR IFRAME -->
     <section id="section-customer-editor" class="admin-section" style="width: 100%; padding: 0;">
       <div class="dashboard-card" style="padding: 10px; margin-top: 0; background: none; border: none;">
         <iframe src="index.html?admin=true&v=2.1.0" id="customer-editor-iframe" style="width: 100%; height: calc(100vh - 120px); border: none; border-radius: 8px; background: #0A0A0A;"></iframe>
@@ -1071,7 +1159,8 @@
     const adminLangDict = {
       tr: {
         "panel-tag": "Yönetici Paneli",
-        "btn-reservations": "Rezervasyonlar",
+        "btn-reservations": "Bugünün Rezervasyonları",
+        "btn-upcoming": "Gelecek Rezervasyonlar",
         "btn-menu-mgmt": "Menü Yönetimi",
         "btn-customer": "Müşteri Görünümü",
         "stat-total": "Toplam Rezervasyon",
@@ -1079,6 +1168,8 @@
         "stat-confirmed": "Onaylanan",
         "stat-cancelled": "İptal Edilen",
         "reservations-title": "Gelen Rezervasyon Talepleri",
+        "upcoming-title": "Gelecek Rezervasyon Talepleri",
+        "empty-upcoming": "Henüz gelecek tarihli bir masa rezervasyon talebi bulunmuyor.",
         "btn-test-booking": "Test Rezervasyonu Ekle",
         "btn-clear-all": "Tümünü Temizle",
         "th-customer": "Müşteri",
@@ -1132,11 +1223,18 @@
         "label-cat-name-tr": "Kategori Adı (Türkçe)",
         "label-cat-name-en": "Kategori Adı (EN)",
         "label-cat-name-ar": "Kategori Adı (AR)",
-        "btn-save-category": "Kategoriyi Kaydet"
+        "btn-save-category": "Kategoriyi Kaydet",
+        "btn-reviews-mgmt": "Yorum Yönetimi",
+        "reviews-mgmt-title": "Müşteri Yorumları Yönetimi",
+        "th-author": "Müşteri Adı",
+        "th-rating": "Puan",
+        "th-text": "Yorum",
+        "empty-reviews": "Henüz eklenmiş bir yorum bulunmuyor."
       },
       en: {
         "panel-tag": "Admin Panel",
-        "btn-reservations": "Reservations",
+        "btn-reservations": "Today's Reservations",
+        "btn-upcoming": "Upcoming Reservations",
         "btn-menu-mgmt": "Menu Management",
         "btn-customer": "Customer View",
         "stat-total": "Total Bookings",
@@ -1144,6 +1242,8 @@
         "stat-confirmed": "Confirmed",
         "stat-cancelled": "Cancelled",
         "reservations-title": "Incoming Reservations",
+        "upcoming-title": "Upcoming Reservations",
+        "empty-upcoming": "No upcoming table reservations received yet.",
         "btn-test-booking": "Add Test Booking",
         "btn-clear-all": "Clear All",
         "th-customer": "Customer",
@@ -1197,11 +1297,18 @@
         "label-cat-name-tr": "Category Name (TR)",
         "label-cat-name-en": "Category Name (EN)",
         "label-cat-name-ar": "Category Name (AR)",
-        "btn-save-category": "Save Category"
+        "btn-save-category": "Save Category",
+        "btn-reviews-mgmt": "Review Management",
+        "reviews-mgmt-title": "Customer Reviews Management",
+        "th-author": "Customer Name",
+        "th-rating": "Rating",
+        "th-text": "Review",
+        "empty-reviews": "No reviews submitted yet."
       },
       ar: {
         "panel-tag": "لوحة التحكم",
-        "btn-reservations": "الحجوزات",
+        "btn-reservations": "حجوزات اليوم",
+        "btn-upcoming": "الحجوزات القادمة",
         "btn-menu-mgmt": "إدارة القائمة",
         "btn-customer": "عرض الموقع",
         "stat-total": "إجمالي الحجوزات",
@@ -1209,6 +1316,8 @@
         "stat-confirmed": "تم التأكيد",
         "stat-cancelled": "تم الإلغاء",
         "reservations-title": "طلبات الحجز الواردة",
+        "upcoming-title": "طلبات الحجز القادمة",
+        "empty-upcoming": "لم يتم استلام أي طلبات حجز طاولات مستقبلية حتى الآن.",
         "btn-test-booking": "حجز تجريبي",
         "btn-clear-all": "مسح الكل",
         "th-customer": "العميل",
@@ -1262,7 +1371,13 @@
         "label-cat-name-tr": "اسم القسم (التركية)",
         "label-cat-name-en": "اسم القسم (الإنجليزية)",
         "label-cat-name-ar": "اسم القسم (العربية)",
-        "btn-save-category": "حفظ القسم"
+        "btn-save-category": "حفظ القسم",
+        "btn-reviews-mgmt": "إدارة التقييمات",
+        "reviews-mgmt-title": "إدارة تقييمات العملاء",
+        "th-author": "اسم العميل",
+        "th-rating": "التقييم",
+        "th-text": "التعليق",
+        "empty-reviews": "لم يتم إضافة أي تقييمات بعد."
       }
     };
 
@@ -1290,6 +1405,7 @@
       const dict = adminLangDict[lang];
       document.getElementById("lang-panel-tag").textContent = dict["panel-tag"];
       document.getElementById("nav-btn-reservations").textContent = dict["btn-reservations"];
+      document.getElementById("nav-btn-upcoming-reservations").textContent = dict["btn-upcoming"];
       document.getElementById("nav-btn-menu-mgmt").textContent = dict["btn-menu-mgmt"];
       
       const editorBtn = document.getElementById("nav-btn-customer-editor");
@@ -1301,8 +1417,22 @@
       document.getElementById("lang-stat-pending").textContent = dict["stat-pending"];
       document.getElementById("lang-stat-confirmed").textContent = dict["stat-confirmed"];
       document.getElementById("lang-stat-cancelled").textContent = dict["stat-cancelled"];
+
+      const elUpTotal = document.getElementById("lang-stat-upcoming-total");
+      if (elUpTotal) elUpTotal.textContent = dict["stat-total"];
+      const pendingLabels = document.querySelectorAll("#section-upcoming-reservations .stat-card.pending .stat-label");
+      pendingLabels.forEach(el => el.textContent = dict["stat-pending"]);
+      const confirmedLabels = document.querySelectorAll("#section-upcoming-reservations .stat-card.confirmed .stat-label");
+      confirmedLabels.forEach(el => el.textContent = dict["stat-confirmed"]);
+      const cancelledLabels = document.querySelectorAll("#section-upcoming-reservations .stat-card.cancelled .stat-label");
+      cancelledLabels.forEach(el => el.textContent = dict["stat-cancelled"]);
       
       document.getElementById("lang-reservations-title").textContent = dict["reservations-title"];
+      const elUpTitle = document.getElementById("lang-upcoming-title");
+      if (elUpTitle) elUpTitle.textContent = dict["upcoming-title"];
+      const elUpEmpty = document.getElementById("lang-empty-upcoming");
+      if (elUpEmpty) elUpEmpty.textContent = dict["empty-upcoming"];
+      
       document.getElementById("lang-btn-test-booking").textContent = dict["btn-test-booking"];
       document.getElementById("lang-btn-clear-all").textContent = dict["btn-clear-all"];
       
@@ -1313,6 +1443,37 @@
       document.getElementById("lang-th-status").textContent = dict["th-status"];
       document.getElementById("lang-th-actions").textContent = dict["th-actions"];
       document.getElementById("lang-empty-reservations").textContent = dict["empty-reservations"];
+
+      const elUpThCust = document.getElementById("lang-upcoming-th-customer");
+      if (elUpThCust) elUpThCust.textContent = dict["th-customer"];
+      const elUpThDet = document.getElementById("lang-upcoming-th-details");
+      if (elUpThDet) elUpThDet.textContent = dict["th-details"];
+      const elUpThFood = document.getElementById("lang-upcoming-th-food");
+      if (elUpThFood) elUpThFood.textContent = dict["th-food"];
+      const elUpThDrink = document.getElementById("lang-upcoming-th-drink");
+      if (elUpThDrink) elUpThDrink.textContent = dict["th-drink"];
+      const elUpThPay = document.getElementById("lang-upcoming-th-payment");
+      if (elUpThPay) elUpThPay.textContent = dict["th-payment"];
+      const elUpThStat = document.getElementById("lang-upcoming-th-status");
+      if (elUpThStat) elUpThStat.textContent = dict["th-status"];
+      const elUpThAct = document.getElementById("lang-upcoming-th-actions");
+      if (elUpThAct) elUpThAct.textContent = dict["th-actions"];
+
+      document.getElementById("nav-btn-reviews-mgmt").textContent = dict["btn-reviews-mgmt"];
+      const elRevTitle = document.getElementById("lang-reviews-mgmt-title");
+      if (elRevTitle) elRevTitle.textContent = dict["reviews-mgmt-title"];
+      const elRevThAuth = document.getElementById("lang-reviews-th-author");
+      if (elRevThAuth) elRevThAuth.textContent = dict["th-author"];
+      const elRevThRat = document.getElementById("lang-reviews-th-rating");
+      if (elRevThRat) elRevThRat.textContent = dict["th-rating"];
+      const elRevThTxt = document.getElementById("lang-reviews-th-text");
+      if (elRevThTxt) elRevThTxt.textContent = dict["th-text"];
+      const elRevThStat = document.getElementById("lang-reviews-th-status");
+      if (elRevThStat) elRevThStat.textContent = dict["th-status"];
+      const elRevThAct = document.getElementById("lang-reviews-th-actions");
+      if (elRevThAct) elRevThAct.textContent = dict["th-actions"];
+      const elRevEmpty = document.getElementById("lang-empty-reviews");
+      if (elRevEmpty) elRevEmpty.textContent = dict["empty-reviews"];
       
       document.getElementById("lang-menu-list-title").textContent = dict["menu-list-title"];
       document.getElementById("lang-btn-reset-menu").textContent = dict["btn-reset-menu"];
@@ -1530,7 +1691,16 @@
 
     // 4. Load Bookings List
     function loadBookings() {
-      const bookings = safeGetItem("pietro_bookings");
+      const allBookings = safeGetItem("pietro_bookings");
+      
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const todayStr = `${yyyy}-${mm}-${dd}`;
+
+      const bookings = allBookings.filter(b => b.date === todayStr);
+
       const tbody = document.getElementById("bookings-tbody");
       const emptyState = document.getElementById("bookings-empty");
       const table = document.getElementById("bookings-table");
@@ -1621,6 +1791,114 @@
       });
 
       updateStats(bookings.length, pending, confirmed, cancelled);
+      
+      // Also load upcoming bookings to keep both lists dynamically updated
+      loadUpcomingBookings();
+    }
+
+    function loadUpcomingBookings() {
+      const allBookings = safeGetItem("pietro_bookings");
+      
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const todayStr = `${yyyy}-${mm}-${dd}`;
+
+      const bookings = allBookings.filter(b => b.date > todayStr);
+
+      const tbody = document.getElementById("upcoming-tbody");
+      const emptyState = document.getElementById("bookings-upcoming-empty");
+      const table = document.getElementById("upcoming-table");
+
+      if (!tbody || !emptyState || !table) return;
+
+      tbody.innerHTML = "";
+
+      if (bookings.length === 0) {
+        emptyState.style.display = "block";
+        table.style.display = "none";
+        updateUpcomingStats(0, 0, 0, 0);
+        return;
+      }
+
+      emptyState.style.display = "none";
+      table.style.display = "table";
+
+      let pending = 0;
+      let confirmed = 0;
+      let cancelled = 0;
+
+      bookings.forEach(booking => {
+        if (booking.status === "pending") pending++;
+        else if (booking.status === "confirmed") confirmed++;
+        else if (booking.status === "cancelled") cancelled++;
+
+        const tr = document.createElement("tr");
+        tr.id = 'upcoming-' + booking.id;
+
+        const dateObj = new Date(booking.date);
+        const dateStr = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
+        
+        const payStatus = booking.paymentStatus || "unpaid";
+        const dict = adminLangDict[adminActiveLang];
+        const paySelectHtml = `
+          <select class="pay-select ${payStatus}" onchange="changePaymentStatus('${booking.id}', this.value)">
+            <option value="unpaid" ${payStatus === 'unpaid' ? 'selected' : ''}>${dict["pay-unpaid"]}</option>
+            <option value="arrival" ${payStatus === 'arrival' ? 'selected' : ''}>${dict["pay-arrival"]}</option>
+            <option value="paid" ${payStatus === 'paid' ? 'selected' : ''}>${dict["pay-paid"]}</option>
+          </select>
+        `;
+
+        tr.innerHTML = `
+          <td>
+            <div class="customer-info">
+              <h5>${escapeHTML(booking.name)}</h5>
+              <p><i class="fa-solid fa-phone"></i> ${escapeHTML(booking.phone)}</p>
+            </div>
+          </td>
+          <td>
+            <div class="booking-details">
+              <strong>${escapeHTML(booking.time)}</strong> | ${dateStr}
+              <div style="font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 2px;">
+                <i class="fa-solid fa-users"></i> ${booking.guests} Kişi ${booking.table ? `| <span style="color:var(--color-gold); font-weight:600;">${translateTable(booking.table)}</span>` : ''}
+              </div>
+              ${booking.notes ? `<div style="font-size:0.75rem; color:#d4af37; margin-top:4px; font-style:italic; max-width:200px; white-space:normal; word-break:break-word;">📝 ${escapeHTML(booking.notes)}</div>` : ''}
+            </div>
+          </td>
+          <td>
+            ${booking.dish ? booking.dish.split(" + ").map(d => `<span class="dish-tag" style="display:block; margin-bottom:4px;" title="${escapeHTML(d)}">${escapeHTML(d)}</span>`).join('') : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
+          </td>
+          <td>
+            ${booking.drink ? `<span class="drink-tag" title="${escapeHTML(booking.drink)}">${escapeHTML(booking.drink)}</span>` : '<em style="color: var(--color-text-secondary); font-size: 0.8rem;">Seçilmedi</em>'}
+          </td>
+          <td>
+            ${paySelectHtml}
+          </td>
+          <td>
+            <span class="status-badge ${booking.status}">${translateStatus(booking.status)}</span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-action btn-confirm" onclick="setStatus('${booking.id}', 'confirmed')" title="Onayla">
+                <i class="fa-solid fa-check"></i>
+              </button>
+              <button class="btn-action btn-cancel" onclick="setStatus('${booking.id}', 'cancelled')" title="İptal Et">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+              <button class="btn-action btn-whatsapp" onclick="contactCustomer('${booking.id}')" title="İletişim & İBAN Gönder">
+                <i class="fa-brands fa-whatsapp"></i>
+              </button>
+              <button class="btn-action btn-delete" onclick="deleteBooking('${booking.id}')" title="Sil">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      updateUpcomingStats(bookings.length, pending, confirmed, cancelled);
     }
 
     function updateStats(total, pending, confirmed, cancelled) {
@@ -1629,6 +1907,152 @@
       document.getElementById("stat-confirmed").textContent = confirmed;
       document.getElementById("stat-cancelled").textContent = cancelled;
     }
+
+    function updateUpcomingStats(total, pending, confirmed, cancelled) {
+      const elTotal = document.getElementById("stat-upcoming-total");
+      const elPending = document.getElementById("stat-upcoming-pending");
+      const elConfirmed = document.getElementById("stat-upcoming-confirmed");
+      const elCancelled = document.getElementById("stat-upcoming-cancelled");
+      if (elTotal) elTotal.textContent = total;
+      if (elPending) elPending.textContent = pending;
+      if (elConfirmed) elConfirmed.textContent = confirmed;
+      if (elCancelled) elCancelled.textContent = cancelled;
+    }
+
+    function loadReviewsList() {
+      const defaultReviews = [
+        {
+          id: "R-default-1",
+          author: "Ayşe K.",
+          text: "Yalova'da gerçek İtalyan pizzası bulabileceğiniz tek yer. Pizza Pietro'daki prosciutto ve mantar uyumu harikaydı. Mekanın atmosferi ve botanik duvar resmi çok estetik.",
+          rating: 5,
+          status: "visible"
+        },
+        {
+          id: "R-default-2",
+          author: "Mehmet T.",
+          text: "Penne Burrata enfes! Kremalı sosun kıvamı ve burrata peynirinin tazeliği mükemmeldi. Ayrıca yemekten sonra içtiğimiz espresso tam kıvamındaydı.",
+          rating: 5,
+          status: "visible"
+        },
+        {
+          id: "R-default-3",
+          author: "Selim G.",
+          text: "İç mekan tasarımı çok sıcak ve davetkar. Tavanlardaki ahşap geometrik detaylar ve duvar resmi muazzam. Yalova'da böylesi bir şık İtalyan restoranı açılması harika olmuş.",
+          rating: 5,
+          status: "visible"
+        }
+      ];
+
+      const saved = localStorage.getItem("pietro_reviews");
+      let reviews = [];
+      if (!saved) {
+        reviews = defaultReviews;
+      } else {
+        try {
+          reviews = JSON.parse(saved);
+        } catch(e) {
+          reviews = defaultReviews;
+        }
+      }
+
+      const tbody = document.getElementById("reviews-tbody");
+      const emptyState = document.getElementById("reviews-empty");
+      const table = document.getElementById("reviews-mgmt-table");
+
+      if (!tbody || !emptyState || !table) return;
+
+      tbody.innerHTML = "";
+
+      if (reviews.length === 0) {
+        emptyState.style.display = "block";
+        table.style.display = "none";
+        return;
+      }
+
+      emptyState.style.display = "none";
+      table.style.display = "table";
+
+      reviews.forEach(review => {
+        const tr = document.createElement("tr");
+        tr.id = 'mgmt-' + review.id;
+
+        let starsHtml = "";
+        for (let i = 1; i <= 5; i++) {
+          if (i <= review.rating) {
+            starsHtml += `<i class="fa-solid fa-star" style="color: #FFD700;"></i>`;
+          } else {
+            starsHtml += `<i class="fa-regular fa-star" style="color: #555;"></i>`;
+          }
+        }
+
+        const dict = adminLangDict[adminActiveLang];
+        const statusText = review.status === "visible" ? 
+                           (adminActiveLang === "tr" ? "Gösteriliyor" : (adminActiveLang === "en" ? "Visible" : "معروض")) : 
+                           (adminActiveLang === "tr" ? "Gizli" : (adminActiveLang === "en" ? "Hidden" : "مخفي"));
+        
+        const visibilityBtnIcon = review.status === "visible" ? "fa-eye-slash" : "fa-eye";
+        const visibilityBtnTitle = review.status === "visible" ? 
+                                   (adminActiveLang === "tr" ? "Gizle" : (adminActiveLang === "en" ? "Hide" : "إخفاء")) : 
+                                   (adminActiveLang === "tr" ? "Göster" : (adminActiveLang === "en" ? "Show" : "إظهار"));
+
+        tr.innerHTML = `
+          <td><strong>${escapeHTML(review.author)}</strong></td>
+          <td>${starsHtml}</td>
+          <td><p style="font-size:0.85rem; color:var(--color-text-muted-light); white-space:normal; max-width:400px; word-break:break-word;">${escapeHTML(review.text)}</p></td>
+          <td><span class="status-badge ${review.status === 'visible' ? 'confirmed' : 'cancelled'}">${statusText}</span></td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-action btn-confirm" onclick="toggleReviewVisibility('${review.id}')" title="${visibilityBtnTitle}">
+                <i class="fa-solid ${visibilityBtnIcon}"></i>
+              </button>
+              <button class="btn-action btn-delete" onclick="deleteReview('${review.id}')" title="Sil">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.toggleReviewVisibility = function(id) {
+      const saved = localStorage.getItem("pietro_reviews");
+      if (!saved) return;
+      try {
+        let reviews = JSON.parse(saved);
+        reviews = reviews.map(r => {
+          if (r.id === id) {
+            r.status = r.status === "visible" ? "hidden" : "visible";
+          }
+          return r;
+        });
+        localStorage.setItem("pietro_reviews", JSON.stringify(reviews));
+        localStorage.setItem("pietro_reviews_updated_event", Date.now().toString());
+        loadReviewsList();
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    window.deleteReview = function(id) {
+      const confirmMsg = adminActiveLang === "tr" ? "Bu yorumu kalıcı olarak silmek istediğinize emin misiniz?" :
+                         (adminActiveLang === "en" ? "Are you sure you want to permanently delete this review?" :
+                         "هل أنت متأكد من حذف هذا التقييم نهائياً؟");
+      if (!confirm(confirmMsg)) return;
+
+      const saved = localStorage.getItem("pietro_reviews");
+      if (!saved) return;
+      try {
+        let reviews = JSON.parse(saved);
+        reviews = reviews.filter(r => r.id !== id);
+        localStorage.setItem("pietro_reviews", JSON.stringify(reviews));
+        localStorage.setItem("pietro_reviews_updated_event", Date.now().toString());
+        loadReviewsList();
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
     function translateStatus(status) {
       const lang = adminActiveLang;
@@ -1661,29 +2085,6 @@
       });
       localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
       loadBookings();
-
-      if (status === "confirmed") {
-        const booking = bookings.find(b => b.id === id);
-        if (booking) {
-          let cleanedPhone = booking.phone.replace(/[^0-9+]/g, "");
-          if (cleanedPhone.startsWith("05")) cleanedPhone = "+90" + cleanedPhone.substring(1);
-          else if (cleanedPhone.startsWith("5")) cleanedPhone = "+90" + cleanedPhone;
-
-          const dateObj = new Date(booking.date);
-          const dateStr = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
-
-          let message = "";
-          if (adminActiveLang === "tr") {
-            message = `Merhaba ${booking.name},\n\nPietro Coffee Pizzeria'dan yapmış olduğunuz masa rezervasyonu talebiniz ONAYLANMIŞTIR.\n\n📅 Tarih: ${dateStr}\n⏰ Saat: ${booking.time}\n👥 Kişi Sayısı: ${booking.guests} Kişi\n📍 Masa: ${translateTable(booking.table)}\n\nSizleri ağırlamaktan mutluluk duyacağız. Görüşmek üzere!`;
-          } else if (adminActiveLang === "en") {
-            message = `Hello ${booking.name},\n\nYour table reservation at Pietro Coffee Pizzeria has been CONFIRMED.\n\n📅 Date: ${dateStr}\n⏰ Time: ${booking.time}\n👥 Guests: ${booking.guests} People\n📍 Table: ${translateTable(booking.table)}\n\nWe look forward to hosting you. See you soon!`;
-          } else {
-            message = `مرحباً ${booking.name}،\n\nتم تأكيد حجز الطاولة الخاص بك في مطعم Pietro Coffee Pizzeria بنجاح.\n\n📅 التاريخ: ${dateStr}\n⏰ الوقت: ${booking.time}\n👥 عدد الأفراد: ${booking.guests} أفراد\n📍 الطاولة: ${translateTable(booking.table)}\n\nنتطلع لاستضافتكم. نراكم قريباً!`;
-          }
-
-          window.open(`https://wa.me/${cleanedPhone}?text=${encodeURIComponent(message)}`, "_blank");
-        }
-      }
     };
 
     window.changePaymentStatus = function(id, newStatus) {
@@ -2266,6 +2667,9 @@
       if (event.key === "pietro_custom_drinks" || event.key === "pietro_custom_drinks_updated_event") {
         loadDrinkList();
       }
+      if (event.key === "pietro_reviews" || event.key === "pietro_reviews_updated_event") {
+        loadReviewsList();
+      }
     });
 
     // Check file system warnings
@@ -2300,6 +2704,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       checkFileProtocol();
       changeAdminLang("tr"); // Default in Turkish
+      loadReviewsList();
     });
   </script>
 </body>

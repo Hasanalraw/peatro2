@@ -113,6 +113,12 @@ const defaultTranslations = {
     "popup-message": "Rezervasyon talebiniz alınmıştır. Onaylamak için en kısa sürede sizinle iletişime geçeceğiz. Teşekkürler!",
     "btn-close": "Kapat",
     "logo-text": "Pietro",
+    "btn-add-review-text": "Değerlendirme Ekle",
+    "review-modal-title": "Değerlendirme Ekle",
+    "label-review-author": "Adınız Soyadınız",
+    "label-review-rating": "Puanınız",
+    "label-review-text": "Yorumunuz",
+    "btn-submit-review": "Gönder",
 
     // Testimonials
     "reviews-title": "Müşteri Yorumları",
@@ -221,6 +227,12 @@ const defaultTranslations = {
     "popup-message": "Your table reservation request has been received. We will contact you shortly to confirm your booking. Thank you!",
     "btn-close": "Close",
     "logo-text": "Pietro",
+    "btn-add-review-text": "Add Review",
+    "review-modal-title": "Add Review",
+    "label-review-author": "Your Name",
+    "label-review-rating": "Your Rating",
+    "label-review-text": "Your Review",
+    "btn-submit-review": "Submit",
 
     // Testimonials
     "reviews-title": "Guest Reviews",
@@ -328,7 +340,13 @@ const defaultTranslations = {
     "popup-title": "تم استلام طلب الحجز",
     "popup-message": "لقد تلقينا طلب حجز الطاولة الخاص بك بنجاح. سنتواصل معك في أقرب وقت لتأكيد الحجز. شكراً لك!",
     "btn-close": "إغلاق",
-    "logo-text": "Pietro",
+    "logo-text": "بيترو",
+    "btn-add-review-text": "إضافة تقييم",
+    "review-modal-title": "إضافة تقييم",
+    "label-review-author": "الاسم بالكامل",
+    "label-review-rating": "التقييم",
+    "label-review-text": "التعليق",
+    "btn-submit-review": "إرسال",
 
     // Testimonials
     "reviews-title": "تقييمات العملاء",
@@ -1121,6 +1139,10 @@ function setLanguage(lang) {
 
   // Re-apply admin overlays in visual editor
   initializeVisualEditor();
+
+  if (window.renderReviews) {
+    window.renderReviews();
+  }
 }
 
 // 4. Dynamic WhatsApp Link generator based on active language
@@ -1135,7 +1157,32 @@ function updateWhatsAppLink(lang) {
   };
 
   const encodedMessage = encodeURIComponent(messages[lang]);
-  whatsappFloat.href = `https://wa.me/905300000000?text=${encodedMessage}`;
+  
+  let rawPhone = "";
+  if (translations && translations[lang] && translations[lang]["contact-phone-val"]) {
+    rawPhone = translations[lang]["contact-phone-val"];
+  } else if (translations && translations["tr"] && translations["tr"]["contact-phone-val"]) {
+    rawPhone = translations["tr"]["contact-phone-val"];
+  } else if (defaultTranslations && defaultTranslations[lang] && defaultTranslations[lang]["contact-phone-val"]) {
+    rawPhone = defaultTranslations[lang]["contact-phone-val"];
+  } else {
+    rawPhone = "905300000000";
+  }
+
+  let cleanedPhone = rawPhone.replace(/[^0-9+]/g, "");
+  if (cleanedPhone.startsWith("05")) {
+    cleanedPhone = "90" + cleanedPhone.substring(1);
+  } else if (cleanedPhone.startsWith("5")) {
+    cleanedPhone = "90" + cleanedPhone;
+  } else if (cleanedPhone.startsWith("+")) {
+    cleanedPhone = cleanedPhone.substring(1);
+  }
+
+  if (!cleanedPhone) {
+    cleanedPhone = "905300000000";
+  }
+
+  whatsappFloat.href = `https://wa.me/${cleanedPhone}?text=${encodedMessage}`;
 }
 
 // 5. Menu Filtering System with Empty Category Placeholder handler
@@ -1621,6 +1668,16 @@ window.goToReservationFromCart = function() {
 window.handleBookingSubmit = function(event) {
   event.preventDefault();
 
+  // Prevent reservations without selecting menu items
+  if (bookingCart.length === 0) {
+    const warnMsg = translations[currentLanguage]["warning-empty-cart"] || 
+                    (currentLanguage === "tr" ? "Lütfen rezervasyonunuzu tamamlamadan önce en az bir menü öğesi seçin." :
+                     (currentLanguage === "ar" ? "يرجى تحديد عنصر واحد على الأقل من القائمة قبل إتمام الحجز." : 
+                      "Please select at least one menu item before completing your reservation."));
+    alert(warnMsg);
+    return;
+  }
+
   const name = document.getElementById("booking-name").value;
   const phone = document.getElementById("booking-phone").value;
   const date = document.getElementById("booking-date").value;
@@ -2017,6 +2074,9 @@ document.addEventListener("DOMContentLoaded", () => {
       translations = safeGetItem("pietro_translations", defaultTranslations);
       setLanguage(currentLanguage);
     }
+    if (event.key === "pietro_reviews" || event.key === "pietro_reviews_updated_event") {
+      if (window.renderReviews) window.renderReviews();
+    }
   });
 
   // Initialize page in Turkish language by default & render custom dishes
@@ -2199,4 +2259,148 @@ window.deleteAdminDish = function() {
     renderMenu();
     closeAdminModal("admin-dish-modal");
   }
+};
+
+// Reviews System Logic & Helpers
+function escapeHTML(str) {
+  if (!str) return "";
+  return str.replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+}
+
+const defaultReviews = [
+  {
+    id: "R-default-1",
+    author: "Ayşe K.",
+    text: "Yalova'da gerçek İtalyan pizzası bulabileceğiniz tek yer. Pizza Pietro'daki prosciutto ve mantar uyumu harikaydı. Mekanın atmosferi ve botanik duvar resmi çok estetik.",
+    rating: 5,
+    status: "visible",
+    timestamp: new Date().toISOString()
+  },
+  {
+    id: "R-default-2",
+    author: "Mehmet T.",
+    text: "Penne Burrata enfes! Kremalı sosun kıvamı ve burrata peynirinin tazeliği mükemmeldi. Ayrıca yemekten sonra içtiğimiz espresso tam kıvamındaydı.",
+    rating: 5,
+    status: "visible",
+    timestamp: new Date().toISOString()
+  },
+  {
+    id: "R-default-3",
+    author: "Selim G.",
+    text: "İç mekan tasarımı çok sıcak ve davetkar. Tavanlardaki ahşap geometrik detaylar ve duvar resmi muazzam. Yalova'da böylesi bir şık İtalyan restoranı açılması harika olmuş.",
+    rating: 5,
+    status: "visible",
+    timestamp: new Date().toISOString()
+  }
+];
+
+function safeGetReviews() {
+  const saved = localStorage.getItem("pietro_reviews");
+  if (!saved) {
+    localStorage.setItem("pietro_reviews", JSON.stringify(defaultReviews));
+    return defaultReviews;
+  }
+  try {
+    return JSON.parse(saved);
+  } catch (e) {
+    return defaultReviews;
+  }
+}
+
+window.renderReviews = function() {
+  const container = document.getElementById("reviews-container");
+  if (!container) return;
+
+  container.innerHTML = "";
+  const reviews = safeGetReviews();
+  const visibleReviews = reviews.filter(r => r.status === "visible");
+
+  if (visibleReviews.length === 0) {
+    const emptyText = document.createElement("p");
+    emptyText.style = "grid-column: 1/-1; text-align: center; color: var(--color-text-secondary); font-style: italic;";
+    emptyText.textContent = currentLanguage === "tr" ? "Henüz değerlendirme bulunmuyor." :
+                           (currentLanguage === "ar" ? "لا توجد تقييمات بعد." : "No reviews yet.");
+    container.appendChild(emptyText);
+    return;
+  }
+
+  visibleReviews.forEach(review => {
+    const card = document.createElement("div");
+    card.className = "review-card";
+    
+    let starsHtml = "";
+    for (let i = 1; i <= 5; i++) {
+      if (i <= review.rating) {
+        starsHtml += `<i class="fa-solid fa-star" style="color: #FFD700;"></i>`;
+      } else {
+        starsHtml += `<i class="fa-regular fa-star" style="color: #555;"></i>`;
+      }
+    }
+
+    card.innerHTML = `
+      <div class="rating-stars" style="margin-bottom:12px;">
+        ${starsHtml}
+      </div>
+      <p class="review-text" style="color:var(--color-text-muted-light); font-size:0.95rem; margin-bottom:16px;">"${escapeHTML(review.text)}"</p>
+      <h5 class="review-author" style="color:var(--color-gold); font-family:var(--font-serif); font-size:1.05rem; font-style:italic;">${escapeHTML(review.author)}</h5>
+    `;
+    container.appendChild(card);
+  });
+};
+
+window.openAddReviewModal = function() {
+  document.getElementById("review-author-input").value = "";
+  document.getElementById("review-text-input").value = "";
+  setReviewRating(5);
+  openModal("review-add-modal");
+};
+
+window.setReviewRating = function(rating) {
+  document.getElementById("review-rating-value").value = rating;
+  const starsContainer = document.getElementById("interactive-review-stars");
+  if (!starsContainer) return;
+  const stars = starsContainer.querySelectorAll(".star-btn");
+  stars.forEach((star, idx) => {
+    if (idx < rating) {
+      star.style.color = "#FFD700";
+    } else {
+      star.style.color = "#555";
+    }
+  });
+};
+
+window.submitCustomerReview = function() {
+  const author = document.getElementById("review-author-input").value.trim();
+  const text = document.getElementById("review-text-input").value.trim();
+  const rating = parseInt(document.getElementById("review-rating-value").value) || 5;
+
+  if (!author || !text) {
+    alert(currentLanguage === "tr" ? "Lütfen tüm alanları doldurun!" :
+          (currentLanguage === "ar" ? "يرجى ملء جميع الحقول!" : "Please fill in all fields!"));
+    return;
+  }
+
+  const reviews = safeGetReviews();
+  const newReview = {
+    id: "R-" + Date.now(),
+    author,
+    text,
+    rating,
+    status: "visible",
+    timestamp: new Date().toISOString()
+  };
+
+  reviews.unshift(newReview);
+  localStorage.setItem("pietro_reviews", JSON.stringify(reviews));
+  localStorage.setItem("pietro_reviews_updated_event", Date.now().toString());
+
+  renderReviews();
+  closeAdminModal("review-add-modal");
+
+  alert(currentLanguage === "tr" ? "Değerlendirmeniz için teşekkür ederiz!" :
+        (currentLanguage === "ar" ? "شكراً لتقييمك!" : "Thank you for your review!"));
 };
