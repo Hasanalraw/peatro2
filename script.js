@@ -1494,6 +1494,51 @@ window.confirmBookingWithCart = function() {
   }
 };
 
+window.bookTableDirectly = function(id) {
+  const dish = dishesData[id];
+  if (!dish) return;
+
+  const sizeLabels = {
+    tr: { small: "Küçük", medium: "Orta", large: "Büyük" },
+    en: { small: "Small", medium: "Medium", large: "Large" },
+    ar: { small: "صغيرة", medium: "متوسطة", large: "كبيرة" }
+  };
+
+  const currencyPrices = dish.prices[currentLanguage] || dish.prices["tr"] || { small: '', medium: '0 TL', large: '0 TL' };
+  let selectedSize = "medium";
+  if (!currencyPrices.medium || currencyPrices.medium.trim() === "") {
+    if (currencyPrices.small && currencyPrices.small.trim() !== "") {
+      selectedSize = "small";
+    } else if (currencyPrices.large && currencyPrices.large.trim() !== "") {
+      selectedSize = "large";
+    }
+  }
+
+  const selectedPriceLabel = currencyPrices[selectedSize] || "0 TL";
+
+  const existingIndex = bookingCart.findIndex(item => item.dishId === dish.id && item.size === selectedSize);
+  if (existingIndex !== -1) {
+    bookingCart[existingIndex].qty += 1;
+  } else {
+    bookingCart.push({
+      dishId: dish.id,
+      name: dish.name,
+      size: selectedSize,
+      sizeLabel: sizeLabels,
+      price: selectedPriceLabel,
+      image: dish.image,
+      qty: 1
+    });
+  }
+
+  renderCart();
+
+  const bookingSection = document.getElementById("reservation");
+  if (bookingSection) {
+    bookingSection.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
 window.addDishDirectToCart = function(id) {
   const dish = dishesData[id];
   if (!dish) return;
@@ -1730,6 +1775,19 @@ window.handleBookingSubmit = function(event) {
   const popup = document.getElementById("form-success-popup");
   if (popup) {
     popup.classList.add("active");
+  }
+
+  // Notify parent window if loaded inside an iframe (visual editor)
+  if (window.parent && window.parent !== window) {
+    if (typeof window.parent.loadBookings === "function") {
+      window.parent.loadBookings();
+    }
+    if (typeof window.parent.playNotificationSound === "function") {
+      window.parent.playNotificationSound();
+    }
+    if (typeof window.parent.showToast === "function") {
+      window.parent.showToast(name);
+    }
   }
 };
 
@@ -1979,7 +2037,7 @@ function renderMenu() {
             </span>
           </div>
           <div class="menu-card-actions" style="display: flex; gap: 8px; width: 100%;">
-            <button class="btn btn-outline" onclick="openSizeModal('${dish.id}', 'reserve')" data-key="btn-reserve-table" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">
+            <button class="btn btn-outline" onclick="bookTableDirectly('${dish.id}')" data-key="btn-reserve-table" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">
               ${translations[currentLanguage]["btn-reserve-table"] || "Masa Rezerve Et"}
             </button>
             <button class="btn btn-gold" onclick="openSizeModal('${dish.id}', 'cart')" data-key="btn-add-to-cart" style="flex: 1; padding: 10px 4px; font-size: 0.75rem; justify-content: center; align-items: center; min-height: 38px;">

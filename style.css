@@ -2216,4 +2216,42 @@ body.admin-mode-active img[data-img-key] {
   border-color: #000000 !important;
 }
 
+/* Red delete buttons in cart tags and drawer */
+.cart-item-tag .cart-item-remove {
+  color: #ff4d4d !important;
+}
+.cart-drawer-item-remove {
+  color: #ff4d4d !important;
+}
+
+/* White browser-native calendar and clock picker indicators */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) !important;
+  cursor: pointer;
+}
+
+/* Add Review button always black style */
+#btn-add-review {
+  color: #000000 !important;
+  border-color: #000000 !important;
+  background: transparent !important;
+}
+#btn-add-review:hover {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+/* Position visual editor image edit buttons inset to prevent overflow clip */
+.about-img-wrapper .edit-overlay-btn,
+.hero-image-wrapper .edit-overlay-btn {
+  top: 15px !important;
+  right: 15px !important;
+}
+html[dir="rtl"] .about-img-wrapper .edit-overlay-btn,
+html[dir="rtl"] .hero-image-wrapper .edit-overlay-btn {
+  right: auto !important;
+  left: 15px !important;
+}
+
 
