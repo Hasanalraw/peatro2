@@ -1031,6 +1031,33 @@
         </div>
 
       </div>
+
+      <!-- Cloud Database Settings (Firebase) -->
+      <div class="dashboard-card" style="margin-top: 30px;">
+        <div class="card-title">
+          <i class="fa-solid fa-database text-gold"></i> <span id="lang-db-settings-title">Bulut Veritabanı Ayarları (Firebase)</span>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 20px;" id="lang-db-settings-desc">
+          Müşterilerin kendi telefonlarından gönderdikleri rezervasyonların yönetici paneline anlık (Real-time) olarak düşmesi için Firebase veritabanı bilgilerinizi buraya yapıştırın. Boş bırakılırsa yerel depolama (Local Demo) modu etkin kalır.
+        </p>
+        
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="db-firebase-config" id="lang-db-config-label">Firebase Config JSON nesnesi</label>
+          <textarea id="db-firebase-config" placeholder='{
+  "apiKey": "AIzaSy...",
+  "authDomain": "...",
+  "projectId": "...",
+  "storageBucket": "...",
+  "messagingSenderId": "...",
+  "appId": "..."
+}' style="width: 100%; height: 150px; font-family: monospace; font-size: 0.85rem; background: rgba(255,255,255,0.02); color: #FFF; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 12px; resize: vertical;"></textarea>
+        </div>
+        
+        <div style="display: flex; gap: 15px; justify-content: flex-end;">
+          <button class="btn btn-outline" onclick="loadDefaultDbConfig()" id="lang-btn-db-load">Mevcut Bilgileri Yükle</button>
+          <button class="btn btn-gold" onclick="saveDbConfig()" id="lang-btn-db-save">Ayarları Kaydet</button>
+        </div>
+      </div>
     </section>
 
     <!-- TAB 2.5: ALL RESERVATIONS SECTION -->
@@ -1081,33 +1108,7 @@
             <p id="lang-empty-all-bookings">Herhangi bir rezervasyon bulunmuyor.</p>
           </div>
         </div>
-      <!-- Cloud Database Settings (Firebase) -->
-      <div class="dashboard-card" style="margin-top: 30px; grid-column: span 2;">
-        <div class="card-title">
-          <i class="fa-solid fa-database text-gold"></i> <span id="lang-db-settings-title">Bulut Veritabanı Ayarları (Firebase)</span>
-        </div>
-        <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 20px;" id="lang-db-settings-desc">
-          Müşterilerin kendi telefonlarından gönderdikleri rezervasyonların yönetici paneline anlık (Real-time) olarak düşmesi için Firebase veritabanı bilgilerinizi buraya yapıştırın. Boş bırakılırsa yerel depolama (Local Demo) modu etkin kalır.
-        </p>
-        
-        <div class="form-group" style="margin-bottom: 20px;">
-          <label for="db-firebase-config" id="lang-db-config-label">Firebase Config JSON nesnesi</label>
-          <textarea id="db-firebase-config" placeholder='{
-  "apiKey": "AIzaSy...",
-  "authDomain": "...",
-  "projectId": "...",
-  "storageBucket": "...",
-  "messagingSenderId": "...",
-  "appId": "..."
-}' style="width: 100%; height: 150px; font-family: monospace; font-size: 0.85rem; background: rgba(255,255,255,0.02); color: #FFF; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 12px; resize: vertical;"></textarea>
-        </div>
-        
-        <div style="display: flex; gap: 15px; justify-content: flex-end;">
-          <button class="btn btn-outline" onclick="loadDefaultDbConfig()" id="lang-btn-db-load">Mevcut Bilgileri Yükle</button>
-          <button class="btn btn-gold" onclick="saveDbConfig()" id="lang-btn-db-save">Ayarları Kaydet</button>
-        </div>
       </div>
-
     </section>
 
     <!-- TAB 3.5: REVIEW MANAGEMENT SECTION -->
