@@ -1776,6 +1776,30 @@
     }
 
     // 4. Load Bookings List
+    function formatDateStr(dateString) {
+      if (!dateString) return "";
+      const parts = dateString.split("-");
+      if (parts.length === 3) {
+        const year = parts[0];
+        const monthNum = parts[1];
+        const day = parts[2];
+        
+        const monthNames = {
+          tr: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+          en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          ar: ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"]
+        };
+        
+        const lang = typeof adminActiveLang !== "undefined" ? adminActiveLang : "tr";
+        const months = monthNames[lang] || monthNames["tr"];
+        const monthIdx = parseInt(monthNum, 10) - 1;
+        if (monthIdx >= 0 && monthIdx < 12) {
+          return `${day} ${months[monthIdx]} ${year}`;
+        }
+      }
+      return dateString;
+    }
+
     function loadBookings() {
       const allBookings = safeGetItem("pietro_bookings");
       
@@ -1815,8 +1839,7 @@
         const tr = document.createElement("tr");
         tr.id = booking.id;
 
-        const dateObj = new Date(booking.date);
-        const dateStr = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
+        const dateStr = formatDateStr(booking.date);
         
         const payStatus = booking.paymentStatus || "unpaid";
         const dict = adminLangDict[adminActiveLang];
@@ -1924,8 +1947,7 @@
         const tr = document.createElement("tr");
         tr.id = 'upcoming-' + booking.id;
 
-        const dateObj = new Date(booking.date);
-        const dateStr = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
+        const dateStr = formatDateStr(booking.date);
         
         const payStatus = booking.paymentStatus || "unpaid";
         const dict = adminLangDict[adminActiveLang];
@@ -2038,8 +2060,7 @@
         const tr = document.createElement("tr");
         tr.id = 'all-' + booking.id;
 
-        const dateObj = new Date(booking.date);
-        const dateStr = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
+        const dateStr = formatDateStr(booking.date);
         
         const payStatus = booking.paymentStatus || "unpaid";
         const dict = adminLangDict[adminActiveLang];
