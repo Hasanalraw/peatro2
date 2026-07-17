@@ -1081,7 +1081,33 @@
             <p id="lang-empty-all-bookings">Herhangi bir rezervasyon bulunmuyor.</p>
           </div>
         </div>
+      <!-- Cloud Database Settings (Firebase) -->
+      <div class="dashboard-card" style="margin-top: 30px; grid-column: span 2;">
+        <div class="card-title">
+          <i class="fa-solid fa-database text-gold"></i> <span id="lang-db-settings-title">Bulut Veritabanı Ayarları (Firebase)</span>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 20px;" id="lang-db-settings-desc">
+          Müşterilerin kendi telefonlarından gönderdikleri rezervasyonların yönetici paneline anlık (Real-time) olarak düşmesi için Firebase veritabanı bilgilerinizi buraya yapıştırın. Boş bırakılırsa yerel depolama (Local Demo) modu etkin kalır.
+        </p>
+        
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="db-firebase-config" id="lang-db-config-label">Firebase Config JSON nesnesi</label>
+          <textarea id="db-firebase-config" placeholder='{
+  "apiKey": "AIzaSy...",
+  "authDomain": "...",
+  "projectId": "...",
+  "storageBucket": "...",
+  "messagingSenderId": "...",
+  "appId": "..."
+}' style="width: 100%; height: 150px; font-family: monospace; font-size: 0.85rem; background: rgba(255,255,255,0.02); color: #FFF; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 12px; resize: vertical;"></textarea>
+        </div>
+        
+        <div style="display: flex; gap: 15px; justify-content: flex-end;">
+          <button class="btn btn-outline" onclick="loadDefaultDbConfig()" id="lang-btn-db-load">Mevcut Bilgileri Yükle</button>
+          <button class="btn btn-gold" onclick="saveDbConfig()" id="lang-btn-db-save">Ayarları Kaydet</button>
+        </div>
       </div>
+
     </section>
 
     <!-- TAB 3.5: REVIEW MANAGEMENT SECTION -->
@@ -1132,6 +1158,13 @@
       <p id="toast-booking-info">Bir müşteri yeni rezervasyon gönderdi.</p>
     </div>
   </div>
+
+  <!-- Firebase Compat SDK (v10) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  
+  <!-- Firebase Cloud Database -->
+  <script src="db.js?v=2.1.0"></script>
 
   <script>
     // Global Safe LocalStorage Parser
@@ -1284,7 +1317,12 @@
         "empty-reviews": "Henüz eklenmiş bir yorum bulunmuyor.",
         "btn-all-res": "Tüm Rezervasyonlar",
         "all-title": "Tüm Rezervasyon Talepleri",
-        "empty-all": "Henüz herhangi bir masa rezervasyon talebi bulunmuyor."
+        "empty-all": "Henüz herhangi bir masa rezervasyon talebi bulunmuyor.",
+        "db-settings-title": "Bulut Veritabanı Ayarları (Firebase)",
+        "db-settings-desc": "Müşterilerin kendi telefonlarından gönderdikleri rezervasyonların yönetici paneline anlık (Real-time) olarak düşmesi için Firebase veritabanı bilgilerinizi buraya yapıştırın. Boş bırakılırsa yerel depolama (Local Demo) modu etkin kalır.",
+        "db-config-label": "Firebase Config JSON nesnesi (Metin kutusuna yapıştırın)",
+        "btn-db-load": "Mevcut Bilgileri Yükle",
+        "btn-db-save": "Ayarları Kaydet"
       },
       en: {
         "panel-tag": "Admin Panel",
@@ -1361,7 +1399,12 @@
         "empty-reviews": "No reviews submitted yet.",
         "btn-all-res": "All Reservations",
         "all-title": "All Reservation Requests",
-        "empty-all": "No table reservations received yet."
+        "empty-all": "No table reservations received yet.",
+        "db-settings-title": "Cloud Database Settings (Firebase)",
+        "db-settings-desc": "Paste your Firebase database credentials here so that reservations sent by customers from their phones appear on the admin panel in real-time. If left blank, local storage mode (Local Demo) remains active.",
+        "db-config-label": "Firebase Config JSON Object",
+        "btn-db-load": "Load Existing Config",
+        "btn-db-save": "Save Settings"
       },
       ar: {
         "panel-tag": "لوحة التحكم",
@@ -1438,7 +1481,12 @@
         "empty-reviews": "لم يتم إضافة أي تقييمات بعد.",
         "btn-all-res": "جميع الحجوزات",
         "all-title": "جميع طلبات الحجز",
-        "empty-all": "لا توجد أي طلبات حجز بعد."
+        "empty-all": "لا توجد أي طلبات حجز بعد.",
+        "db-settings-title": "إعدادات قاعدة البيانات السحابية (Firebase)",
+        "db-settings-desc": "الصق بيانات اعتماد قاعدة بيانات Firebase هنا حتى تظهر الحجوزات المرسلة من هواتف العملاء في لوحة التحكم في نفس اللحظة (Real-time). إذا تركت فارغة، فسيظل وضع التخزين المحلي نشطاً.",
+        "db-config-label": "كائن تكوين Firebase JSON",
+        "btn-db-load": "تحميل الإعدادات الحالية",
+        "btn-db-save": "حفظ الإعدادات"
       }
     };
 
@@ -1560,6 +1608,16 @@
       if (elStatAllConf) elStatAllConf.textContent = dict["stat-confirmed"];
       const elStatAllCanc = document.getElementById("lang-stat-all-cancelled");
       if (elStatAllCanc) elStatAllCanc.textContent = dict["stat-cancelled"];
+      const elDbTitle = document.getElementById("lang-db-settings-title");
+      if (elDbTitle) elDbTitle.textContent = dict["db-settings-title"];
+      const elDbDesc = document.getElementById("lang-db-settings-desc");
+      if (elDbDesc) elDbDesc.textContent = dict["db-settings-desc"];
+      const elDbConfigLabel = document.getElementById("lang-db-config-label");
+      if (elDbConfigLabel) elDbConfigLabel.textContent = dict["db-config-label"];
+      const elBtnDbLoad = document.getElementById("lang-btn-db-load");
+      if (elBtnDbLoad) elBtnDbLoad.textContent = dict["btn-db-load"];
+      const elBtnDbSave = document.getElementById("lang-btn-db-save");
+      if (elBtnDbSave) elBtnDbSave.textContent = dict["btn-db-save"];
 
       document.getElementById("lang-menu-list-title").textContent = dict["menu-list-title"];
       document.getElementById("lang-btn-reset-menu").textContent = dict["btn-reset-menu"];
@@ -2293,39 +2351,56 @@
 
     // 5. Booking Action functions
     window.setStatus = function(id, status) {
-      let bookings = safeGetItem("pietro_bookings");
-      bookings = bookings.map(b => {
-        if (b.id === id) b.status = status;
-        return b;
-      });
-      localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
-      loadBookings();
+      if (typeof window.updateBookingInCloud === "function") {
+        window.updateBookingInCloud(id, { status: status });
+      } else {
+        let bookings = safeGetItem("pietro_bookings");
+        bookings = bookings.map(b => {
+          if (b.id === id) b.status = status;
+          return b;
+        });
+        localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
+        loadBookings();
+      }
     };
 
     window.changePaymentStatus = function(id, newStatus) {
-      let bookings = safeGetItem("pietro_bookings");
-      bookings = bookings.map(b => {
-        if (b.id === id) {
-          b.paymentStatus = newStatus;
-        }
-        return b;
-      });
-      localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
-      loadBookings();
+      if (typeof window.updateBookingInCloud === "function") {
+        window.updateBookingInCloud(id, { paymentStatus: newStatus });
+      } else {
+        let bookings = safeGetItem("pietro_bookings");
+        bookings = bookings.map(b => {
+          if (b.id === id) {
+            b.paymentStatus = newStatus;
+          }
+          return b;
+        });
+        localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
+        loadBookings();
+      }
     };
 
     window.deleteBooking = function(id) {
       if (!confirm("Bu rezervasyon kaydını silmek istediğinize emin misiniz?")) return;
-      let bookings = safeGetItem("pietro_bookings");
-      bookings = bookings.filter(b => b.id !== id);
-      localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
-      loadBookings();
+      if (typeof window.deleteBookingFromCloud === "function") {
+        window.deleteBookingFromCloud(id);
+      } else {
+        let bookings = safeGetItem("pietro_bookings");
+        bookings = bookings.filter(b => b.id !== id);
+        localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
+        loadBookings();
+      }
     };
 
     window.clearAllBookings = function() {
       if (!confirm("Tüm kayıtları silmek istediğinize emin misiniz?")) return;
-      localStorage.removeItem("pietro_bookings");
-      loadBookings();
+      if (typeof window.deleteBookingFromCloud === "function") {
+        const bookings = safeGetItem("pietro_bookings");
+        bookings.forEach(b => window.deleteBookingFromCloud(b.id));
+      } else {
+        localStorage.removeItem("pietro_bookings");
+        loadBookings();
+      }
     };
 
     window.contactCustomer = function(id) {
@@ -2915,11 +2990,82 @@
       alert(successMsg);
     };
 
+    // Firebase Cloud Configuration Manager
+    window.loadDefaultDbConfig = function() {
+      const config = localStorage.getItem("pietro_firebase_config");
+      const textarea = document.getElementById("db-firebase-config");
+      if (textarea) {
+        if (config) {
+          try {
+            textarea.value = JSON.stringify(JSON.parse(config), null, 2);
+          } catch(e) {
+            textarea.value = config;
+          }
+        } else {
+          const template = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "SENDER_ID",
+            appId: "APP_ID"
+          };
+          textarea.value = JSON.stringify(template, null, 2);
+        }
+      }
+    };
+
+    window.saveDbConfig = function() {
+      const textarea = document.getElementById("db-firebase-config");
+      if (!textarea) return;
+      
+      const value = textarea.value.trim();
+      if (value === "") {
+        localStorage.removeItem("pietro_firebase_config");
+        alert(adminActiveLang === "tr" ? "Bulut veritabanı ayarları temizlendi. Yerel depolama modu etkin." : "Cloud database config cleared. Local storage mode active.");
+        window.location.reload();
+        return;
+      }
+      
+      try {
+        const parsed = JSON.parse(value);
+        if (!parsed.projectId || !parsed.apiKey) {
+          throw new Error("Missing projectId or apiKey");
+        }
+        localStorage.setItem("pietro_firebase_config", JSON.stringify(parsed));
+        alert(adminActiveLang === "tr" ? "Bulut veritabanı ayarları başarıyla kaydedildi! Sayfa yenileniyor..." : "Cloud database settings saved successfully! Reloading page...");
+        window.location.reload();
+      } catch (e) {
+        alert(adminActiveLang === "tr" ? "Geçersiz JSON formatı! Lütfen tüm alanları doğru girdiğinizden emin olun." : "Invalid JSON format! Please make sure the config object is valid.");
+      }
+    };
+
     // 9. Initial Load Configuration
     document.addEventListener("DOMContentLoaded", () => {
       checkFileProtocol();
       changeAdminLang("tr"); // Default in Turkish
       loadReviewsList();
+      loadDefaultDbConfig();
+
+      // Initialize real-time Firebase bookings sync
+      if (typeof window.onBookingsChange === "function") {
+        let isInitialLoad = true;
+        window.onBookingsChange((updatedBookings) => {
+          // Play sound and show toast only for NEW bookings added in real-time
+          if (!isInitialLoad && updatedBookings.length > 0) {
+            const oldBookings = safeGetItem("pietro_bookings");
+            // If the first booking is new (not in our old list), trigger notification
+            if (oldBookings.length === 0 || updatedBookings[0].id !== oldBookings[0].id) {
+              playNotificationSound();
+              showToast(updatedBookings[0].name);
+            }
+          }
+          isInitialLoad = false;
+          
+          // Re-render dashboard lists
+          loadBookings();
+        });
+      }
     });
   </script>
 </body>

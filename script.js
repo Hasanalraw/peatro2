@@ -1748,8 +1748,7 @@ window.handleBookingSubmit = function(event) {
   // Simple validation helper
   if (!name || !phone || !date || !time) return;
 
-  // Fetch bookings list, append new booking, and save
-  let bookings = safeGetItem("pietro_bookings");
+  // Create new booking object
   const newBooking = {
     id: 'B-' + Date.now(),
     name,
@@ -1765,11 +1764,16 @@ window.handleBookingSubmit = function(event) {
     paymentStatus: "unpaid",
     timestamp: new Date().toISOString()
   };
-  bookings.unshift(newBooking); // add to top
-  localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
 
-  // Dispatch storage update trigger event for local tab-to-tab sync
-  localStorage.setItem("pietro_new_booking_event", Date.now().toString());
+  // Save to cloud database (with automatic localStorage fallback built-in)
+  if (typeof window.addBookingToCloud === "function") {
+    window.addBookingToCloud(newBooking);
+  } else {
+    let bookings = safeGetItem("pietro_bookings");
+    bookings.unshift(newBooking);
+    localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
+    localStorage.setItem("pietro_new_booking_event", Date.now().toString());
+  }
 
   // Show Success Popup Modal card
   const popup = document.getElementById("form-success-popup");
