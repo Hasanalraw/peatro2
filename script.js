@@ -368,6 +368,7 @@ let translations = safeGetItem("pietro_translations", defaultTranslations);
 const defaultConfig = {
   logoImg: "images/logo.svg",
   heroBg: "images/pizza_pietro.jpg",
+  "hero-featured-img": "images/pizza_pietro.jpg",
   heroOverlay1: "0.8",
   heroOverlay2: "0.9",
   aboutGalleryImg1: "images/penne_burrata.jpg",

@@ -2254,15 +2254,25 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 /* Position visual editor image edit buttons inset to prevent overflow clip */
-.about-img-wrapper .edit-overlay-btn,
-.hero-image-wrapper .edit-overlay-btn {
-  top: 15px !important;
-  right: 15px !important;
+.about-img-wrapper .edit-overlay-btn {
+  top: 30px !important;
+  right: 30px !important;
 }
-html[dir="rtl"] .about-img-wrapper .edit-overlay-btn,
-html[dir="rtl"] .hero-image-wrapper .edit-overlay-btn {
+html[dir="rtl"] .about-img-wrapper .edit-overlay-btn {
   right: auto !important;
-  left: 15px !important;
+  left: 30px !important;
+}
+
+.hero-image-wrapper .edit-overlay-btn {
+  top: auto !important;
+  bottom: 20px !important;
+  right: 20px !important;
+}
+html[dir="rtl"] .hero-image-wrapper .edit-overlay-btn {
+  top: auto !important;
+  right: auto !important;
+  left: 20px !important;
+  bottom: 20px !important;
 }
 
 

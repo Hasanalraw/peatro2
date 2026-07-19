@@ -1593,11 +1593,13 @@
       let reviews = [];
       if (!saved) {
         reviews = defaultReviews;
+        localStorage.setItem("pietro_reviews", JSON.stringify(defaultReviews));
       } else {
         try {
           reviews = JSON.parse(saved);
         } catch(e) {
           reviews = defaultReviews;
+          localStorage.setItem("pietro_reviews", JSON.stringify(defaultReviews));
         }
       }
 
@@ -1718,6 +1720,7 @@
     }
 
     function escapeHTML(str) {
+      if (!str) return "";
       return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
     }
 
