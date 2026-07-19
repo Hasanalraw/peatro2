@@ -1125,8 +1125,7 @@ function setLanguage(lang) {
   // Re-populate dynamic drinks dropdown based on current language
   populateDrinksDropdown();
   
-  // Re-render dynamic cart items to apply active language translations
-  renderCart();
+
   
   renderCategoryFilters();
   populateCategoryDropdowns();

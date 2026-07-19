@@ -1382,7 +1382,6 @@
       }
 
       // Reload lists
-      loadBookings();
       loadMenuList();
       loadDrinkList();
     }
@@ -2184,70 +2183,8 @@
       loadDrinkList();
     };
 
-    // 7. Simulation / Testing functions
-    window.simulateNewOrder = function() {
-      const mockNames = ["Ahmet Şahin", "Zeynep Yılmaz", "Can Demir", "Sarah Connor", "Ali El-Suri"];
-      const mockPhones = ["+90 532 987 6543", "+90 535 123 4567", "+90 541 333 4455", "+44 7911 123456", "+90 530 555 1122"];
-      const mockDishes = [
-        "Pizza Margherita (Orta - 380 TL)", 
-        "Pizza Pietro (Büyük - 610 TL)", 
-        "Penne Burrata (Küçük - 390 TL)", 
-        "Tagliatelli Scampi (Orta - 520 TL)",
-        "Pizza Quattro Formaggi (Büyük - 560 TL)"
-      ];
-      const mockDrinks = ["Cola (Yakında)", "Su (Yakında)", "", "Fanta (Yakında)", "Su (Yakında)"];
-
-      const randomIndex = Math.floor(Math.random() * mockNames.length);
-      const randomGuests = Math.floor(Math.random() * 6) + 1;
-      const today = new Date();
-      today.setDate(today.getDate() + Math.floor(Math.random() * 3));
-
-      const booking = {
-        id: 'B-' + Date.now(),
-        name: mockNames[randomIndex],
-        phone: mockPhones[randomIndex],
-        date: today.toISOString().split("T")[0],
-        time: `${12 + Math.floor(Math.random() * 8)}:00`,
-        guests: randomGuests.toString(),
-        dish: mockDishes[randomIndex],
-        drink: mockDrinks[randomIndex],
-        status: "pending",
-        timestamp: new Date().toISOString()
-      };
-
-      let bookings = safeGetItem("pietro_bookings");
-      bookings.unshift(booking);
-      localStorage.setItem("pietro_bookings", JSON.stringify(bookings));
-
-      // Trigger local storage event manually for same page update
-      localStorage.setItem("pietro_new_booking_event", Date.now().toString());
-      
-      loadBookings();
-      showToast(booking.name);
-      playNotificationSound();
-    };
-
-    function showToast(name) {
-      const toast = document.getElementById("booking-toast");
-      const dict = adminLangDict[adminActiveLang];
-      
-      document.getElementById("toast-booking-info").textContent = `${name} ${dict["toast-desc"]}`;
-      toast.classList.add("show");
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 4000);
-    }
-
     // 8. Real-time storage synchronization
     window.addEventListener("storage", (event) => {
-      if (event.key === "pietro_bookings" || event.key === "pietro_new_booking_event") {
-        const bookings = safeGetItem("pietro_bookings");
-        if (bookings.length > 0) {
-          playNotificationSound();
-          showToast(bookings[0].name);
-        }
-        loadBookings();
-      }
       if (event.key === "pietro_custom_dishes" || event.key === "pietro_deleted_default_dishes" || event.key === "pietro_custom_dishes_updated_event") {
         loadMenuList();
       }
